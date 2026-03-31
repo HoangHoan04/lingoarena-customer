@@ -43,7 +43,6 @@ export default function NotFound(): React.JSX.Element {
           </div>
         </div>
 
-        {/* Phần Text: Tiêu đề và Slogan thôi thúc */}
         <div className="flex flex-col -space-y-1 mb-10">
           <div className="flex items-center justify-center font-black tracking-tight text-5xl lg:text-7xl">
             <span className="text-white mr-2">LINGO</span>

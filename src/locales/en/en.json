@@ -1,0 +1,336 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills",
+    "experience": "Experience",
+    "education": "Education",
+    "contact": "Contact"
+  },
+  "header": {
+    "logo": "HoangHoan"
+  },
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "vietnamese": "Vietnamese",
+    "downloadCv": "Download CV",
+    "resume": "Resume",
+    "contact": "Contact",
+    "viewAll": "View All",
+    "loading": "Loading...",
+    "sending": "Sending...",
+    "send": "Send Message",
+    "success": "Success",
+    "error": "Error",
+    "code": "Code",
+    "demo": "Live Demo",
+    "source": "Source",
+    "customer": "Customer",
+    "admin": "Admin",
+    "api": "API"
+  },
+  "home": {
+    "hero": {
+      "title": "Hi! I'm HoangHoan",
+      "description": "Hello! I'm a Web Developer with a strong passion for building modern user interfaces and optimizing user experience. I'm currently a Software Engineering student at <strong>Saigon University</strong>, working as a Web Developer at <strong>APETECH Solutions</strong>. I'm actively learning and improving my skills through personal and group projects.",
+      "resume": "Resume",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "viewProjects": "View Projects",
+      "contact": "Contact Me"
+    },
+    "roles": [
+      "Full-Stack Developer",
+      "Frontend Developer",
+      "Backend Developer",
+      "UI/UX Designer"
+    ],
+    "projects": {
+      "title": "Featured Projects",
+      "subtitle": "Some of the notable projects I've worked on recently",
+      "viewAll": "View all projects",
+      "list": {
+        "wedding": {
+          "title": "Wedding Invitation",
+          "desc": "A full-stack wedding invitation web app with countdown timer, event details, and RSVP functionality. Built a responsive UI with React and Tailwind CSS, optimized for both desktop and mobile devices."
+        },
+        "himlam": {
+          "title": "Booking Tour HimLamTourist",
+          "desc": "A full-stack tour booking platform with separate modules for customer, admin, and API services. Features tour search, filtering, and reservation flow with NestJS and PostgreSQL via Supabase."
+        },
+        "apple": {
+          "title": "Apple Store",
+          "desc": "A full-stack e-commerce web app simulating the Apple Store with product listings, shopping cart, and order management. Built with core PHP and MVC architecture with a relational MySQL database."
+        }
+      }
+    },
+    "skills": {
+      "title": "Skills",
+      "subtitle": "The technologies and programming languages I am proficient in",
+      "viewAll": "View all skills"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Get to know me better",
+    "description": "Hello! I'm a Web Developer with a strong passion for building modern user interfaces and optimizing user experience. I'm currently a Software Engineering student at <strong>Saigon University</strong>, working as a Web Developer at <strong>APETECH Solutions</strong>. I'm actively learning and improving my skills through personal and group projects.",
+    "intro": [
+      "Hi! I'm a Full-Stack Developer with over 1 year of experience in developing web applications. I am passionate about learning new technologies and always looking for creative ways to solve complex problems.",
+      "My expertise includes React, Node.js, MySQL, and cloud technologies like AWS. I have experience working with both startups and large companies, from building MVPs to scaling systems serving millions of users.",
+      "Besides coding, I enjoy reading technology books, writing blogs to share knowledge, and participating in developer community activities. I believe that sharing knowledge helps the entire community grow stronger."
+    ],
+    "personalInfo": {
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "age": "Age",
+      "address": "Current Address",
+      "addressNew": "New Address",
+      "email": "Email",
+      "phone": "Phone",
+      "languages": "Languages"
+    },
+    "hobbies": {
+      "title": "Hobbies",
+      "list": {
+        "coding": "Coding",
+        "music": "Listening to Music",
+        "travel": "Traveling",
+        "photography": "Photography",
+        "football": "Football",
+        "badminton": "Badminton"
+      }
+    },
+    "journey": {
+      "title": "My Development Journey",
+      "intern": {
+        "title": "Intern Full-Stack Developer",
+        "company": "APE TECH Solutions",
+        "desc": "Participated in developing web and mobile application projects."
+      },
+      "university": {
+        "title": "Studied at Saigon University",
+        "company": "Faculty of Information Technology",
+        "desc": "Major in Software Engineering."
+      }
+    }
+  },
+  "experience": {
+    "title": "Work Experience",
+    "subtitle": "My career journey through roles, projects, and activities.",
+    "responsibilities": "Main Responsibilities",
+    "technologies": "Technologies",
+    "achievements": "Achievements",
+    "roles": {
+      "webDev": "Web Developer",
+      "fulltime": "Full-time"
+    },
+    "apetech": {
+      "desc": "Developing and maintaining web applications in a professional Agile team environment, contributing to both frontend and backend.",
+      "resp": [
+        "Develop and maintain web applications using React, Angular, and NestJS",
+        "Design and manage relational databases with PostgreSQL and MySQL",
+        "Collaborate with team members following Agile workflow to deliver features on schedule",
+        "Diagnose and resolve bugs to ensure system stability and improve application performance"
+      ],
+      "achieve": [
+        "Contributed to multiple real-world projects within the first months",
+        "Improved system stability by actively identifying and resolving bugs",
+        "Gained hands-on experience with Agile/Scrum workflow in a professional team"
+      ]
+    },
+    "activities": {
+      "title": "Activities & Clubs",
+      "studentBoard": {
+        "title": "Faculty Student Executive Board",
+        "role": "Committee Member",
+        "desc": "Represented students and coordinated academic and extracurricular events at faculty level."
+      },
+      "codeClub": {
+        "title": "Competitive Programming Club",
+        "role": "Member",
+        "desc": "Participated in algorithm challenges and programming contests to strengthen problem-solving skills."
+      }
+    },
+    "workStyle": {
+      "title": "Work Style",
+      "agile": {
+        "title": "Agile & Collaborative",
+        "desc": "Adapt well to Agile/Scrum methodology and work efficiently in cross-functional teams."
+      },
+      "problemSolver": {
+        "title": "Problem Solver",
+        "desc": "Approach problems methodically, debug systematically, and find efficient solutions."
+      },
+      "learner": {
+        "title": "Continuous Learner",
+        "desc": "Continuously learn and apply new technologies quickly in real-world projects."
+      },
+      "quality": {
+        "title": "Quality Focused",
+        "desc": "Prioritize code quality, system stability, and a smooth user experience."
+      },
+      "teamPlayer": {
+        "title": "Team Player",
+        "desc": "Communicate clearly, support teammates, and contribute actively to team goals."
+      },
+      "results": {
+        "title": "Results Driven",
+        "desc": "Focus on delivering features on schedule and resolving issues that impact the system."
+      }
+    },
+    "cta": "Let's work together!",
+    "ctaDesc": "I'm always looking for new opportunities to apply my experience and skills to exciting projects."
+  },
+  "education": {
+    "title": "Education & Projects",
+    "subtitle": "Academic background and hands-on projects built throughout my learning journey.",
+    "formal": "Formal Education",
+    "degree": "Bachelor of Software Engineering",
+    "school": "Saigon University",
+    "location": "Ho Chi Minh City, Vietnam",
+    "desc": "Studying Software Engineering with a focus on web development, database systems, and software engineering principles.",
+    "courses": "Main Courses",
+    "activities": "Activities",
+    "projects": "Projects",
+    "timeline": {
+      "title": "Learning Timeline",
+      "uniStart": "University Start",
+      "uniStartDesc": "HTML, CSS, JavaScript — programming fundamentals",
+      "coreCS": "Core CS",
+      "coreCSDesc": "OOP, Data Structures & Algorithms, Web Development",
+      "personal": "Personal Projects",
+      "personalDesc": "React, PHP, MySQL, Git — built first real projects",
+      "professional": "Professional",
+      "professionalDesc": "Angular, NestJS, TypeScript, PostgreSQL at APETECH Solutions"
+    },
+    "philosophy": {
+      "title": "Learning Philosophy",
+      "quote": "\"I believe the best way to learn is by building real things. Every project teaches me something new — and I never stop.\"",
+      "build": "Build to Learn",
+      "buildDesc": "Apply knowledge immediately through real projects rather than just theory.",
+      "others": "Learn from Others",
+      "othersDesc": "Collaborate with teammates and learn from code reviews and feedback.",
+      "improve": "Keep Improving",
+      "improveDesc": "Continuously refine skills and stay updated with new technologies."
+    }
+  },
+  "skills": {
+    "header": {
+      "badge": "Skills & Expertise",
+      "titleMain": "My Skills &",
+      "titleGradient": "Technologies",
+      "desc": "An overview of the skills and technologies I have learned and applied in real projects."
+    },
+    "stats": {
+      "tech": "Technologies",
+      "projects": "Projects Built",
+      "experience": "Months Experience",
+      "commits": "GitHub Commits"
+    },
+    "tabs": {
+      "technical": "Technical",
+      "tools": "Tools",
+      "soft": "Soft Skills"
+    },
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "database": "Database",
+      "devTools": "Development Tools",
+      "workflow": "Workflow"
+    },
+    "tools": {
+      "teamCollab": "Team Collaboration",
+      "bugFixing": "Bug Fixing"
+    },
+    "soft": {
+      "teamwork": "Teamwork",
+      "teamworkDesc": "Collaborate effectively in Agile teams, contributing to sprint goals and supporting teammates.",
+      "comm": "Communication",
+      "commDesc": "Communicate technical ideas clearly to both technical and non-technical stakeholders.",
+      "problemSolving": "Problem Solving",
+      "problemSolvingDesc": "Break down complex problems into manageable solutions with structured debugging.",
+      "agile": "Agile / Scrum",
+      "agileDesc": "Experienced in sprint planning, daily stand-ups, and delivering features on schedule.",
+      "time": "Time Management",
+      "timeDesc": "Prioritize tasks effectively, meet deadlines, and manage parallel workstreams.",
+      "learning": "Self-Learning",
+      "learningDesc": "Continuously learn new technologies and apply them quickly in real-world projects."
+    },
+    "cta": {
+      "title": "Let's work together!",
+      "desc": "I'm always ready to apply these skills to real-world projects. Let's get in touch!",
+      "button": "Contact Me"
+    }
+  },
+  "projectsPage": {
+    "title": "My Projects",
+    "subtitle": "Explore projects I have developed, from full-stack web applications to e-commerce platforms and interactive experiences.",
+    "featured": "Featured Projects",
+    "categories": {
+      "all": "All",
+      "fullstack": "Full-Stack",
+      "frontend": "Frontend",
+      "backend": "Backend"
+    },
+    "cta": "Got a project idea?",
+    "ctaDesc": "I'm always open to discussing new and exciting projects. Reach out so we can turn your idea into reality!"
+  },
+  "contactPage": {
+    "title": "Contact Me",
+    "subtitle": "Have an interesting project idea? Want to collaborate? Or just want to connect? I'm always open to listening and discussing!",
+    "sendMessage": "Send a Message",
+    "form": {
+      "name": "Full Name *",
+      "namePlaceholder": "Your full name",
+      "email": "Email *",
+      "emailPlaceholder": "email@example.com",
+      "projectType": "Project Type",
+      "projectPlaceholder": "Select project type",
+      "subject": "Subject *",
+      "subjectPlaceholder": "Brief summary",
+      "message": "Message *",
+      "messagePlaceholder": "Describe your project...",
+      "sending": "Sending...",
+      "send": "Send Message"
+    },
+    "success": {
+      "title": "Thank you!",
+      "message": "Message sent successfully to hoanghoanpineapple04@gmail.com. I'll get back to you within 24 hours."
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": "Email",
+      "emailDesc": "Send me an email anytime",
+      "github": "GitHub",
+      "githubDesc": "Check out my source code",
+      "linkedin": "LinkedIn",
+      "linkedinDesc": "Connect professionally",
+      "location": "Location",
+      "locationDesc": "Open to remote work"
+    },
+    "social": "Social Media",
+    "availability": {
+      "title": "Availability",
+      "days": "Mon - Fri",
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "off": "Off",
+      "status": "Available for opportunities"
+    },
+    "locationSection": {
+      "title": "Location",
+      "desc": "Currently based in Ho Chi Minh City, Vietnam. Open to remote work for suitable projects."
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "copy": "Copyright © 2025 Hoanghoan."
+  },
+  "fullscreen": {
+    "enter": "Enter fullscreen",
+    "exit": "Exit fullscreen"
+  }
+}

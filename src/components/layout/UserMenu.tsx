@@ -1,10 +1,10 @@
 import { useTheme } from "@/context/ThemeContext";
+import { useRouter } from "@/routes/hooks";
 import tokenCache from "@/utils/token-cache";
 import { Avatar } from "primereact/avatar";
 import { Menu } from "primereact/menu";
 import type { MenuItem } from "primereact/menuitem";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface UserMenuProps {
   onLoginClick: () => void;
@@ -15,7 +15,7 @@ export default function UserMenu({
   onLoginClick,
   onRegisterClick,
 }: UserMenuProps) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,17 +55,17 @@ export default function UserMenu({
       {
         label: "Đơn hàng",
         icon: "pi pi-fw pi-shopping-bag",
-        command: () => navigate("/my-orders"),
+        command: () => router.push("/my-orders"),
       },
       {
         label: "Tài khoản",
         icon: "pi pi-fw pi-user-edit",
-        command: () => navigate("/profile"),
+        command: () => router.push("/profile"),
       },
       {
         label: "Mật khẩu",
         icon: "pi pi-fw pi-key",
-        command: () => navigate("/change-password"),
+        command: () => router.push("/change-password"),
       },
       { separator: true },
       {
@@ -77,7 +77,7 @@ export default function UserMenu({
         },
       },
     ],
-    [displayName, navigate],
+    [displayName, router],
   );
 
   const userMenuItemsGuest: MenuItem[] = useMemo(
@@ -98,20 +98,6 @@ export default function UserMenu({
 
   return (
     <div ref={containerRef} className="flex items-center gap-3">
-      {/* Khối hiển thị tên (Chỉ hiển thị, không chứa Menu để tránh lệch) */}
-      <div
-        className="hidden sm:flex flex-col items-end cursor-pointer select-none"
-        onClick={() => setShowUserMenu(!showUserMenu)}
-      >
-        <span className="text-[13px] font-bold text-slate-700 dark:text-slate-200 leading-tight">
-          {displayName}
-        </span>
-        <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
-          {isLoggedIn ? "Thành viên" : "Khách"}
-        </span>
-      </div>
-
-      {/* Khối Avatar: Gốc tọa độ cho Menu */}
       <div className="relative">
         <div
           className={`
@@ -128,7 +114,6 @@ export default function UserMenu({
           />
         </div>
 
-        {/* Dropdown Menu: Căn theo Avatar */}
         {showUserMenu && (
           <div className="absolute right-0 mt-3 z-110 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200">
             <Menu

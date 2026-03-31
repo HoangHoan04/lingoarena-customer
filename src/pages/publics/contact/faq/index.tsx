@@ -82,10 +82,8 @@ export default function FaqScreen() {
   return (
     <div className="">
       <div className="min-h-screen max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        {/* FAQ Section */}
         <div className="mb-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-            {/* Left Side - Text and Image */}
             <div className="space-y-8 lg:sticky lg:top-8">
               <div className="space-y-4">
                 <div className="inline-block px-4 py-2 bg-linear-to-r from-teal-100 to-cyan-100 rounded-full">
@@ -119,7 +117,6 @@ export default function FaqScreen() {
               </div>
             </div>
 
-            {/* Right Side - FAQ Accordion */}
             <div className="space-y-3">
               <Accordion className="border-0">
                 {faqItems.map((item, index) => (
@@ -147,9 +144,7 @@ export default function FaqScreen() {
           </div>
         </div>
 
-        {/* Contact Form Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-12 border-t border-gray-200">
-          {/* Left Side - Form */}
           <div className="order-2 lg:order-1">
             <Card className="shadow-2xl border-0 rounded-3xl overflow-hidden">
               <div className="bg-linear-to-br from-purple-600 via-indigo-600 to-purple-700 text-white p-8 -m-6 mb-6">
@@ -249,7 +244,6 @@ export default function FaqScreen() {
             </Card>
           </div>
 
-          {/* Right Side - Animation */}
           <div className="order-1 lg:order-2 flex justify-center items-center">
             <div className="relative w-full max-w-lg">
               <div className="absolute inset-0 bg-linear-to-r from-teal-400 to-cyan-400 rounded-full blur-3xl opacity-20 animate-pulse"></div>
@@ -270,7 +264,6 @@ export default function FaqScreen() {
         </div>
       </div>
 
-      {/* Newsletter Subscription */}
       <SendEmailComponent
         onSuccess={(email) => {
           console.log("Người dùng đã đăng ký với email:", email);

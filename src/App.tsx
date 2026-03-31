@@ -1,3 +1,4 @@
+import "@/assets/styles/style.css";
 import "@/assets/styles/tailwind.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "primeicons/primeicons.css";

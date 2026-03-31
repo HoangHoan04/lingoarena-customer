@@ -1,15 +1,14 @@
 import { Field } from "@/components/ui/Field";
 import { validators } from "@/utils/validators";
 import { Button } from "primereact/button";
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
+
 import { InputOtp } from "primereact/inputotp";
 import { InputText } from "primereact/inputtext";
 import { Steps } from "primereact/steps";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function ForgotPasswordPage() {
+export default function ForgotPasswordScreen() {
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -70,7 +69,6 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="w-full flex flex-col">
-      {/* Header */}
       <div className="mb-6">
         <h3 className="text-4xl font-black text-slate-800 dark:text-white m-0 mb-2  ">
           Quên mật khẩu
@@ -82,7 +80,6 @@ export default function ForgotPasswordPage() {
         </p>
       </div>
 
-      {/* Steps */}
       <div className="mb-8 scale-95 origin-left">
         <Steps
           model={stepItems}
@@ -93,7 +90,6 @@ export default function ForgotPasswordPage() {
       </div>
 
       <div className="flex-1 flex flex-col">
-        {/* BƯỚC 0: NHẬP THÔNG TIN LIÊN HỆ */}
         {activeStep === 0 && (
           <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-500">
             <Field
@@ -101,8 +97,7 @@ export default function ForgotPasswordPage() {
               error={errors.contact}
               required
             >
-              <IconField iconPosition="left">
-                <InputIcon className="pi pi-user" />
+              <div className="relative">
                 <InputText
                   value={formData.contact}
                   onChange={(e) =>
@@ -112,7 +107,7 @@ export default function ForgotPasswordPage() {
                   className={`w-full pl-10 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all ${errors.contact ? "ring-2 ring-red-500" : ""}`}
                   onKeyDown={(e) => e.key === "Enter" && handleSendOTP()}
                 />
-              </IconField>
+              </div>
             </Field>
 
             <Button
@@ -136,7 +131,6 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        {/* BƯỚC 1: XÁC THỰC OTP */}
         {activeStep === 1 && (
           <div className="flex flex-col items-center gap-8 animate-in zoom-in-95 duration-300">
             <div className="text-center bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-2xl border border-indigo-100 dark:border-indigo-800 w-full">
@@ -189,12 +183,11 @@ export default function ForgotPasswordPage() {
           </div>
         )}
 
-        {/* BƯỚC 2: THIẾT LẬP MẬT KHẨU MỚI */}
         {activeStep === 2 && (
           <div className="flex flex-col gap-5 animate-in fade-in slide-in-from-right-4 duration-500">
             <Field label="Mật khẩu mới" error={errors.newPassword} required>
-              <IconField iconPosition="left">
-                <InputIcon className="pi pi-lock" />
+              <div className="relative">
+                <i className="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <InputText
                   type={showPassword ? "text" : "password"}
                   value={formData.newPassword}
@@ -208,7 +201,7 @@ export default function ForgotPasswordPage() {
                   className={`pi ${showPassword ? "pi-eye-slash" : "pi-eye"} absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-slate-400`}
                   onClick={() => setShowPassword(!showPassword)}
                 />
-              </IconField>
+              </div>
             </Field>
 
             <Field
@@ -216,8 +209,8 @@ export default function ForgotPasswordPage() {
               error={errors.confirmPassword}
               required
             >
-              <IconField iconPosition="left">
-                <InputIcon className="pi pi-lock" />
+              <div className="relative">
+                <i className="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <InputText
                   type={showPassword ? "text" : "password"}
                   value={formData.confirmPassword}
@@ -230,7 +223,7 @@ export default function ForgotPasswordPage() {
                   placeholder="Nhập lại mật khẩu mới"
                   className={`w-full pl-10 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all ${errors.confirmPassword ? "ring-2 ring-red-500" : ""}`}
                 />
-              </IconField>
+              </div>
             </Field>
 
             <Button

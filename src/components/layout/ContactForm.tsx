@@ -2,7 +2,6 @@ import { useToast } from "@/context/ToastContext";
 import type { ContactDto } from "@/dto";
 import { useSendContact } from "@/hooks/contact";
 import { Button } from "primereact/button";
-import { Card } from "primereact/card";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
@@ -103,7 +102,7 @@ export default function ContactForm({
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium mb-2">
             Họ và Tên <span className="text-red-500">*</span>
           </label>
           <InputText
@@ -116,7 +115,7 @@ export default function ContactForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium mb-2">
             Email <span className="text-red-500">*</span>
           </label>
           <InputText
@@ -132,9 +131,7 @@ export default function ContactForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Chủ đề
-          </label>
+          <label className="block text-sm font-medium mb-2">Chủ đề</label>
           <Dropdown
             value={formData.subject}
             onChange={(e) => setFormData({ ...formData, subject: e.value })}
@@ -146,7 +143,7 @@ export default function ContactForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium mb-2">
             Nội dung <span className="text-red-500">*</span>
           </label>
           <InputTextarea
@@ -158,7 +155,7 @@ export default function ContactForm({
                 message: e.target.value,
               })
             }
-            rows={6}
+            rows={4}
             className="w-full"
             disabled={isPending}
           />
@@ -187,7 +184,6 @@ export default function ContactForm({
             background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
             border: "none",
             fontSize: "1.1rem",
-            padding: "0.75rem",
           }}
         />
       </div>
@@ -195,7 +191,7 @@ export default function ContactForm({
   );
 
   if (showCard) {
-    return <Card className="shadow-xl">{formContent}</Card>;
+    return <div className="shadow-xl">{formContent}</div>;
   }
 
   return <div>{formContent}</div>;

@@ -1,9 +1,11 @@
-import Logo from "@/components/layout/Logo";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import Notification from "@/components/layout/Notification";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 import UserMenu from "@/components/layout/UserMenu";
+import Logo from "@/components/ui/Logo";
 import { useTheme } from "@/context/ThemeContext";
 import { useRouter } from "@/routes/hooks";
+import { PUBLIC_ROUTES, REQUIRE_AUTH_ROUTES } from "@/routes/routes";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 type MenuItemType = {
@@ -36,20 +38,33 @@ export default function AppHeader() {
   const menuItems: MenuItemType[] = useMemo(
     () => [
       {
-        label: "Luyện thi",
+        label: "Khóa học",
+        path: PUBLIC_ROUTES.COURSE,
         children: [
-          { label: "IELTS Mastery", path: "/exams/ielts" },
-          { label: "TOEIC Đột phá", path: "/exams/toeic" },
+          { label: "IELTS", path: `${PUBLIC_ROUTES.COURSE}?cert=IELTS` },
+          { label: "TOEIC", path: `${PUBLIC_ROUTES.COURSE}?cert=TOEIC` },
+          { label: "APTIS", path: `${PUBLIC_ROUTES.COURSE}?cert=APTIS` },
+          { label: "VSTEP", path: `${PUBLIC_ROUTES.COURSE}?cert=VSTEP` },
         ],
       },
-      { label: "Lộ trình", path: "/learning-path" },
-      { label: "Đấu trường", path: "/arena" },
-      { label: "Bài viết", path: "/blogs" },
+      {
+        label: "Bài tập",
+        children: [
+          { label: "IELTS", path: "/courses/ielts" },
+          { label: "TOEIC", path: "/courses/toeic" },
+          { label: "APTIS", path: "/courses/aptis" },
+          { label: "VSTEP", path: "/courses/vstep" },
+        ],
+      },
+      { label: "Lộ trình", path: PUBLIC_ROUTES.LEARNING_PATH },
+      { label: "Đấu trường", path: REQUIRE_AUTH_ROUTES.ARENA },
+      { label: "Bài viết", path: PUBLIC_ROUTES.BLOGS },
       {
         label: "Hỗ trợ",
         children: [
-          { label: "Hướng dẫn", path: "/guide" },
-          { label: "FAQ", path: "/faq" },
+          { label: "Liên hệ", path: PUBLIC_ROUTES.CONTACT },
+          { label: "FAQ", path: PUBLIC_ROUTES.FAQ },
+          { label: "Về chúng tôi", path: PUBLIC_ROUTES.ABOUT },
         ],
       },
     ],
@@ -77,7 +92,7 @@ export default function AppHeader() {
             <div className="flex items-center justify-between h-20">
               <div
                 className="flex items-center cursor-pointer shrink-0 transition-transform active:scale-95"
-                onClick={() => router.push("/")}
+                onClick={() => router.push(PUBLIC_ROUTES.HOME)}
               >
                 <Logo size="md" />
               </div>
@@ -109,7 +124,7 @@ export default function AppHeader() {
                     >
                       <button
                         onClick={() => {
-                          if (!hasChildren && item.path) {
+                          if (item.path) {
                             handleMenuClick(item.path);
                           }
                         }}
@@ -162,6 +177,7 @@ export default function AppHeader() {
                 className={`flex items-center gap-3 shrink-0 pl-4 border-l ${isDark ? "dark:border-white/10" : "border-slate-100"}`}
               >
                 <Notification />
+                <LanguageSwitcher />
                 <ThemeToggle />
                 <UserMenu
                   onLoginClick={() => router.push("/login")}

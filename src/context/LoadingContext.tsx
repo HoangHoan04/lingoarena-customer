@@ -1,11 +1,11 @@
 import GlobalLoading from "@/components/layout/Loading";
 import {
   createContext,
-  type ReactNode,
   useCallback,
   useContext,
   useMemo,
   useState,
+  type ReactNode,
 } from "react";
 
 const LoadingContext = createContext({

@@ -106,7 +106,6 @@ const BannerComponent = ({
     <section
       className={`w-full rounded-4xl relative overflow-hidden group shadow-2xl ${className}`}
     >
-      {/* ẢNH BANNER CHÍNH */}
       <div
         className="relative w-full h-full cursor-pointer overflow-hidden"
         onClick={() => handleBannerClick(currentBanner.url)}
@@ -117,10 +116,8 @@ const BannerComponent = ({
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
         />
 
-        {/* LỚP PHỦ GRADIENT ĐỂ CHỮ RÕ HƠN */}
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent"></div>
 
-        {/* THUMBNAILS LIST (Bên phải) */}
         <div className="absolute top-6 right-6 z-20">
           <div className="flex flex-col gap-4 max-h-[80%] py-2 overflow-y-auto pr-2 scrollbar-none">
             {banners.map((banner, index) => (
@@ -131,7 +128,6 @@ const BannerComponent = ({
           </div>
         </div>
 
-        {/* NÚT ĐIỀU HƯỚNG PREV/NEXT */}
         {banners.length > 1 && (
           <>
             <button
@@ -157,7 +153,6 @@ const BannerComponent = ({
           </>
         )}
 
-        {/* NỘI DUNG CHỮ TRÊN BANNER */}
         <div className="absolute bottom-10 left-10 right-32 z-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-2xl uppercase italic tracking-tighter leading-tight">
             {currentBanner.title}
@@ -169,7 +164,6 @@ const BannerComponent = ({
           )}
         </div>
 
-        {/* PHÂN TRANG (DOTS) */}
         {banners.length > 1 && (
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-30">
             {banners.map((_, index) => (

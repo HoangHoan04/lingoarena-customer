@@ -1,0 +1,336 @@
+{
+  "nav": {
+    "home": "Trang Chủ",
+    "about": "Giới Thiệu",
+    "projects": "Dự Án",
+    "skills": "Kỹ Năng",
+    "experience": "Kinh Nghiệm",
+    "education": "Học Vấn",
+    "contact": "Liên Hệ"
+  },
+  "header": {
+    "logo": "HoangHoan"
+  },
+  "common": {
+    "language": "Ngôn Ngữ",
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt",
+    "downloadCv": "Tải CV",
+    "resume": "Hồ Sơ",
+    "contact": "Liên Hệ",
+    "viewAll": "Xem Tất Cả",
+    "loading": "Đang Tải...",
+    "sending": "Đang Gửi...",
+    "send": "Gửi Tin Nhắn",
+    "success": "Thành Công",
+    "error": "Lỗi",
+    "code": "Mã Nguồn",
+    "demo": "Bản Thử Nghiệm",
+    "source": "Mã Nguồn",
+    "customer": "Khách Hàng",
+    "admin": "Quản Trị",
+    "api": "API"
+  },
+  "home": {
+    "hero": {
+      "title": "Xin chào! Mình là Hoàng Hoàn",
+      "description": "Chào bạn! Mình là một Web Developer với niềm đam mê xây dựng các giao diện người dùng hiện đại và tối ưu hóa trải nghiệm người dùng. Hiện tại mình là sinh viên Kỹ thuật Phần mềm tại <strong>Trường Đại học Sài Gòn</strong>, đang làm việc tại <strong>APETECH Solutions</strong>. Mình luôn tích cực học tập và nâng cao kỹ năng thông qua các dự án cá nhân và nhóm.",
+      "resume": "Tải CV",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "viewProjects": "Xem Dự Án",
+      "contact": "Liên Hệ Ngay"
+    },
+    "roles": [
+      "Nhà Phát Triển Full-Stack",
+      "Nhà Phát Triển Frontend",
+      "Nhà Phát Triển Backend",
+      "Thiết Kế UI/UX"
+    ],
+    "projects": {
+      "title": "Dự Án Nổi Bật",
+      "subtitle": "Một số dự án tiêu biểu tôi đã thực hiện gần đây",
+      "viewAll": "Xem tất cả dự án",
+      "list": {
+        "wedding": {
+          "title": "Thiệp Cưới Điện Tử",
+          "desc": "Ứng dụng web mời cưới full-stack với bộ đếm ngược, thông tin sự kiện và tính năng RSVP. Xây dựng giao diện responsive với React và Tailwind CSS, tối ưu hóa cho cả thiết bị di động và máy tính."
+        },
+        "himlam": {
+          "title": "Đặt Tour HimLamTourist",
+          "desc": "Nền tảng đặt tour full-stack với các phân hệ riêng biệt cho khách hàng, quản trị và dịch vụ API. Tính năng tìm kiếm tour, lọc và quy trình đặt chỗ với NestJS và PostgreSQL qua Supabase."
+        },
+        "apple": {
+          "title": "Cửa Hàng Apple",
+          "desc": "Ứng dụng thương mại điện tử mô phỏng Apple Store với danh sách sản phẩm, giỏ hàng và quản lý đơn hàng. Xây dựng bằng PHP thuần với kiến trúc MVC và cơ sở dữ liệu MySQL."
+        }
+      }
+    },
+    "skills": {
+      "title": "Kỹ Năng",
+      "subtitle": "Các công nghệ và ngôn ngữ lập trình tôi thành thạo",
+      "viewAll": "Xem tất cả kỹ năng"
+    }
+  },
+  "about": {
+    "title": "Giới Thiệu",
+    "subtitle": "Hiểu hơn về tôi",
+    "description": "Chào bạn! Mình là một Web Developer với niềm đam mê xây dựng các giao diện người dùng hiện đại và tối ưu hóa trải nghiệm người dùng. Hiện tại mình là sinh viên Kỹ thuật Phần mềm tại <strong>Trường Đại học Sài Gòn</strong>, đang làm việc tại <strong>APETECH Solutions</strong>. Mình luôn tích cực học tập và nâng cao kỹ năng thông qua các dự án cá nhân và nhóm.",
+    "intro": [
+      "Chào bạn! Tôi là một Full-Stack Developer với hơn 1 năm kinh nghiệm trong việc phát triển các ứng dụng web. Tôi luôn đam mê học hỏi các công nghệ mới và tìm kiếm những giải pháp sáng tạo cho những vấn đề phức tạp.",
+      "Kỹ năng của tôi bao gồm React, Node.js, MySQL và các công nghệ đám mây như AWS. Tôi đã có kinh nghiệm làm việc với cả các dự án khởi nghiệp và các công ty lớn, từ việc xây dựng các bản thử nghiệm (MVP) cho đến việc mở rộng các hệ thống phục vụ hàng triệu người dùng.",
+      "Ngoài việc lập trình, tôi thích đọc sách về công nghệ, viết blog chia sẻ kiến thức và tham gia các hoạt động cộng đồng lập trình viên. Tôi tin rằng việc chia sẻ kiến thức sẽ giúp cộng đồng ngày càng phát triển mạnh mẽ hơn."
+    ],
+    "personalInfo": {
+      "title": "Thông Tin Cá Nhân",
+      "fullName": "Họ và Tên",
+      "age": "Tuổi",
+      "address": "Địa Chỉ Hiện Tại",
+      "addressNew": "Địa Chỉ Mới",
+      "email": "Email",
+      "phone": "Điện Thoại",
+      "languages": "Ngôn Ngữ"
+    },
+    "hobbies": {
+      "title": "Sở Thích",
+      "list": {
+        "coding": "Lập Trình",
+        "music": "Nghe Nhạc",
+        "travel": "Du Lịch",
+        "photography": "Nhiếp Ảnh",
+        "football": "Bóng Đá",
+        "badminton": "Cầu Lông"
+      }
+    },
+    "journey": {
+      "title": "Hành Trình Phát Triển",
+      "intern": {
+        "title": "Thực Tập Sinh Full-Stack Developer",
+        "company": "Giải Pháp APE TECH",
+        "desc": "Tham gia phát triển các dự án ứng dụng web và di động."
+      },
+      "university": {
+        "title": "Học Tập tại Đại học Sài Gòn",
+        "company": "Khoa Công Nghệ Thông Tin",
+        "desc": "Chuyên ngành Kỹ Thuật Phần Mềm."
+      }
+    }
+  },
+  "experience": {
+    "title": "Kinh Nghiệm Làm Việc",
+    "subtitle": "Hành trình sự nghiệp qua các vai trò, dự án và hoạt động của tôi.",
+    "responsibilities": "Trách Nhiệm Chính",
+    "technologies": "Công Nghệ",
+    "achievements": "Thành Tựu",
+    "roles": {
+      "webDev": "Lập Trình Viên Web",
+      "fulltime": "Toàn Thời Gian"
+    },
+    "apetech": {
+      "desc": "Phát triển và bảo trì các ứng dụng web trong môi trường nhóm chuyên nghiệp theo quy trình Agile, đóng góp vào cả frontend và backend.",
+      "resp": [
+        "Phát triển và bảo trì ứng dụng web sử dụng React, Angular và NestJS",
+        "Thiết kế và quản lý các cơ sở dữ liệu quan hệ với PostgreSQL và MySQL",
+        "Hợp tác với các thành viên trong nhóm theo quy trình Agile để hoàn thành tính năng đúng tiến độ",
+        "Chẩn đoán và khắc phục các lỗi (bug) để đảm hệ thống ổn định và cải thiện hiệu suất ứng dụng"
+      ],
+      "achieve": [
+        "Đóng góp vào nhiều dự án thực tế ngay trong những tháng đầu tiên",
+        "Cải thiện độ ổn định hệ thống qua việc chủ động tìm và sửa lỗi",
+        "Tích lũy kinh nghiệm làm việc thực tế với quy trình Agile/Scrum trong môi trường chuyên nghiệp"
+      ]
+    },
+    "activities": {
+      "title": "Hoạt động & Câu lạc bộ",
+      "studentBoard": {
+        "title": "Ban Chấp Hành Đoàn Faculty",
+        "role": "Thành viên",
+        "desc": "Đại diện tiếng nói sinh viên và điều phối các sự kiện học thuật, ngoại khóa cấp khoa."
+      },
+      "codeClub": {
+        "title": "Câu Lạc Bộ Lập Trình Thi Đấu",
+        "role": "Thành viên",
+        "desc": "Tham gia các thử thách thuật toán và các cuộc thi lập trình để củng cố kỹ năng giải quyết vấn đề."
+      }
+    },
+    "workStyle": {
+      "title": "Phong Cách Làm Việc",
+      "agile": {
+        "title": "Agile & Hợp Tác",
+        "desc": "Thích nghi tốt với phương pháp Agile/Scrum và làm việc hiệu quả trong các nhóm đa chức năng."
+      },
+      "problemSolver": {
+        "title": "Giải Quyết Vấn Đề",
+        "desc": "Tiếp cận vấn đề một cách bài bản, gỡ lỗi có hệ thống và tìm ra các giải pháp hiệu quả."
+      },
+      "learner": {
+        "title": "Học Hỏi Không Ngừng",
+        "desc": "Liên tục học hỏi và áp dụng các công nghệ mới một cách nhanh chóng vào dự án thực tế."
+      },
+      "quality": {
+        "title": "Tập Trung Chất Lượng",
+        "desc": "Ưu tiên chất lượng mã nguồn, độ ổn định của hệ thống và trải nghiệm người dùng mượt mà."
+      },
+      "teamPlayer": {
+        "title": "Tinh Thần Đồng Đội",
+        "desc": "Giao tiếp rõ ràng, hỗ trợ đồng đội và đóng góp tích cực vào các mục tiêu chung của nhóm."
+      },
+      "results": {
+        "title": "Hướng Tới Kết Quả",
+        "desc": "Tập trung hoàn thành các tính năng đúng tiến độ và giải quyết các vấn đề ảnh hưởng đến hệ thống."
+      }
+    },
+    "cta": "Hãy cùng hợp tác nào!",
+    "ctaDesc": "Tôi luôn tìm kiếm những cơ hội mới để áp dụng kinh nghiệm và kỹ năng của mình vào những dự án thú vị."
+  },
+  "education": {
+    "title": "Học Vấn & Dự Án",
+    "subtitle": "Nền tảng học vấn và các dự án thực tế đã thực hiện trong suốt hành trình học tập.",
+    "formal": "Giáo Dục Chính Quy",
+    "degree": "Kỹ Sư Kỹ Thuật Phần Mềm",
+    "school": "Đại Học Sài Gòn",
+    "location": "Thành phố Hồ Chí Minh, Việt Nam",
+    "desc": "Học chuyên ngành Kỹ Thuật Phần Mềm, tập trung vào phát triển web, hệ thống cơ sở dữ liệu và các nguyên lý công nghệ phần mềm.",
+    "courses": "Các Môn Học Chính",
+    "activities": "Hoạt Động",
+    "projects": "Dự Án",
+    "timeline": {
+      "title": "Hành Trình Học Tập",
+      "uniStart": "Bắt Đầu Đại Học",
+      "uniStartDesc": "HTML, CSS, JavaScript — nắm vững nền tảng lập trình cơ bản",
+      "coreCS": "Nền Tảng CS",
+      "coreCSDesc": "Lập trình hướng đối tượng (OOP), Cấu trúc dữ liệu & Giải thuật, Phát triển Web",
+      "personal": "Dự Án Cá Nhân",
+      "personalDesc": "React, PHP, MySQL, Git — xây dựng những dự án thực tế đầu tiên",
+      "professional": "Chuyên Nghiệp",
+      "professionalDesc": "Angular, NestJS, TypeScript, PostgreSQL tại Giải Pháp APETECH"
+    },
+    "philosophy": {
+      "title": "Triết Lý Học Tập",
+      "quote": "\"Tôi tin rằng cách tốt nhất để học là xây dựng những sản phẩm thực tế. Mỗi dự án dạy cho tôi một điều gì đó mới mẻ — và tôi không bao giờ dừng lại.\"",
+      "build": "Học Qua Thực Hành",
+      "buildDesc": "Áp dụng kiến thức ngay lập tức thông qua các dự án thực tế thay vì chỉ nắm lý thuyết.",
+      "others": "Học Hỏi Từ Đồng Nghiệp",
+      "othersDesc": "Hợp tác với các thành viên trong nhóm và học hỏi từ việc đánh giá mã nguồn (code review).",
+      "improve": "Cải Thiện Liên Tục",
+      "improveDesc": "Liên tục tinh chỉnh kỹ năng và cập nhật những công nghệ tiên tiến nhất."
+    }
+  },
+  "skills": {
+    "header": {
+      "badge": "Kỹ Năng & Chuyên Môn",
+      "titleMain": "Bộ Kỹ Năng &",
+      "titleGradient": "Công Nghệ",
+      "desc": "Tổng quan về bộ kỹ năng và các công nghệ tôi đã học được và áp dụng vào các dự án thực tế."
+    },
+    "stats": {
+      "tech": "Công Nghệ",
+      "projects": "Dự Án Đã Xây",
+      "experience": "Tháng Kinh Nghiệm",
+      "commits": "Lượt Commit GitHub"
+    },
+    "tabs": {
+      "technical": "Kỹ Thuật",
+      "tools": "Công Cụ",
+      "soft": "Kỹ Năng Mềm"
+    },
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "database": "Cơ Sở Dữ Liệu",
+      "devTools": "Công Cụ Phát Triển",
+      "workflow": "Quy Trình"
+    },
+    "tools": {
+      "teamCollab": "Hợp Tác Nhóm",
+      "bugFixing": "Sửa Lỗi"
+    },
+    "soft": {
+      "teamwork": "Làm Việc Nhóm",
+      "teamworkDesc": "Hợp tác hiệu quả trong các nhóm Agile, đóng góp vào mục tiêu sprint và hỗ trợ đồng đội.",
+      "comm": "Giao Tiếp",
+      "commDesc": "Truyền đạt các ý tưởng kỹ thuật một cách rõ ràng cho tất cả các bên liên quan.",
+      "problemSolving": "Giải Quyết Vấn Đề",
+      "problemSolvingDesc": "Phân tích các vấn đề phức tạp thành các giải pháp dễ quản lý và thực hiện gỡ lỗi bài bản.",
+      "agile": "Agile / Scrum",
+      "agileDesc": "Có kinh nghiệm lập kế hoạch sprint, họp hàng ngày và hoàn thành các tính năng đúng tiến độ.",
+      "time": "Quản Lý Thời Gian",
+      "timeDesc": "Sắp xếp thứ tự ưu tiên các công việc một cách hiệu quả, hoàn thành đúng hạn.",
+      "learning": "Tự Học",
+      "learningDesc": "Liên tục học hỏi và áp dụng các công nghệ mới một cách nhanh chóng vào dự án thực tế."
+    },
+    "cta": {
+      "title": "Hãy cùng hợp tác phát triển!",
+      "desc": "Tôi luôn sẵn sàng áp dụng những kỹ năng này vào các dự án thực tế của bạn. Hãy liên hệ với tôi ngay!",
+      "button": "Liên Hệ Ngay"
+    }
+  },
+  "projectsPage": {
+    "title": "Dự Án Cá Nhân",
+    "subtitle": "Khám phá các dự án tôi đã phát triển, từ ứng dụng web full-stack đến các nền tảng thương mại điện tử và trải nghiệm tương tác.",
+    "featured": "Dự Án Nổi Bật",
+    "categories": {
+      "all": "Tất Cả",
+      "fullstack": "Full-Stack",
+      "frontend": "Frontend",
+      "backend": "Backend"
+    },
+    "cta": "Bạn có ý tưởng dự án?",
+    "ctaDesc": "Tôi luôn sẵn sàng thảo luận về những dự án mới và thú vị. Hãy liên hệ để chúng ta cùng biến ý tưởng của bạn thành hiện thực!"
+  },
+  "contactPage": {
+    "title": "Liên Hệ Với Tôi",
+    "subtitle": "Bạn có ý tưởng dự án thú vị? Muốn hợp tác? Hay chỉ muốn kết nối? Tôi luôn sẵn sàng lắng nghe và thảo luận!",
+    "sendMessage": "Gửi Tin Nhắn",
+    "form": {
+      "name": "Họ và Tên *",
+      "namePlaceholder": "Nhập họ tên của bạn",
+      "email": "Email *",
+      "emailPlaceholder": "email@example.com",
+      "projectType": "Loại Dự Án",
+      "projectPlaceholder": "Chọn loại dự án",
+      "subject": "Tiêu Đề *",
+      "subjectPlaceholder": "Tóm tắt ngắn gọn",
+      "message": "Nội Dung *",
+      "messagePlaceholder": "Mô tả dự án, yêu cầu, mục tiêu của bạn hoặc bất cứ điều gì cần thảo luận...",
+      "sending": "Đang Gửi...",
+      "send": "Gửi Tin Nhắn"
+    },
+    "success": {
+      "title": "Cảm ơn bạn!",
+      "message": "Tin nhắn đã được gửi thành công đến hoanghoanpineapple04@gmail.com. Tôi sẽ phản hồi lại bạn trong vòng 24 giờ tới."
+    },
+    "info": {
+      "title": "Thông Tin Liên Hệ",
+      "email": "Email",
+      "emailDesc": "Gửi cho tôi bất cứ lúc nào",
+      "github": "GitHub",
+      "githubDesc": "Xem mã nguồn của tôi",
+      "linkedin": "LinkedIn",
+      "linkedinDesc": "Kết nối chuyên nghiệp",
+      "location": "Vị Trí",
+      "locationDesc": "Sẵn sàng làm việc từ xa"
+    },
+    "social": "Mạng Xã Hội",
+    "availability": {
+      "title": "Thời Gian Làm Việc",
+      "days": "Thứ 2 - Thứ 6",
+      "sat": "Thứ 7",
+      "sun": "Chủ Nhật",
+      "off": "Nghỉ",
+      "status": "Sẵn sàng cho các cơ hội mới"
+    },
+    "locationSection": {
+      "title": "Địa Điểm",
+      "desc": "Hiện đang sinh sống tại TP. Hồ Chí Minh, Việt Nam. Sẵn sàng làm việc từ xa cho các dự án phù hợp."
+    }
+  },
+  "footer": {
+    "rights": "Tất cả các quyền được bảo lưu.",
+    "copy": "Bản quyền © 2025 Hoanghoan."
+  },
+  "fullscreen": {
+    "enter": "Toàn màn hình",
+    "exit": "Thoát toàn màn hình"
+  }
+}

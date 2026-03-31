@@ -3,7 +3,8 @@ import SocialButton from "@/components/layout/SocialButton";
 import FancyDivider from "@/components/ui/Divider";
 import { Field } from "@/components/ui/Field";
 import { useToast } from "@/context/ToastContext";
-import { PUBLIC_ROUTES } from "@/routes/routes";
+import { useRouter } from "@/routes/hooks";
+import { AUTH_ROUTES, PUBLIC_ROUTES } from "@/routes/routes";
 import {
   loginNormal,
   registerCustomer,
@@ -12,17 +13,16 @@ import {
 import tokenCache from "@/utils/token-cache";
 import { validators } from "@/utils/validators";
 import { Button } from "primereact/button";
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
+
 import { InputOtp } from "primereact/inputotp";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import { Steps } from "primereact/steps";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function RegisterPage() {
-  const navigate = useNavigate();
+export default function RegisterScreen() {
+  const router = useRouter();
   const { showToast } = useToast();
   const [activeStep, setActiveStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
@@ -122,7 +122,7 @@ export default function RegisterPage() {
           title: "Thành công",
           message: "Đăng ký hoàn tất!",
         });
-        navigate("/");
+        router.push(PUBLIC_ROUTES.HOME);
       }
     } catch (error: any) {
       showToast({
@@ -159,8 +159,7 @@ export default function RegisterPage() {
       {activeStep === 0 ? (
         <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-500">
           <Field label="Họ và tên" error={errors.name} required>
-            <IconField iconPosition="left">
-              <InputIcon className="pi pi-user" />
+            <div className="relative">
               <InputText
                 value={registerData.name}
                 onChange={(e) =>
@@ -169,13 +168,12 @@ export default function RegisterPage() {
                 placeholder="Nguyễn Văn A"
                 className={`w-full pl-10 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all ${errors.name ? "ring-2 ring-red-500" : ""}`}
               />
-            </IconField>
+            </div>
           </Field>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Số điện thoại" error={errors.phone} required>
-              <IconField iconPosition="left">
-                <InputIcon className="pi pi-phone" />
+              <div className="relative">
                 <InputText
                   value={registerData.phone}
                   onChange={(e) =>
@@ -184,11 +182,10 @@ export default function RegisterPage() {
                   placeholder="0912345678"
                   className="w-full pl-10 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl"
                 />
-              </IconField>
+              </div>
             </Field>
             <Field label="Email" error={errors.email} required>
-              <IconField iconPosition="left">
-                <InputIcon className="pi pi-envelope" />
+              <div className="relative">
                 <InputText
                   value={registerData.email}
                   onChange={(e) =>
@@ -197,7 +194,7 @@ export default function RegisterPage() {
                   placeholder="name@example.com"
                   className="w-full pl-10 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl"
                 />
-              </IconField>
+              </div>
             </Field>
           </div>
 
@@ -233,8 +230,7 @@ export default function RegisterPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Mật khẩu" error={errors.password} required>
-              <IconField iconPosition="left">
-                <InputIcon className="pi pi-lock" />
+              <div className="relative">
                 <InputText
                   type={showPassword ? "text" : "password"}
                   value={registerData.password}
@@ -251,11 +247,10 @@ export default function RegisterPage() {
                   className={`pi ${showPassword ? "pi-eye-slash" : "pi-eye"} absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-slate-400`}
                   onClick={() => setShowPassword(!showPassword)}
                 />
-              </IconField>
+              </div>
             </Field>
             <Field label="Xác nhận" error={errors.confirmPassword} required>
-              <IconField iconPosition="left">
-                <InputIcon className="pi pi-lock" />
+              <div className="relative">
                 <InputText
                   type={showPassword ? "text" : "password"}
                   value={registerData.confirmPassword}
@@ -268,7 +263,7 @@ export default function RegisterPage() {
                   placeholder="••••••"
                   className="w-full pl-10 py-3 bg-slate-50 dark:bg-slate-900 border-none rounded-xl"
                 />
-              </IconField>
+              </div>
             </Field>
           </div>
 
@@ -309,7 +304,7 @@ export default function RegisterPage() {
           <p className="text-center mt-4 text-sm text-slate-500 font-medium">
             Đã có tài khoản?{" "}
             <Link
-              to={PUBLIC_ROUTES.LOGIN}
+              to={AUTH_ROUTES.LOGIN}
               className="text-indigo-600 font-bold hover:underline"
             >
               Đăng nhập ngay

@@ -3,7 +3,7 @@ import SocialButton from "@/components/layout/SocialButton";
 import FancyDivider from "@/components/ui/Divider";
 import { Field } from "@/components/ui/Field";
 import { useToast } from "@/context/ToastContext";
-import { PUBLIC_ROUTES } from "@/routes/routes";
+import { AUTH_ROUTES } from "@/routes/routes";
 import {
   getMe,
   loginNormal,
@@ -16,13 +16,12 @@ import FacebookLogin from "@greatsumini/react-facebook-login";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
+
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function LoginPage() {
+export default function LoginScreen() {
   const { showToast } = useToast();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -145,7 +144,6 @@ export default function LoginPage() {
 
   return (
     <div className="w-full flex flex-col">
-      {/* Header */}
       <div className="mb-8">
         <h3 className="text-4xl font-black text-slate-800 dark:text-white m-0 mb-2   text-left">
           Đăng nhập
@@ -160,23 +158,19 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         className="flex flex-col gap-5 animate-in fade-in slide-in-from-right-4 duration-500"
       >
-        {/* Username Field */}
         <Field label="Tên đăng nhập" error={errors.username} required>
-          <IconField iconPosition="left">
-            <InputIcon className="pi pi-user" />
+          <div className="relative">
             <InputText
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Email hoặc số điện thoại"
               className={`w-full pl-10 py-3.5 bg-slate-50 dark:bg-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 transition-all ${errors.username ? "ring-2 ring-red-500" : ""}`}
             />
-          </IconField>
+          </div>
         </Field>
 
-        {/* Password Field */}
         <Field label="Mật khẩu" error={errors.password} required>
-          <IconField iconPosition="left">
-            <InputIcon className="pi pi-lock" />
+          <div className="relative">
             <InputText
               type={showPassword ? "text" : "password"}
               value={password}
@@ -188,10 +182,9 @@ export default function LoginPage() {
               className={`pi ${showPassword ? "pi-eye-slash" : "pi-eye"} absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-slate-400 hover:text-indigo-600 transition-colors`}
               onClick={() => setShowPassword(!showPassword)}
             />
-          </IconField>
+          </div>
         </Field>
 
-        {/* Actions Row */}
         <div className="flex justify-between items-center px-1">
           <div className="flex items-center gap-2">
             <Checkbox
@@ -207,14 +200,13 @@ export default function LoginPage() {
             </label>
           </div>
           <Link
-            to={PUBLIC_ROUTES.FORGOT_PASSWORD}
+            to={AUTH_ROUTES.FORGOT_PASSWORD}
             className="text-sm font-bold text-indigo-600 hover:underline"
           >
             Quên mật khẩu?
           </Link>
         </div>
 
-        {/* Submit Button */}
         <Button
           label={loading ? "Đang xử lý..." : "Đăng nhập ngay"}
           icon={!loading && "pi pi-arrow-right"}
@@ -225,7 +217,6 @@ export default function LoginPage() {
 
         <FancyDivider className="py-2">Hoặc đăng nhập với</FancyDivider>
 
-        {/* Social Logins */}
         <div className="flex gap-3">
           <SocialButton icon={GoogleIcon} onClick={() => handleGoogleLogin()} />
 
@@ -241,11 +232,10 @@ export default function LoginPage() {
           <SocialButton icon={ZaloIcon} onClick={handleZaloLogin} />
         </div>
 
-        {/* Footer */}
         <p className="text-center mt-6 text-sm text-slate-500 font-medium">
           Chưa có tài khoản?{" "}
           <Link
-            to={PUBLIC_ROUTES.REGISTER}
+            to={AUTH_ROUTES.REGISTER}
             className="text-indigo-600 font-bold hover:underline ml-1"
           >
             Đăng ký thành viên
