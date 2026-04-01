@@ -1,6 +1,7 @@
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import Notification from "@/components/layout/Notification";
 import ThemeToggle from "@/components/layout/ThemeToggle";
+import TranslationButton from "@/components/layout/TranslationButton";
 import UserMenu from "@/components/layout/UserMenu";
 import Logo from "@/components/ui/Logo";
 import { useTheme } from "@/context/ThemeContext";
@@ -18,7 +19,7 @@ export default function AppHeader() {
   const router = useRouter();
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const [activeMenu, setActiveMenu] = useState("/");
+  const [activeMenu, setActiveMenu] = useState(PUBLIC_ROUTES.HOME);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<number | null>(null);
   const themeStyles = {
@@ -48,15 +49,17 @@ export default function AppHeader() {
         ],
       },
       {
-        label: "Bài tập",
+        label: "Luyện tập",
+        path: PUBLIC_ROUTES.PRACTICE,
         children: [
-          { label: "IELTS", path: "/courses/ielts" },
-          { label: "TOEIC", path: "/courses/toeic" },
-          { label: "APTIS", path: "/courses/aptis" },
-          { label: "VSTEP", path: "/courses/vstep" },
+          { label: "IELTS", path: `${PUBLIC_ROUTES.PRACTICE}?cert=IELTS` },
+          { label: "TOEIC", path: `${PUBLIC_ROUTES.PRACTICE}?cert=TOEIC` },
+          { label: "APTIS", path: `${PUBLIC_ROUTES.PRACTICE}?cert=APTIS` },
+          { label: "VSTEP", path: `${PUBLIC_ROUTES.PRACTICE}?cert=VSTEP` },
         ],
       },
-      { label: "Lộ trình", path: PUBLIC_ROUTES.LEARNING_PATH },
+      { label: "Thi thử", path: REQUIRE_AUTH_ROUTES.MOCK_TEST },
+      { label: "Lộ trình", path: PUBLIC_ROUTES.ROAD_MAP },
       { label: "Đấu trường", path: REQUIRE_AUTH_ROUTES.ARENA },
       { label: "Bài viết", path: PUBLIC_ROUTES.BLOGS },
       {
@@ -174,8 +177,9 @@ export default function AppHeader() {
                 })}
               </nav>
               <div
-                className={`flex items-center gap-3 shrink-0 pl-4 border-l ${isDark ? "dark:border-white/10" : "border-slate-100"}`}
+                className={`flex items-center gap-2 shrink-0 pl-4 border-l ${isDark ? "dark:border-white/10" : "border-slate-100"}`}
               >
+                <TranslationButton />
                 <Notification />
                 <LanguageSwitcher />
                 <ThemeToggle />

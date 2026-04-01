@@ -3,6 +3,7 @@ export const REQUIRE_AUTH_ROUTES = {
   PROFILE: "/profile",
   ARENA: "/arena",
   MY_COURSE: "/my-course",
+  MOCK_TEST: "/mock-test",
 };
 
 export const PUBLIC_ROUTES = {
@@ -13,9 +14,13 @@ export const PUBLIC_ROUTES = {
   BLOG_DETAIL: "/blogs/:slug",
   FAQ: "/faq",
   COURSE: "/courses",
-  LEARNING_PATH: "/learning-path",
+  ROAD_MAP: "/road-map",
   COURSE_DETAIL: "/course/detail/:slug",
   ZALO_CALLBACK: "/zalo-callback",
+  PRACTICE: "/practice",
+  PRIVACY_POLICY: "/privacy-policy",
+  TERMS_OF_SERVICE: "/terms-of-service",
+  TRANSLATE: "/translate",
 };
 
 export const AUTH_ROUTES = {

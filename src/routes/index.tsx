@@ -14,7 +14,7 @@ const Page404 = lazy(() => import("../pages/NotFound"));
 
 const RequireAuthRoutes = [
   {
-    path: "/",
+    path: PUBLIC_ROUTES.HOME,
     element: (
       <RequireAuthLayout>
         <Suspense fallback={<GlobalLoading />}>
@@ -35,13 +35,17 @@ const RequireAuthRoutes = [
         path: REQUIRE_AUTH_ROUTES.PROFILE.replace(/^\//, ""),
         element: REQUIRE_AUTH_SCREENS[REQUIRE_AUTH_ROUTES.PROFILE],
       },
+      {
+        path: REQUIRE_AUTH_ROUTES.MOCK_TEST.replace(/^\//, ""),
+        element: REQUIRE_AUTH_SCREENS[REQUIRE_AUTH_ROUTES.MOCK_TEST],
+      },
     ],
   },
 ];
 
 const AuthRoutes = [
   {
-    path: "/",
+    path: PUBLIC_ROUTES.HOME,
     element: (
       <AuthLayout>
         <Suspense fallback={<GlobalLoading />}>
@@ -68,7 +72,7 @@ const AuthRoutes = [
 
 const PublicRoutes = [
   {
-    path: "/",
+    path: PUBLIC_ROUTES.HOME,
     element: (
       <PublicLayout>
         <Suspense fallback={<GlobalLoading />}>
@@ -115,12 +119,24 @@ const PublicRoutes = [
         element: PUBLIC_SCREENS[PUBLIC_ROUTES.COURSE_DETAIL],
       },
       {
-        path: PUBLIC_ROUTES.LEARNING_PATH,
-        element: PUBLIC_SCREENS[PUBLIC_ROUTES.LEARNING_PATH],
+        path: PUBLIC_ROUTES.ROAD_MAP,
+        element: PUBLIC_SCREENS[PUBLIC_ROUTES.ROAD_MAP],
       },
       {
         path: PUBLIC_ROUTES.BLOGS,
         element: PUBLIC_SCREENS[PUBLIC_ROUTES.BLOGS],
+      },
+      {
+        path: PUBLIC_ROUTES.PRACTICE,
+        element: PUBLIC_SCREENS[PUBLIC_ROUTES.PRACTICE],
+      },
+      {
+        path: PUBLIC_ROUTES.PRIVACY_POLICY,
+        element: PUBLIC_SCREENS[PUBLIC_ROUTES.PRIVACY_POLICY],
+      },
+      {
+        path: PUBLIC_ROUTES.TERMS_OF_SERVICE,
+        element: PUBLIC_SCREENS[PUBLIC_ROUTES.TERMS_OF_SERVICE],
       },
     ],
   },

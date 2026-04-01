@@ -1,6 +1,7 @@
 import SendEmailComponent from "@/components/layout/SendEmailFrom";
 import Logo from "@/components/ui/Logo";
 import { useTheme } from "@/context";
+import { PUBLIC_ROUTES, REQUIRE_AUTH_ROUTES } from "@/routes/routes";
 import { Link } from "react-router-dom";
 
 const FOOTER_LINKS = {
@@ -11,14 +12,22 @@ const FOOTER_LINKS = {
     { idx: 4, label: "Ngữ pháp cơ bản", path: "/courses/grammar" },
   ],
   FEATURES: [
-    { idx: 1, label: "Đấu trường 1vs1", path: "/arena" },
+    { idx: 1, label: "Đấu trường 1vs1", path: REQUIRE_AUTH_ROUTES.ARENA },
     { idx: 2, label: "Bảng xếp hạng", path: "/leaderboard" },
-    { idx: 3, label: "Lộ trình AI", path: "/learning-path" },
+    { idx: 3, label: "Lộ trình AI", path: "/road-map" },
     { idx: 4, label: "Thư viện tài liệu", path: "/library" },
   ],
   LEGAL: [
-    { idx: 1, label: "Chính sách bảo mật", path: "/privacy-policy" },
-    { idx: 2, label: "Điều khoản dịch vụ", path: "/terms" },
+    {
+      idx: 1,
+      label: "Chính sách bảo mật",
+      path: PUBLIC_ROUTES.PRIVACY_POLICY,
+    },
+    {
+      idx: 2,
+      label: "Điều khoản dịch vụ",
+      path: PUBLIC_ROUTES.TERMS_OF_SERVICE,
+    },
     { idx: 3, label: "Sitemap", path: "/sitemap" },
   ],
 };
@@ -33,10 +42,7 @@ export default function AppFooter() {
       className={`relative overflow-hidden border-t transition-colors duration-500 
       ${isDark ? "bg-[#0f172a] text-white border-white/5" : "bg-[#f8fafc] text-slate-800 border-slate-200"}`}
     >
-      {/* Component gửi email */}
       <SendEmailComponent />
-
-      {/* Hiệu ứng Gradient Background (Glow) */}
       <div
         className={`absolute inset-0 z-0 pointer-events-none transition-opacity duration-1000 
         ${isDark ? "opacity-20" : "opacity-10"}`}
@@ -45,7 +51,6 @@ export default function AppFooter() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500 blur-[100px]" />
       </div>
 
-      {/* Trang trí bằng Icon chìm */}
       <div
         className={`absolute inset-0 pointer-events-none transition-opacity duration-500 
         ${isDark ? "opacity-[0.03]" : "opacity-[0.05]"}`}
@@ -60,7 +65,6 @@ export default function AppFooter() {
 
       <div className="relative z-10 container mx-auto px-6 py-16 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
-          {/* Cột 1: Thông tin thương hiệu */}
           <div className="md:col-span-4 space-y-6">
             <Logo size="md" />
             <p
@@ -113,9 +117,11 @@ export default function AppFooter() {
                       className={`w-0 group-hover:w-4 overflow-hidden transition-all duration-300 text-xs 
                       ${isDark ? "text-cyan-400" : "text-blue-600"}`}
                     >
-                      ▶
+                      <i className="pi pi-arrow-right mr-2"></i>
                     </span>
-                    {item.label}
+                    <span className="transition-all duration-300 group-hover:translate-x-1">
+                      {item.label}
+                    </span>
                   </Link>
                 </li>
               ))}
@@ -141,9 +147,11 @@ export default function AppFooter() {
                       className={`w-0 group-hover:w-4 overflow-hidden transition-all duration-300 text-xs 
                       ${isDark ? "text-cyan-400" : "text-blue-600"}`}
                     >
-                      ▶
+                      <i className="pi pi-arrow-right mr-2"></i>
                     </span>
-                    {item.label}
+                    <span className="transition-all duration-300 group-hover:translate-x-1">
+                      {item.label}
+                    </span>
                   </Link>
                 </li>
               ))}

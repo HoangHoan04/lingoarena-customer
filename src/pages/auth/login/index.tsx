@@ -10,8 +10,7 @@ import {
   loginWithGoogle,
   loginWithZalo,
 } from "@/services/auth.service";
-import tokenCache from "@/utils/token-cache";
-import { validators } from "@/utils/validators";
+import { tokenCache, validators } from "@/utils";
 import FacebookLogin from "@greatsumini/react-facebook-login";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "primereact/button";

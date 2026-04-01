@@ -1,10 +1,46 @@
 import { Navigate, Outlet } from "react-router-dom";
-import tokenCache from "@/utils/token-cache";
-import { AUTH_ROUTES } from "./routes";
+import { AUTH_ROUTES, PUBLIC_ROUTES } from "./routes";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "primereact/button";
-import { Toast } from "primereact/toast";
 import { useToast } from "@/context";
+import { tokenCache } from "@/utils";
+
+function CountdownRing({ value, max = 10 }: { value: number; max?: number }) {
+  const pct = (value / max) * 360;
+  return (
+    <div className="relative w-[100px] h-[100px] mx-auto mb-9">
+      <div
+        className="absolute inset-0 rounded-full"
+        style={{ background: "rgba(255,255,255,0.08)" }}
+      />
+      {/* Progress — conic-gradient */}
+      <div
+        className="absolute inset-0 rounded-full"
+        style={{
+          background: `conic-gradient(#6366f1 ${pct}deg, #06b6d4 ${pct + 2}deg, transparent ${pct + 2}deg)`,
+          transition: "background 0.9s linear",
+        }}
+      />
+      {/* Mask */}
+      <div
+        className="absolute inset-2 rounded-full flex flex-col items-center justify-center"
+        style={{ background: "#0f1117" }}
+      >
+        <span
+          className="text-[30px] font-extrabold leading-none"
+          style={{
+            background: "linear-gradient(135deg, #6366f1, #06b6d4)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {value}
+        </span>
+        <span className="text-[11px] text-slate-500 mt-0.5">giây</span>
+      </div>
+    </div>
+  );
+}
 
 function UnauthorizedScreen() {
   const [countdown, setCountdown] = useState(10);
@@ -19,7 +55,6 @@ function UnauthorizedScreen() {
         title: "Chưa đăng nhập",
         message:
           "Bạn cần đăng nhập để truy cập trang này. Đang chuyển hướng...",
-        timeout: 10000,
       });
     }
 
@@ -41,10 +76,6 @@ function UnauthorizedScreen() {
     return <Navigate to={AUTH_ROUTES.LOGIN} replace />;
   }
 
-  const progress = (countdown / 10) * 100;
-  const circumference = 2 * Math.PI * 36;
-  const dashOffset = circumference - (progress / 100) * circumference;
-
   return (
     <div className="min-h-dvh flex items-center justify-center p-6 relative overflow-hidden">
       <div
@@ -62,7 +93,6 @@ function UnauthorizedScreen() {
         }}
       />
 
-      {/* Card */}
       <div
         className="relative w-full max-w-md text-center rounded-[28px] px-12 py-14"
         style={{
@@ -86,7 +116,6 @@ function UnauthorizedScreen() {
           }
         `}</style>
 
-        {/* Lock icon */}
         <div
           className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center"
           style={{
@@ -99,55 +128,18 @@ function UnauthorizedScreen() {
           <i className="pi pi-lock text-red-400 text-3xl" />
         </div>
 
-        {/* Title */}
         <h1 className="text-[26px] font-bold text-slate-100 mb-3 tracking-tight">
           Bạn chưa đăng nhập
         </h1>
 
-        {/* Description */}
         <p className="text-[15px] text-slate-400 mb-10 leading-relaxed">
-          Trang <strong className="text-indigo-300">Đấu trường</strong> yêu cầu
-          đăng nhập.
+          Để truy cập trang này yêu cầu đăng nhập.
           <br />
           Bạn sẽ được chuyển đến trang đăng nhập sau:
         </p>
 
-        {/* Countdown ring */}
         <div className="relative w-[100px] h-[100px] mx-auto mb-9">
-          <svg width="100" height="100" style={{ transform: "rotate(-90deg)" }}>
-            <defs>
-              <linearGradient
-                id="countdownGrad"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="0%"
-              >
-                <stop offset="0%" stopColor="#6366f1" />
-                <stop offset="100%" stopColor="#06b6d4" />
-              </linearGradient>
-            </defs>
-            <circle
-              cx="50"
-              cy="50"
-              r="36"
-              fill="none"
-              stroke="rgba(255,255,255,0.08)"
-              strokeWidth="6"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="36"
-              fill="none"
-              stroke="url(#countdownGrad)"
-              strokeWidth="6"
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={dashOffset}
-              style={{ transition: "stroke-dashoffset 0.9s linear" }}
-            />
-          </svg>
+          <CountdownRing value={countdown} />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span
               className="text-[30px] font-extrabold leading-none"
@@ -163,7 +155,6 @@ function UnauthorizedScreen() {
           </div>
         </div>
 
-        {/* Login button — PrimeReact */}
         <Button
           label="Đăng nhập ngay"
           icon="pi pi-sign-in"
@@ -177,9 +168,8 @@ function UnauthorizedScreen() {
           }}
         />
 
-        {/* Back link */}
         <a
-          href="/"
+          href={PUBLIC_ROUTES.HOME}
           className="inline-flex items-center gap-1.5 mt-4 text-[13px] text-slate-500 no-underline transition-colors hover:text-slate-400"
         >
           <i className="pi pi-arrow-left text-xs" />

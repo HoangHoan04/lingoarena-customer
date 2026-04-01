@@ -7,7 +7,7 @@ import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import { useState } from "react";
 
-export default function LearningPathScreen() {
+export default function RoadMapScreen() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 

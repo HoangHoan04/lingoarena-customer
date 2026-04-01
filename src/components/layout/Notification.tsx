@@ -97,6 +97,7 @@ export default function Notification() {
           icon="pi pi-bell"
           rounded
           text
+          size="small"
           onClick={() => setIsOpen(!isOpen)}
           tooltip="Thông báo"
           tooltipOptions={{ position: "bottom" }}

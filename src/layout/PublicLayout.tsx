@@ -1,4 +1,5 @@
 import BackToTop from "@/components/layout/BackToTop";
+import SocialFloatButtons from "@/components/layout/SocialFloatButtons";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 
@@ -19,6 +20,7 @@ export default function PublicLayout({
       </main>
       <AppFooter />
 
+      <SocialFloatButtons />
       <BackToTop />
     </div>
   );

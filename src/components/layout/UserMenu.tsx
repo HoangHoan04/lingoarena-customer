@@ -1,6 +1,7 @@
 import { useTheme } from "@/context/ThemeContext";
 import { useRouter } from "@/routes/hooks";
-import tokenCache from "@/utils/token-cache";
+import { REQUIRE_AUTH_ROUTES } from "@/routes/routes";
+import { tokenCache } from "@/utils";
 import { Avatar } from "primereact/avatar";
 import { Menu } from "primereact/menu";
 import type { MenuItem } from "primereact/menuitem";
@@ -53,19 +54,19 @@ export default function UserMenu({
       },
       { separator: true },
       {
-        label: "Đơn hàng",
+        label: "Khóa học của tôi",
         icon: "pi pi-fw pi-shopping-bag",
-        command: () => router.push("/my-orders"),
+        command: () => router.push(REQUIRE_AUTH_ROUTES.MY_COURSE),
       },
       {
-        label: "Tài khoản",
+        label: "Thông tin tài khoản",
         icon: "pi pi-fw pi-user-edit",
-        command: () => router.push("/profile"),
+        command: () => router.push(REQUIRE_AUTH_ROUTES.PROFILE),
       },
       {
-        label: "Mật khẩu",
+        label: "Đổi mật khẩu",
         icon: "pi pi-fw pi-key",
-        command: () => router.push("/change-password"),
+        command: () => router.push(REQUIRE_AUTH_ROUTES.CHANGE_PASSWORD),
       },
       { separator: true },
       {
