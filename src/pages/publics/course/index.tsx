@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/common/helpers";
 import { useTheme } from "@/context";
 import { useRouter } from "@/routes/hooks";
 import { PUBLIC_ROUTES } from "@/routes/routes";
@@ -8,7 +9,6 @@ import { InputText } from "primereact/inputtext";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-// Mapping ID chứng chỉ với Style hiển thị
 const CERTIFICATES = [
   {
     id: "IELTS",
@@ -36,7 +36,6 @@ const CERTIFICATES = [
   },
 ];
 
-// Dữ liệu Mock chuẩn theo CourseEntity
 const COURSES_MOCK = [
   {
     id: "uuid-1",
@@ -64,7 +63,6 @@ const COURSES_MOCK = [
     totalLessons: 30,
     totalDurationMins: 1500,
   },
-  // Thêm các item khác tương tự...
 ];
 
 export default function CourseScreen() {
@@ -90,14 +88,6 @@ export default function CourseScreen() {
         (!selectedLevel || c.level === selectedLevel),
     );
   }, [certQuery, search, selectedLevel]);
-
-  // Hàm format tiền tệ
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(value);
-  };
 
   return (
     <div

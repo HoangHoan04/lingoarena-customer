@@ -11,7 +11,6 @@ export default function RoadMapScreen() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Quản lý bước hiện tại bằng State (Chuẩn React)
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +25,7 @@ export default function RoadMapScreen() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setActiveStep(1); // Nhảy sang bước Lộ trình
+      setActiveStep(1);
     }, 2500);
   };
 
@@ -221,7 +220,6 @@ export default function RoadMapScreen() {
   );
 }
 
-// Sub-component Loading
 const LoadingState = ({ isDark }: { isDark: boolean }) => (
   <div className="flex flex-col items-center justify-center py-32 space-y-4">
     <i className="pi pi-spin pi-spinner text-4xl text-blue-500"></i>

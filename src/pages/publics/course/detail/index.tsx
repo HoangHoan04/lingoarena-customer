@@ -6,7 +6,6 @@ import { Badge } from "primereact/badge";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 
-// Dữ liệu giả lập khớp với các Entity (Course, Teacher, Lesson, CertType)
 const MOCK_COURSE_DETAIL = {
   id: "uuid-1",
   code: "IEL-ADV-001",

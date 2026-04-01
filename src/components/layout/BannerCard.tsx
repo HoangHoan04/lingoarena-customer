@@ -1,10 +1,11 @@
 import type { BannerDto } from "@/dto";
 import { useBanners } from "@/hooks/banner";
 import { useEffect, useState } from "react";
+import GlobalLoading from "./Loading";
 
 interface BannerComponentProps {
   type?: string;
-  className?: string; // Cho phép truyền className từ ngoài vào
+  className?: string;
 }
 
 const BannerComponent = ({
@@ -28,23 +29,10 @@ const BannerComponent = ({
     }
   };
 
-  // --- TRẠNG THÁI LOADING ---
   if (isLoading) {
-    return (
-      <section
-        className={`w-full rounded-3xl bg-slate-200 dark:bg-slate-800 animate-pulse flex items-center justify-center ${className}`}
-      >
-        <div className="flex flex-col items-center gap-3">
-          <i className="pi pi-spin pi-spinner text-4xl text-slate-400"></i>
-          <span className="text-slate-500 font-medium">
-            Đang tải đấu trường...
-          </span>
-        </div>
-      </section>
-    );
+    return <GlobalLoading />;
   }
 
-  // --- TRẠNG THÁI LỖI ---
   if (isError) {
     return (
       <section
@@ -58,7 +46,6 @@ const BannerComponent = ({
     );
   }
 
-  // --- TRẠNG THÁI KHÔNG CÓ DỮ LIỆU ---
   if (!banners || banners.length === 0) {
     return (
       <section
@@ -66,7 +53,7 @@ const BannerComponent = ({
       >
         <div className="text-center z-10">
           <i className="pi pi-images text-6xl text-slate-400 mb-4"></i>
-          <p className="text-slate-500 text-xl font-bold">Arena is empty</p>
+          <p className="text-slate-500 text-xl font-bold">is empty</p>
           <p className="text-slate-400 text-sm mt-1">
             Chưa có banner nào được hiển thị
           </p>

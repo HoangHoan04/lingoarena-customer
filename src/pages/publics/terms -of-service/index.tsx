@@ -5,7 +5,7 @@ export default function TermsOfServiceScreen() {
   const lastUpdated = "01/04/2026";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="max-w-7xl mx-auto px-4">
       {/* Header Section */}
       <div className="text-center mb-12">
         <i className="pi pi-file-edit text-4xl mb-4 opacity-80"></i>

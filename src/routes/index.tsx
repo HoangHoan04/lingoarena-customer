@@ -138,6 +138,14 @@ const PublicRoutes = [
         path: PUBLIC_ROUTES.TERMS_OF_SERVICE,
         element: PUBLIC_SCREENS[PUBLIC_ROUTES.TERMS_OF_SERVICE],
       },
+      {
+        path: PUBLIC_ROUTES.TRANSLATION,
+        element: PUBLIC_SCREENS[PUBLIC_ROUTES.TRANSLATION],
+      },
+      {
+        path: PUBLIC_ROUTES.TEST,
+        element: PUBLIC_SCREENS[PUBLIC_ROUTES.TEST],
+      },
     ],
   },
 ];

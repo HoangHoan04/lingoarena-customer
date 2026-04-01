@@ -10,6 +10,7 @@ import RoadMapScreen from "@/pages/publics/roadmap";
 import PracticeScreen from "@/pages/publics/practice";
 import PrivacyPolicyScreen from "@/pages/publics/privacy-policy";
 import TermsOfServiceScreen from "@/pages/publics/terms -of-service";
+import TranslationScreen from "@/pages/publics/translation";
 
 export const PUBLIC_SCREENS = {
   [PUBLIC_ROUTES.HOME]: <HomeSection />,
@@ -23,4 +24,5 @@ export const PUBLIC_SCREENS = {
   [PUBLIC_ROUTES.PRACTICE]: <PracticeScreen />,
   [PUBLIC_ROUTES.PRIVACY_POLICY]: <PrivacyPolicyScreen />,
   [PUBLIC_ROUTES.TERMS_OF_SERVICE]: <TermsOfServiceScreen />,
+  [PUBLIC_ROUTES.TRANSLATION]: <TranslationScreen />,
 };

@@ -100,7 +100,6 @@ export default function Notification() {
           size="small"
           onClick={() => setIsOpen(!isOpen)}
           tooltip="Thông báo"
-          tooltipOptions={{ position: "bottom" }}
           pt={{
             root: {
               className: `
@@ -114,6 +113,12 @@ export default function Notification() {
             icon: {
               className: `text-xl ${isDark ? "text-cyan-400" : "text-black"} opacity-80 group-hover:opacity-100`,
             },
+          }}
+          tooltipOptions={{
+            position: "bottom",
+            mouseTrack: true,
+            mouseTrackTop: 15,
+            mouseTrackLeft: 15,
           }}
         />
         {unreadCount > 0 && (

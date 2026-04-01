@@ -1,6 +1,14 @@
+import { toastEmitter } from "@/layout/lib/toast-event-emitter";
 import { Toast } from "primereact/toast";
 import type { ReactNode } from "react";
-import { createContext, useCallback, useContext, useMemo, useRef } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 
 export type ToastContextType = {
   showToast: (options: {
@@ -43,6 +51,10 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     },
     [],
   );
+
+  useEffect(() => {
+    toastEmitter.register(showToast);
+  }, [showToast]);
 
   const value = useMemo(() => ({ showToast }), [showToast]);
 

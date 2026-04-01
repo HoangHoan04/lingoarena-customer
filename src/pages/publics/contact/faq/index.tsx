@@ -32,7 +32,6 @@ export default function FaqScreen() {
       alert("Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    console.log("Form submitted:", formData);
     alert("Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.");
   };
 

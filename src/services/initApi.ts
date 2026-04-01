@@ -1,4 +1,5 @@
 import { logOut } from "@/layout/lib/auth-event-emitter";
+import { toastEmitter } from "@/layout/lib/toast-event-emitter";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -93,7 +94,11 @@ const initApi = (url?: string, headers = {}) => {
           now - lastErrorTimestamp > ERROR_DEBOUNCE_MS;
 
         if (shouldRenderToast) {
-          console.log("Show toast message:", message);
+          toastEmitter.emit({
+            type: "error",
+            title: "Lỗi",
+            message,
+          });
           lastErrorMessage = message;
           lastErrorTimestamp = now;
         }

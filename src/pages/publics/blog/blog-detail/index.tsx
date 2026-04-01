@@ -1,4 +1,4 @@
-import { formatDate } from "@/common/helpers/format";
+import { formatDate } from "@/common/helpers";
 import LabelTag from "@/components/ui/LabelTag";
 import Title from "@/components/ui/Tilte";
 import {
@@ -289,7 +289,6 @@ export default function BlogDetailScreen() {
   );
 }
 
-// Sub-components giúp code sạch hơn
 function BlogNotFound({ onClick }: { onClick: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">

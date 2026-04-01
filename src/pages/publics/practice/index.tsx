@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog"; // Thêm Dialog
+import { Dialog } from "primereact/dialog";
 import { useRouter } from "@/routes/hooks";
 import FancyDivider from "@/components/ui/Divider";
 
-// Cấu trúc dữ liệu chi tiết cho từng Part của từng kỹ năng
 const SKILL_DETAILS: Record<string, Record<string, string[]>> = {
   TOEIC: {
     Listening: [
@@ -126,7 +125,7 @@ export default function PracticeScreen() {
           {/* Full Test Card */}
           <Card className="lg:col-span-1 overflow-hidden border-none shadow-xl relative group">
             <div
-              className={`absolute inset-0 bg-gradient-to-br ${CERT_DATA[activeCert].color} opacity-90`}
+              className={`absolute inset-0 bg-linear-to-br ${CERT_DATA[activeCert].color} opacity-90`}
             ></div>
             <div className="relative z-1 p-6 text-white h-full flex flex-col justify-between min-h-[350px]">
               <div>
@@ -181,7 +180,6 @@ export default function PracticeScreen() {
         draggable={false}
       >
         <div className="flex flex-col gap-4 py-2">
-          {/* Option: Làm Full Skill */}
           <button
             onClick={() =>
               navigateToPractice(

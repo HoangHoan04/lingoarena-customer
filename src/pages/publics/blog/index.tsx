@@ -1,5 +1,5 @@
 import { enumData } from "@/common/enums/enum";
-import { formatDate } from "@/common/helpers/format";
+import { formatDate } from "@/common/helpers";
 import Title from "@/components/ui/Tilte";
 import { usePaginationBlog } from "@/hooks/blog";
 import { useRouter } from "@/routes/hooks/use-router";

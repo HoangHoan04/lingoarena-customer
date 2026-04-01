@@ -3,7 +3,7 @@ import React from "react";
 
 interface SocialButtonProps {
   icon: string;
-  label?: string; // Label là optional
+  label?: string;
   onClick?: () => void;
 }
 

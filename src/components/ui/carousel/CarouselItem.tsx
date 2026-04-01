@@ -1,13 +1,9 @@
 import { useState, type CSSProperties, type ReactNode } from "react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface CarouselItemColors {
   accent?: string;
   borderInactive?: string;
-  /** Box shadow khi active. Default: tự tính từ accent */
   shadowActive?: string;
-  /** Box shadow khi chưa active. Default: "0 15px 35px rgba(0,0,0,0.4)" */
   shadowInactive?: string;
 }
 

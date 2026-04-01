@@ -4,7 +4,7 @@ dayjs.locale("vi");
 
 /** DATE & TIME */
 
-//Format thời lượng từ phút sang định dạng "1h 30p" hoặc "90 phút"
+/** Format thời lượng từ phút sang định dạng "1h 30p" hoặc "90 phút" */
 export const formatDuration = (minutes: number): string => {
   if (minutes < 60) return `${minutes} phút`;
   const h = Math.floor(minutes / 60);
@@ -12,7 +12,7 @@ export const formatDuration = (minutes: number): string => {
   return m > 0 ? `${h}h ${m}p` : `${h} giờ`;
 };
 
-//Format ngày thân thiện (Hôm nay, Hôm qua, hoặc DD/MM)
+/** Format ngày thân thiện (Hôm nay, Hôm qua, hoặc DD/MM) */
 export const formatRelativeDate = (dateInput: string | Date): string => {
   const date = dayjs(dateInput);
   if (date.isSame(dayjs(), "day")) return "Hôm nay";
@@ -20,6 +20,7 @@ export const formatRelativeDate = (dateInput: string | Date): string => {
   return date.format("DD/MM/YYYY");
 };
 
+/** Format ngày giờ */
 export const formatDateTime = (
   dateInput: string | Date,
   format: string = "HH:mm DD/MM/YYYY",
@@ -33,6 +34,7 @@ export const formatDateTime = (
   return dateObj.format(format);
 };
 
+/** Format ngày */
 export const formatDate = (
   dateInput: string | Date | null | undefined,
   format: string = "DD/MM/YYYY",
@@ -45,6 +47,7 @@ export const formatDate = (
   return dateObj.format(format);
 };
 
+/** Format thời gian trước */
 export const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString);
   const now = new Date();
@@ -61,7 +64,7 @@ export const formatTimeAgo = (dateString: string) => {
 
 /** NUMBERS & CURRENCY  */
 
-//Rút gọn số lớn (VD: 1.500 -> 1.5K, 1.200.000 -> 1.2M)
+/** Rút gọn số lớn (VD: 1.500 -> 1.5K, 1.200.000 -> 1.2M) */
 export const formatCompactNumber = (number: number): string => {
   return new Intl.NumberFormat("en-US", {
     notation: "compact",
@@ -69,12 +72,12 @@ export const formatCompactNumber = (number: number): string => {
   }).format(number);
 };
 
-//Format số có dấu phân cách hàng nghìn (VD: 1000000 -> 1.000.000)
+/** Format số có dấu phân cách hàng nghìn (VD: 1000000 -> 1.000.000) */
 export const formatNumber = (num: number): string => {
   return num.toLocaleString("vi-VN");
 };
 
-//Tính phần trăm (VD: 0.85 -> 85%)
+/** Tính phần trăm (VD: 0.85 -> 85%) */
 export const formatPercent = (value: number, total: number): string => {
   if (total === 0) return "0%";
   const percent = Math.round((value / total) * 100);
@@ -83,13 +86,13 @@ export const formatPercent = (value: number, total: number): string => {
 
 /** STRING & TEXT */
 
-//Cắt ngắn văn bản (VD: "Khóa học IELTS..." -> "Khóa học...")
+/** Cắt ngắn văn bản (VD: "Khóa học IELTS..." -> "Khóa học...") */
 export const truncateText = (text: string, maxLength: number): string => {
   if (!text || text.length <= maxLength) return text;
   return text.slice(0, maxLength) + "...";
 };
 
-//Lấy chữ cái đầu của tên (Dùng cho Avatar nếu không có ảnh)
+/** Lấy chữ cái đầu của tên (Dùng cho Avatar nếu không có ảnh) */
 export const getInitials = (name: string): string => {
   if (!name) return "U";
   const parts = name.split(" ");
@@ -99,7 +102,7 @@ export const getInitials = (name: string): string => {
   return name[0].toUpperCase();
 };
 
-//Chuyển đổi Tiếng Việt có dấu thành không dấu (Dùng để search thủ công)
+/** Chuyển đổi Tiếng Việt có dấu thành không dấu (Dùng để search thủ công) */
 export const removeVietnameseTones = (str: string): string => {
   return str
     .normalize("NFD")
@@ -110,7 +113,7 @@ export const removeVietnameseTones = (str: string): string => {
 
 /** BUSINESS LOGIC (LingoArena) */
 
-//Format Target Score dựa trên loại chứng chỉ
+/** Format Target Score dựa trên loại chứng chỉ */
 export const formatTargetScore = (score: string, certCode: string): string => {
   if (!score) return "N/A";
   if (certCode.toUpperCase() === "IELTS") return `Band ${score}`;
@@ -118,7 +121,7 @@ export const formatTargetScore = (score: string, certCode: string): string => {
   return score;
 };
 
-//Chuyển đổi giây sang định dạng video (VD: 125 -> "02:05")
+/** Chuyển đổi giây sang định dạng video (VD: 125 -> "02:05") */
 export const formatVideoTime = (seconds: number): string => {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
@@ -132,4 +135,19 @@ export const formatVideoTime = (seconds: number): string => {
     return `${hDisplay}:${mDisplay}:${sDisplay}`;
   }
   return `${mDisplay}:${sDisplay}`;
+};
+
+/** Hàm đếm số lương từ (count words) */
+export const countWords = (text: string): number => {
+  if (!text) return 0;
+  const words = text.trim().split(/\s+/);
+  return words.length;
+};
+
+/** Hàm format tiền tệ */
+export const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(value);
 };

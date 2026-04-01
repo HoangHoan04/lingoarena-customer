@@ -35,7 +35,6 @@ export default function ForgotPasswordScreen() {
     }
     setErrors({});
     setLoading(true);
-    // Giả lập API
     setTimeout(() => {
       setLoading(false);
       setActiveStep(1);
@@ -64,7 +63,6 @@ export default function ForgotPasswordScreen() {
       setErrors(newErrors);
       return;
     }
-    // Logic gọi API đổi mật khẩu ở đây
   };
 
   return (

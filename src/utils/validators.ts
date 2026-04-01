@@ -9,7 +9,6 @@ export const validators = {
 
   isValidPassword: (password: string) => REGEX.PASSWORD.test(password),
 
-  // Hàm validate tổng hợp cho một field cụ thể
   validateContact: (value: string) => {
     if (!value) return "Vui lòng nhập Email hoặc Số điện thoại";
     if (!REGEX.EMAIL.test(value) && !REGEX.PHONE.test(value)) {

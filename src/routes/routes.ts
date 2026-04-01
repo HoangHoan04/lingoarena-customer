@@ -20,7 +20,8 @@ export const PUBLIC_ROUTES = {
   PRACTICE: "/practice",
   PRIVACY_POLICY: "/privacy-policy",
   TERMS_OF_SERVICE: "/terms-of-service",
-  TRANSLATE: "/translate",
+  TRANSLATION: "/translation",
+  TEST: "/test",
 };
 
 export const AUTH_ROUTES = {

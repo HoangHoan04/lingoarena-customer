@@ -1,23 +1,30 @@
 import { useTheme } from "@/context/ThemeContext";
+import { Button } from "primereact/button";
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <button
+    <Button
       onClick={toggleTheme}
-      className={`
-        relative w-8 h-8 rounded-full flex items-center justify-center
-        transition-all duration-500 overflow-hidden
-        ${
-          theme === "dark"
-            ? "bg-slate-800 text-indigo-400 shadow-[inset_0_0_10px_rgba(129,140,248,0.2)]"
-            : "bg-orange-50 text-orange-500 shadow-sm"
-        }
-        hover:scale-110 active:scale-95 border
-        ${theme === "dark" ? "border-slate-700" : "border-orange-100"}
-      `}
-      title={theme === "dark" ? "Chế độ sáng" : "Chế độ tối"}
+      rounded
+      text
+      size="small"
+      tooltip={theme === "dark" ? "Chế độ sáng" : "Chế độ tối"}
+      pt={{
+        root: {
+          className: `!border-none !shadow-none !ring-0 !outline-none !focus:ring-0 !focus:outline-none !focus:border-none transition-all duration-300 active:scale-90 w-10 h-10 flex items-center justify-center bg-transparent`,
+        },
+        icon: {
+          className: `text-xl ${theme === "dark" ? "text-cyan-400" : "text-black"} opacity-80 group-hover:opacity-100`,
+        },
+      }}
+      tooltipOptions={{
+        position: "bottom",
+        mouseTrack: true,
+        mouseTrackTop: 15,
+        mouseTrackLeft: 15,
+      }}
     >
       <div
         className={`relative flex justify-center items-center transition-transform duration-500 ${theme === "dark" ? "rotate-360" : "rotate-0"}`}
@@ -31,6 +38,6 @@ export default function ThemeToggle() {
       {theme === "light" && (
         <span className="absolute inset-0 rounded-xl border border-orange-200 animate-ping opacity-20"></span>
       )}
-    </button>
+    </Button>
   );
 }
