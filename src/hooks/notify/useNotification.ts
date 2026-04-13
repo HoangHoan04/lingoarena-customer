@@ -1,7 +1,4 @@
-import type {
-  NotificationPaginationDto,
-  UpdateNotificationSettingDto,
-} from "@/dto";
+import type { NotificationPaginationDto } from "@/dto";
 import { API_ENDPOINTS } from "@/services/api-route";
 import apiService from "@/services/api.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,13 +13,13 @@ export const usePaginationNotification = (
         API_ENDPOINTS.NOTIFY.PAGINATION,
         params,
       );
-      return response.data;
+      return (response as any) ?? { data: [], total: 0 };
     },
   });
 
   return {
-    data: data?.data || [],
-    total: data?.total || 0,
+    data: (data as any)?.data || [],
+    total: (data as any)?.total || 0,
     isLoading,
     refetch,
     error,
@@ -37,13 +34,13 @@ export const useUnreadCount = () => {
         API_ENDPOINTS.NOTIFY.COUNT_NOT_SEEN,
         {},
       );
-      return response.data;
+      return (response as any) ?? { countAll: 0 };
     },
     refetchInterval: 5 * 60 * 1000,
   });
 
   return {
-    count: data?.countAll || 0,
+    count: (data as any)?.countAll || 0,
     isLoading,
     refetch,
   };
@@ -54,12 +51,8 @@ export const useMarkReadList = () => {
 
   const { mutate: onMarkReadList, isPending } = useMutation({
     mutationFn: async (ids: string[]) => {
-      const response = await apiService.post(API_ENDPOINTS.NOTIFY.SEEN_LIST, {
-        lstId: ids,
-      });
-      return response.data;
+      return apiService.post(API_ENDPOINTS.NOTIFY.SEEN_LIST, { lstId: ids });
     },
-
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [API_ENDPOINTS.NOTIFY.PAGINATION],
@@ -78,10 +71,8 @@ export const useMarkAllRead = () => {
 
   const { mutate: onMarkAllRead, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await apiService.post(API_ENDPOINTS.NOTIFY.SEEN_ALL, {});
-      return response.data;
+      return apiService.post(API_ENDPOINTS.NOTIFY.SEEN_ALL, {});
     },
-
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [API_ENDPOINTS.NOTIFY.PAGINATION],
@@ -93,74 +84,4 @@ export const useMarkAllRead = () => {
   });
 
   return { onMarkAllRead, isLoading: isPending };
-};
-
-export const useNotificationDetail = (id: string) => {
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["notification-detail", id],
-    queryFn: async () => {
-      const response = await apiService.post(
-        `${API_ENDPOINTS.NOTIFY.PAGINATION.replace(
-          "/pagination",
-          "",
-        )}/detail/${id}`,
-        {},
-      );
-      return response.data;
-    },
-    enabled: !!id,
-  });
-
-  return {
-    data: data?.data,
-    isLoading,
-    refetch,
-  };
-};
-
-export const useNotificationSettings = () => {
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["notification-settings"],
-    queryFn: async () => {
-      const response = await apiService.post(
-        `${API_ENDPOINTS.NOTIFY.PAGINATION.replace(
-          "/pagination",
-          "",
-        )}/get-settings`,
-        {},
-      );
-      return response.data;
-    },
-  });
-
-  return {
-    settings: data?.data,
-    isLoading,
-    refetch,
-  };
-};
-
-export const useUpdateNotificationSettings = () => {
-  const queryClient = useQueryClient();
-
-  const { mutate: onUpdateSettings, isPending } = useMutation({
-    mutationFn: async (data: UpdateNotificationSettingDto) => {
-      const response = await apiService.post(
-        `${API_ENDPOINTS.NOTIFY.PAGINATION.replace(
-          "/pagination",
-          "",
-        )}/update-settings`,
-        data,
-      );
-      return response.data;
-    },
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["notification-settings"],
-      });
-    },
-  });
-
-  return { onUpdateSettings, isLoading: isPending };
 };

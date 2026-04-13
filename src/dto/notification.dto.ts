@@ -1,49 +1,46 @@
-export type NotificationType =
+export type NotificationCategory =
   | "system"
   | "booking"
   | "payment"
   | "promotion"
-  | "general";
-export type NotificationPriority = "low" | "normal" | "high" | "urgent";
-export type RelatedEntityType = "booking" | "payment" | "tour" | "user";
+  | "general"
+  | string;
+
+export type NotificationPlatform = "WEB" | "APP" | string;
+export type NotificationColorType = "BLUE" | "RED" | "GREEN" | "YELLOW" | string;
 
 export interface NotificationItem {
   id: string;
-  customerId: string;
+  studentId?: string;
+  teacherId?: string;
+  userId?: string;
   title: string;
-  content: string;
-  notificationType: NotificationType;
-  relatedEntity?: RelatedEntityType | null;
-  relatedId?: string | null;
-  isRead: boolean;
-  readAt?: string | null;
-  priority: NotificationPriority;
-  actionUrl?: string | null;
-  expiresAt?: string | null;
-  icon?: string | null;
-  color?: string | null;
+  description?: string;
+  titleEn?: string;
+  descriptionEn?: string;
+  callbackUrl?: string;
+  category: NotificationCategory;
+  platform: NotificationPlatform;
+  colorType: NotificationColorType;
+  isNotifyOffScreen: boolean;
+  isSeen: boolean;
   createdAt: string;
   updatedAt?: string;
   createdBy?: string;
-  customer?: {
-    id: string;
-    fullName?: string;
-    email?: string;
-    avatar?: string;
-  };
+  updatedBy?: string;
 }
 
 export interface NotificationFilterDto {
-  notificationType?: NotificationType;
-  priority?: NotificationPriority;
-  isRead?: boolean;
-  relatedEntity?: RelatedEntityType;
+  userId?: string;
+  category?: NotificationCategory;
+  platform?: NotificationPlatform;
+  isSeen?: boolean;
 }
 
 export interface NotificationPaginationDto {
   skip?: number;
   take?: number;
-  where?: NotificationFilterDto;
+  where: NotificationFilterDto;
 }
 
 export interface MarkReadListDto {
@@ -52,28 +49,6 @@ export interface MarkReadListDto {
 
 export interface NotificationCountResponse {
   countAll: number;
-}
-
-export interface NotificationSettingDto {
-  id: string;
-  customerId: string;
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  smsNotifications: boolean;
-  promotionNotifications: boolean;
-  bookingNotifications: boolean;
-  recommendationNotifications: boolean;
-  createdAt: string;
-  updatedAt?: string;
-}
-
-export interface UpdateNotificationSettingDto {
-  emailNotifications?: boolean;
-  pushNotifications?: boolean;
-  smsNotifications?: boolean;
-  promotionNotifications?: boolean;
-  bookingNotifications?: boolean;
-  recommendationNotifications?: boolean;
 }
 
 export interface NotificationPaginationResponse {

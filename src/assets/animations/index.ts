@@ -5,5 +5,5 @@ import error from "./error.json";
 import loading from "./loading.json";
 import result from "./result.json";
 import teamwork from "./teamwork.json";
-import travel from "./travel.json";
-export { computer, earth, empty, error, loading, result, teamwork, travel };
+import chatbot from "./chatbot.json";
+export { computer, earth, empty, error, loading, result, teamwork, chatbot };

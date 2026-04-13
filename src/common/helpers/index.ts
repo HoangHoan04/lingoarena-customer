@@ -47,6 +47,15 @@ export const formatDate = (
   return dateObj.format(format);
 };
 
+/** Format giờ phút (HH:mm) */
+export const formatTime = (
+  dateInput: string | Date | dayjs.Dayjs = new Date(),
+  format: string = "HH:mm",
+): string => {
+  const dateObj = dayjs(dateInput);
+  return dateObj.format(format);
+};
+
 /** Format thời gian trước */
 export const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString);
@@ -61,6 +70,9 @@ export const formatTimeAgo = (dateString: string) => {
   const days = Math.floor(hours / 24);
   return `${days} ngày trước`;
 };
+
+export const formatRecordTime = (s: number) =>
+  `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
 /** NUMBERS & CURRENCY  */
 

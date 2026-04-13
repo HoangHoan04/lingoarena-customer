@@ -1,11 +1,13 @@
+import Cookies from "js-cookie";
+
 interface TokenData {
   accessToken: string | null;
   refreshToken: string | null;
   user: any | null;
 }
 
-const STORAGE_KEYS = {
-  ACCESS_TOKEN: "access_token",
+const COOKIE_KEYS = {
+  ACCESS_TOKEN: "token",
   REFRESH_TOKEN: "refresh_token",
   USER: "user_data",
 };
@@ -24,17 +26,13 @@ class TokenCache {
   private loadFromStorage(): void {
     if (typeof window === "undefined") return;
     try {
-      this.cache.accessToken = sessionStorage.getItem(
-        STORAGE_KEYS.ACCESS_TOKEN
-      );
-      this.cache.refreshToken = sessionStorage.getItem(
-        STORAGE_KEYS.REFRESH_TOKEN
-      );
-      const userStr = sessionStorage.getItem(STORAGE_KEYS.USER);
+      this.cache.accessToken = Cookies.get(COOKIE_KEYS.ACCESS_TOKEN) || null;
+      this.cache.refreshToken = Cookies.get(COOKIE_KEYS.REFRESH_TOKEN) || null;
+      const userStr = Cookies.get(COOKIE_KEYS.USER);
       this.cache.user = userStr ? JSON.parse(userStr) : null;
     } catch (error) {
       this.clear();
-      console.error("Failed to load tokens from storage:", error);
+      console.error("Failed to load tokens from cookies:", error);
     }
   }
 
@@ -44,26 +42,26 @@ class TokenCache {
       this.cache.refreshToken = refreshToken;
       this.cache.user = user;
 
-      sessionStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-      sessionStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
-      sessionStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+      Cookies.set(COOKIE_KEYS.ACCESS_TOKEN, accessToken, { expires: 1 });
+      Cookies.set(COOKIE_KEYS.REFRESH_TOKEN, refreshToken, { expires: 7 });
+      Cookies.set(COOKIE_KEYS.USER, JSON.stringify(user), { expires: 1 });
     } catch (error) {
-      console.error("Failed to set auth data in storage:", error);
+      console.error("Failed to set auth data in cookies:", error);
     }
   }
 
   updateUser(user: any): void {
     this.cache.user = user;
-    sessionStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+    Cookies.set(COOKIE_KEYS.USER, JSON.stringify(user), { expires: 1 });
   }
 
   clear(): void {
     this.cache.accessToken = null;
     this.cache.refreshToken = null;
     this.cache.user = null;
-    sessionStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-    sessionStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-    sessionStorage.removeItem(STORAGE_KEYS.USER);
+    Cookies.remove(COOKIE_KEYS.ACCESS_TOKEN);
+    Cookies.remove(COOKIE_KEYS.REFRESH_TOKEN);
+    Cookies.remove(COOKIE_KEYS.USER);
   }
 
   getAccessToken() {

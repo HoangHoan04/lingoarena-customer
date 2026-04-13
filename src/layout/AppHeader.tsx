@@ -1,12 +1,13 @@
-import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
-import Notification from "@/components/layout/Notification";
-import ThemeToggle from "@/components/layout/ThemeToggle";
-import TranslationButton from "@/components/layout/TranslationButton";
-import UserMenu from "@/components/layout/UserMenu";
+import LanguageSwitcher from "@/components/layout/NavbarButton/LanguageSwitcher";
+import Notification from "@/components/layout/NavbarButton/Notification";
+import ThemeToggle from "@/components/layout/NavbarButton/ThemeToggle";
+import TranslationButton from "@/components/layout/NavbarButton/TranslationButton";
+import UserMenu from "@/components/layout/NavbarButton/UserMenu";
 import Logo from "@/components/ui/Logo";
 import { useTheme } from "@/context/ThemeContext";
 import { useRouter } from "@/routes/hooks";
 import { PUBLIC_ROUTES, REQUIRE_AUTH_ROUTES } from "@/routes/routes";
+import { tokenCache } from "@/utils";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 type MenuItemType = {
@@ -22,6 +23,8 @@ export default function AppHeader() {
   const [activeMenu, setActiveMenu] = useState(PUBLIC_ROUTES.HOME);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<number | null>(null);
+  const isLoggedIn = tokenCache.isAuthenticated();
+
   const themeStyles = {
     headerBg: isDark ? "bg-[#0f172a]/90" : "bg-white",
     headerBorder: isDark ? "border-white/10" : "border-blue-50",
@@ -180,7 +183,7 @@ export default function AppHeader() {
                 className={`flex items-center gap-2 shrink-0 pl-4 border-l ${isDark ? "dark:border-white/10" : "border-slate-100"}`}
               >
                 <TranslationButton />
-                <Notification />
+                {isLoggedIn && <Notification />}
                 <LanguageSwitcher />
                 <ThemeToggle />
                 <UserMenu

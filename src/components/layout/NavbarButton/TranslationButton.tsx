@@ -86,7 +86,7 @@ export default function TranslationButton() {
     return () => {
       clearTimeout(timer);
     };
-  }, [sourceText, sourceLang, targetLang]);
+  }, [sourceText, sourceLang, targetLang, translate]);
 
   const swapLanguages = () => {
     const effectiveSource = sourceLang || detectedData?.language;

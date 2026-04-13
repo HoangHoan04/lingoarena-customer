@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/common/helpers";
 import BreadcrumbCustom from "@/components/ui/Breadcumb";
 import { useTheme } from "@/context";
 import { Accordion, AccordionTab } from "primereact/accordion";
@@ -61,12 +62,6 @@ export default function CourseDetailScreen() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const course = MOCK_COURSE_DETAIL;
-
-  const formatCurrency = (val: number) =>
-    new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(val);
 
   const breadcrumbItems = [
     {

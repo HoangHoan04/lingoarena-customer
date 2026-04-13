@@ -1,5 +1,5 @@
 import { FacebookIcon, GoogleIcon, ZaloIcon } from "@/assets/icons";
-import SocialButton from "@/components/layout/SocialButton";
+import SocialButton from "@/components/layout/SocialButton/SocialButton";
 import FancyDivider from "@/components/ui/Divider";
 import { Field } from "@/components/ui/Field";
 import { useToast } from "@/context/ToastContext";
@@ -91,7 +91,7 @@ export default function RegisterScreen() {
       showToast({
         type: "error",
         title: "Lỗi",
-        message: error?.response?.data?.message || "Không thể gửi OTP",
+        message: error?.response?.data?.message,
       });
     } finally {
       setLoading(false);
@@ -105,10 +105,10 @@ export default function RegisterScreen() {
       const method = registerData.sendMethod === "phone" ? "ZALO" : "EMAIL";
       await registerCustomer({ ...registerData, sendMethod: method });
 
-      const loginRes = await loginNormal({
+      const loginRes = (await loginNormal({
         username: registerData.phone,
         password: registerData.password,
-      });
+      })) as any;
 
       if (loginRes?.accessToken) {
         tokenCache.setAuthData(

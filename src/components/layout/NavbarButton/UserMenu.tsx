@@ -1,5 +1,7 @@
 import { useTheme } from "@/context/ThemeContext";
 import { useRouter } from "@/routes/hooks";
+import { useGetMe } from "@/hooks/auth/useAuth";
+
 import { REQUIRE_AUTH_ROUTES } from "@/routes/routes";
 import { tokenCache } from "@/utils";
 import { Avatar } from "primereact/avatar";
@@ -25,9 +27,18 @@ export default function UserMenu({
   const isLoggedIn = tokenCache.isAuthenticated();
   const currentUser = tokenCache.getUser();
 
-  const userAvatarUrl = currentUser?.customer?.__avatar__?.[0]?.fileUrl;
-  const displayName =
-    currentUser?.customer?.name || currentUser?.username || "Guest";
+  const { data: meData } = useGetMe();
+  const user = (meData as any)?.user ?? (meData as any) ?? currentUser;
+  const student = user?.student;
+
+  const userAvatarUrl =
+    student?.avatarUrl ||
+    (Array.isArray(student?.avatar) && student.avatar.length > 0
+      ? student.avatar[0]?.fileUrl
+      : null);
+
+  const displayName = student?.fullName || user?.username || "Guest";
+
   const avatarLabel = !userAvatarUrl
     ? (displayName?.[0] || "U").toUpperCase()
     : undefined;
@@ -102,7 +113,7 @@ export default function UserMenu({
       <div className="relative">
         <div
           className={`
-            p-0.5 rounded-full border-2 transition-all duration-300 cursor-pointer
+            p-0.5 w-10 h-10 rounded-full border-2 transition-all duration-300 cursor-pointer
             ${showUserMenu ? "border-indigo-500 scale-110" : "border-transparent hover:border-slate-200 dark:hover:border-white/10"}
           `}
           onClick={() => setShowUserMenu(!showUserMenu)}

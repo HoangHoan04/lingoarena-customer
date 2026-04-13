@@ -1,7 +1,10 @@
 import { Field } from "@/components/ui/Field";
+import { useToast } from "@/context/ToastContext";
+import { useForgotPassword, useSendOtpVerify } from "@/hooks/auth/useAuth";
+import { useRouter } from "@/routes/hooks";
+import { AUTH_ROUTES } from "@/routes/routes";
 import { validators } from "@/utils/validators";
 import { Button } from "primereact/button";
-
 import { InputOtp } from "primereact/inputotp";
 import { InputText } from "primereact/inputtext";
 import { Steps } from "primereact/steps";
@@ -9,8 +12,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function ForgotPasswordScreen() {
+  const router = useRouter();
+  const { showToast } = useToast();
   const [activeStep, setActiveStep] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -28,26 +32,51 @@ export default function ForgotPasswordScreen() {
     { label: "Mật khẩu mới" },
   ];
 
+  // Xác định phương thức gửi (email hay phone)
+  const isEmail = (val: string) => val.includes("@");
+  const getMethod = (contact: string): "EMAIL" | "phone" =>
+    isEmail(contact) ? "EMAIL" : "phone";
+
+  const { mutate: sendOtpVerify, isPending: isSendingOtp } = useSendOtpVerify();
+  const { mutate: resetPassword, isPending: isResetting } = useForgotPassword();
+
   const handleSendOTP = () => {
     if (validators.isEmpty(formData.contact)) {
       setErrors({ contact: "Vui lòng nhập Email hoặc Số điện thoại" });
       return;
     }
     setErrors({});
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setActiveStep(1);
-    }, 1500);
+
+    sendOtpVerify(
+      {
+        identifier: formData.contact,
+        method: getMethod(formData.contact),
+      },
+      {
+        onSuccess: () => {
+          showToast({
+            type: "success",
+            title: "Đã gửi mã OTP",
+            message: `Mã xác thực đã được gửi tới ${formData.contact}`,
+          });
+          setActiveStep(1);
+        },
+        onError: (error: any) => {
+          showToast({
+            type: "error",
+            title: "Lỗi",
+            message:
+              error?.response?.data?.message || "Không thể gửi mã OTP. Vui lòng thử lại.",
+          });
+        },
+      }
+    );
   };
 
   const handleVerifyOTP = () => {
     if (formData.otpCode.length < 6) return;
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setActiveStep(2);
-    }, 1000);
+    // Chỉ chuyển sang bước đặt mật khẩu mới, OTP sẽ kèm theo khi gọi API reset
+    setActiveStep(2);
   };
 
   const handleResetPassword = () => {
@@ -63,6 +92,34 @@ export default function ForgotPasswordScreen() {
       setErrors(newErrors);
       return;
     }
+    setErrors({});
+
+    resetPassword(
+      {
+        identifier: formData.contact,
+        method: getMethod(formData.contact),
+        otpCode: formData.otpCode,
+        newPassword: formData.newPassword,
+      },
+      {
+        onSuccess: () => {
+          showToast({
+            type: "success",
+            title: "Thành công",
+            message: "Mật khẩu đã được đặt lại. Vui lòng đăng nhập lại.",
+          });
+          router.push(AUTH_ROUTES.LOGIN);
+        },
+        onError: (error: any) => {
+          showToast({
+            type: "error",
+            title: "Lỗi",
+            message:
+              error?.response?.data?.message || "Đặt lại mật khẩu thất bại. Mã OTP có thể không đúng.",
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -109,12 +166,12 @@ export default function ForgotPasswordScreen() {
             </Field>
 
             <Button
-              label={loading ? "Đang gửi mã..." : "Tiếp tục xác thực"}
-              icon={!loading && "pi pi-send"}
+              label={isSendingOtp ? "Đang gửi mã..." : "Tiếp tục xác thực"}
+              icon={!isSendingOtp ? "pi pi-send" : undefined}
               iconPos="right"
               className="w-full py-4 bg-indigo-600 border-none rounded-2xl font-bold text-lg shadow-xl shadow-indigo-500/20"
               onClick={handleSendOTP}
-              loading={loading}
+              loading={isSendingOtp}
             />
 
             <div className="text-center mt-2">
@@ -157,11 +214,10 @@ export default function ForgotPasswordScreen() {
 
             <div className="flex flex-col gap-3 w-full">
               <Button
-                label={loading ? "Đang xác thực..." : "Xác thực mã OTP"}
+                label="Xác thực mã OTP"
                 className="w-full py-4 bg-indigo-600 border-none rounded-2xl font-bold shadow-lg"
                 onClick={handleVerifyOTP}
                 disabled={formData.otpCode.length < 6}
-                loading={loading}
               />
               <Button
                 label="Gửi lại mã"
@@ -169,6 +225,7 @@ export default function ForgotPasswordScreen() {
                 text
                 className="text-indigo-600 font-bold"
                 onClick={handleSendOTP}
+                loading={isSendingOtp}
               />
               <Button
                 label="Thay đổi thông tin liên hệ"
@@ -225,11 +282,11 @@ export default function ForgotPasswordScreen() {
             </Field>
 
             <Button
-              label={loading ? "Đang cập nhật..." : "Đổi mật khẩu ngay"}
+              label={isResetting ? "Đang cập nhật..." : "Đổi mật khẩu ngay"}
               icon="pi pi-check-circle"
               className="w-full py-4 bg-indigo-600 border-none rounded-2xl font-bold text-lg shadow-xl shadow-indigo-500/20"
               onClick={handleResetPassword}
-              loading={loading}
+              loading={isResetting}
             />
           </div>
         )}

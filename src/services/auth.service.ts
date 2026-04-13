@@ -1,225 +1,110 @@
+import type {
+  UserLoginDto,
+  AuthResponse,
+  ZaloLoginDto,
+  GoogleLoginDto,
+  FacebookLoginDto,
+  CheckPhoneEmailDto,
+  SendOtpCustomerDto,
+  SendOtpVerifyDto,
+  RegisterCustomerDto,
+  ForgotPasswordCustomerDto,
+  VerifyLoginOtpDto,
+  RefreshTokenDto,
+  UpdatePasswordDto,
+  ChangePasswordDto,
+} from "@/dto";
 import { API_ENDPOINTS } from "./api-route";
 import apiService from "./api.service";
 
-interface SendOptResponse {
-  isSuccess: boolean;
-  message: string;
-  code: number;
-}
-
-export interface RegisterRequest {
-  name: string;
-  phone: string;
-  email: string;
-  gender: string;
-  password: string;
-  confirmPassword: string;
-  sendMethod: string;
-  otpCode: string;
-}
-
-const checkPhoneEmail = async (body: {
-  phone: string;
-  email: string;
-  duprId: string;
-}) => {
-  try {
-    const res = await apiService.post<any>(
-      API_ENDPOINTS.CUSTOMER.CHECK_PHONE_EMAIL,
-      body
-    );
-
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-  }
+/** Đăng nhập thông thường */
+export const loginNormal = async (data: UserLoginDto) => {
+  return apiService.post<AuthResponse>(API_ENDPOINTS.AUTH.LOGIN, data);
 };
 
-const sendOtpCustomer = async (body: {
-  sendMethod: string;
-  phone: string;
-  email: string;
-}): Promise<SendOptResponse | undefined> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.CUSTOMER.SEND_OTP,
-      body
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
+/** Đăng nhập Zalo */
+export const loginWithZalo = async (data: ZaloLoginDto) => {
+  return apiService.post<AuthResponse>(
+    API_ENDPOINTS.AUTH.LOGIN_WITH_ZALO,
+    data,
+  );
 };
 
-const sendOtpVerifyCustomer = async (body: {
-  sendMethod: string;
-  phone: string;
-  email: string;
-}): Promise<SendOptResponse | undefined> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.CUSTOMER.SEND_OTP_VERIFY,
-      body
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
+/** Đăng nhập Google */
+export const loginWithGoogle = async (data: GoogleLoginDto) => {
+  return apiService.post<AuthResponse>(
+    API_ENDPOINTS.AUTH.LOGIN_WITH_GOOGLE,
+    data,
+  );
 };
 
-const forgotPassword = async (body: {
-  sendMethod: string;
-  customerId: string;
-  otpCode: string;
-  password: string;
-  confirmPassword: string;
-}): Promise<SendOptResponse | undefined> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.CUSTOMER.FORGOT_PASSWORD,
-      body
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
+/** Đăng nhập Facebook */
+export const loginWithFacebook = async (data: FacebookLoginDto) => {
+  return apiService.post<AuthResponse>(
+    API_ENDPOINTS.AUTH.LOGIN_WITH_FACEBOOK,
+    data,
+  );
 };
 
-const registerCustomer = async (body: RegisterRequest): Promise<any> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.CUSTOMER.REGISTER,
-      body
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
+/** Kiểm tra số điện thoại hoặc email tồn tại */
+export const checkPhoneEmail = async (
+  data: CheckPhoneEmailDto,
+): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.CHECK_PHONE_EMAIL, data);
 };
 
-const verifyLoginOtp = async (body: {
-  sendMethod: string;
-  phone: string;
-  email: string;
-  otpCode: string;
-}): Promise<any> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.CUSTOMER.VERIFY_OTP,
-      body
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
-};
-const loginWithGoogle = async (token: string): Promise<any> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.LOGIN_WITH_GOOGLE,
-      { idToken: token },
-      {
-        showToastOnError: true,
-      } as any
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
-};
-const loginWithFacebook = async (accessToken: string): Promise<any> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.LOGIN_WITH_FACEBOOK,
-      { accessToken },
-      {
-        showToastOnError: true,
-      } as any
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
+/** Gửi OTP cho khách hàng mới (đăng ký) */
+export const sendOtpCustomer = async (
+  data: SendOtpCustomerDto,
+): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.SEND_OTP, data);
 };
 
-const loginWithZalo = async (code: string): Promise<any> => {
-  try {
-    const res: any = await apiService.post<any>(
-      API_ENDPOINTS.LOGIN_WITH_ZALO,
-      { code: code },
-      {
-        showToastOnError: true,
-      } as any
-    );
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
+/** Gửi OTP xác thực (quên mật khẩu / verify) */
+export const sendOtpVerify = async (data: SendOtpVerifyDto): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.SEND_OTP_VERIFY, data);
 };
 
-const loginNormal = async (body: {
-  username: string;
-  password: string;
-}): Promise<any> => {
-  try {
-    const res: any = await apiService.post<any>(API_ENDPOINTS.LOGIN, body, {
-      showToastOnError: true,
-    } as any);
-    return res;
-  } catch (error) {
-    if (error) {
-      throw error;
-    }
-    return undefined;
-  }
+/** Đăng ký khách hàng mới */
+export const registerCustomer = async (
+  data: RegisterCustomerDto,
+): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.REGISTER, data);
 };
 
-const getMe = async (): Promise<any> => {
-  try {
-    const res: any = await apiService.post<any>(API_ENDPOINTS.GET_ME);
-    return res;
-  } catch (error: any) {
-    console.error("GetMe error:", error);
-    return undefined;
-  }
+/** Quên mật khẩu */
+export const forgotPassword = async (
+  data: ForgotPasswordCustomerDto,
+): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, data);
 };
 
-export {
-  checkPhoneEmail,
-  forgotPassword,
-  getMe,
-  loginNormal,
-  loginWithFacebook,
-  loginWithGoogle,
-  loginWithZalo,
-  registerCustomer,
-  sendOtpCustomer,
-  sendOtpVerifyCustomer,
-  verifyLoginOtp,
+/** Xác thực OTP login */
+export const verifyLoginOtp = async (data: VerifyLoginOtpDto) => {
+  return apiService.post<AuthResponse>(API_ENDPOINTS.AUTH.VERIFY_OTP, data);
+};
+
+/** Làm mới token */
+export const refreshToken = async (data: RefreshTokenDto) => {
+  return apiService.post<AuthResponse>(API_ENDPOINTS.AUTH.REFRESH_TOKEN, data);
+};
+
+/** Cập nhật mật khẩu (khi đã login - có mật khẩu cũ) */
+export const updatePassword = async (data: UpdatePasswordDto): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.UPDATE_PASSWORD, data);
+};
+
+/** Đổi mật khẩu */
+export const changePassword = async (data: ChangePasswordDto): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, data);
+};
+
+/** Lấy thông tin cá nhân */
+export const getMe = async (): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.ME);
+};
+
+/** Đăng xuất */
+export const logout = async (): Promise<any> => {
+  return apiService.post(API_ENDPOINTS.AUTH.LOGOUT);
 };

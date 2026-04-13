@@ -1,33 +1,74 @@
-export interface LoginRequest {
+export interface UserLoginDto {
   username: string;
   password: string;
-  loginAsAdmin?: boolean;
 }
 
-export interface AuthResponse {
+export interface ZaloLoginDto {
+  code: string;
+}
+
+export interface GoogleLoginDto {
+  idToken: string;
+}
+
+export interface FacebookLoginDto {
   accessToken: string;
-  refreshToken: string;
-  tokenType: string;
-  expiresIn: number;
 }
 
-export interface ChangePasswordRequest {
+export interface CheckPhoneEmailDto {
+  identifier: string; // phone or email
+}
+
+export interface SendOtpCustomerDto {
+  email?: string;
+  phone?: string;
+  sendMethod: string;
+}
+
+export interface SendOtpVerifyDto {
+  identifier: string;
+  method: string;
+}
+
+export interface RegisterCustomerDto {
+  name: string;
+  phone: string;
+  email: string;
+  gender?: string;
+  password?: string;
+  sendMethod: string;
+  otpCode: string;
+}
+
+export interface ForgotPasswordCustomerDto {
+  identifier: string;
+  method: string;
+  otpCode: string;
+  newPassword: string;
+}
+
+export interface VerifyLoginOtpDto {
+  identifier: string;
+  method: string;
+  otpCode: string;
+}
+
+export interface RefreshTokenDto {
+  refreshToken: string;
+}
+
+export interface UpdatePasswordDto {
   currentPassword: string;
   newPassword: string;
 }
 
-export interface PasswordResetRequest {
-  email: string;
-}
-
-export interface PasswordResetConfirmRequest {
-  token: string;
+export interface ChangePasswordDto {
   newPassword: string;
 }
 
-export interface RegisterRequest {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
+export interface AuthResponse {
+  user: any;
+  accessToken: string;
+  refreshToken: string;
+  message?: string;
 }

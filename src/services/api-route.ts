@@ -1,12 +1,22 @@
 const prefix = "/api/user";
 export const API_ENDPOINTS = {
-  LOGIN: `${prefix}/auth/login`,
-  GET_ME: `${prefix}/auth/me`,
-  CHANGE_PASSWORD: `${prefix}/auth/update-password`,
-  GET_TOKEN_ID: `${prefix}/auth/get-token-id`,
-  LOGIN_WITH_GOOGLE: `${prefix}/auth/login/google`,
-  LOGIN_WITH_FACEBOOK: `${prefix}/auth/login/facebook`,
-  LOGIN_WITH_ZALO: `${prefix}/auth/login/zalo`,
+  AUTH: {
+    LOGIN: `${prefix}/auth/login`,
+    LOGIN_WITH_ZALO: `${prefix}/auth/login/zalo`,
+    LOGIN_WITH_GOOGLE: `${prefix}/auth/login/google`,
+    LOGIN_WITH_FACEBOOK: `${prefix}/auth/login/facebook`,
+    CHECK_PHONE_EMAIL: `${prefix}/auth/check-phone-email`,
+    SEND_OTP: `${prefix}/auth/send-otp`,
+    SEND_OTP_VERIFY: `${prefix}/auth/send-otp-verify`,
+    REGISTER: `${prefix}/auth/register`,
+    FORGOT_PASSWORD: `${prefix}/auth/forgot-password`,
+    VERIFY_OTP: `${prefix}/auth/verify-otp`,
+    REFRESH_TOKEN: `${prefix}/auth/refresh-token`,
+    UPDATE_PASSWORD: `${prefix}/auth/update-password`,
+    CHANGE_PASSWORD: `${prefix}/auth/change-password`,
+    ME: `${prefix}/auth/me`,
+    LOGOUT: `${prefix}/auth/logout`,
+  },
 
   NOTIFY: {
     SEEN_ALL: `${prefix}/notify/update-seen-all`,
@@ -70,5 +80,18 @@ export const API_ENDPOINTS = {
     TRANSLATE_BATCH: `${prefix}/translation/translate-batch`,
     DETECT: `${prefix}/translation/detect`,
     LANGUAGES: `${prefix}/translation/languages`,
+    WEBSITE: `${prefix}/translation/website`,
+    IMAGE: `${prefix}/translation/image`,
+    DOCUMENT: `${prefix}/translation/document`,
+    DICTIONARY_LOOKUP: `${prefix}/translation/dictionary/lookup`,
+    TRANSLITERATE: `${prefix}/translation/transliterate`,
+    HISTORY: `${prefix}/translation/history`,
+    SAVED_LIST: `${prefix}/translation/saved/list`,
+    SAVED_TOGGLE: `${prefix}/translation/saved/toggle`,
+  },
+
+  CHATBOT: {
+    CHAT: `${prefix}/chatbot-ai/chat`,
+    GENERATE_ROADMAP: `${prefix}/chatbot-ai/generate-roadmap`,
   },
 };

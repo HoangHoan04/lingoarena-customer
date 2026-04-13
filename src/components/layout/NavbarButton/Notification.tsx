@@ -1,5 +1,6 @@
+import { formatTimeAgo } from "@/common/helpers";
 import { useTheme } from "@/context/ThemeContext";
-import type { NotificationType } from "@/dto";
+import type { NotificationCategory } from "@/dto";
 import {
   useMarkAllRead,
   useMarkReadList,
@@ -54,13 +55,13 @@ export default function Notification() {
     onMarkAllRead();
   };
 
-  const handleNotificationClick = (id: string, isRead: boolean) => {
-    if (!isRead) {
+  const handleNotificationClick = (id: string, isSeen: boolean) => {
+    if (!isSeen) {
       onMarkReadList([id]);
     }
   };
 
-  const getIconByType = (type: NotificationType) => {
+  const getIconByType = (type: NotificationCategory) => {
     switch (type) {
       case "system":
         return "pi pi-cog text-blue-500";
@@ -74,20 +75,6 @@ export default function Notification() {
       default:
         return "pi pi-bell text-gray-500";
     }
-  };
-
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-
-    if (minutes < 60) return `${minutes} phút trước`;
-    if (hours < 24) return `${hours} giờ trước`;
-    if (days < 7) return `${days} ngày trước`;
-    return date.toLocaleDateString("vi-VN");
   };
 
   return (
@@ -171,12 +158,12 @@ export default function Notification() {
                     onClick={() =>
                       handleNotificationClick(
                         notification.id,
-                        notification.isRead,
+                        notification.isSeen,
                       )
                     }
                     className={`group flex gap-4 p-4 border-b border-(--surface-border) last:border-0 cursor-pointer transition-all duration-200 hover:bg-(--surface-hover) 
                     ${
-                      !notification.isRead
+                      !notification.isSeen
                         ? "bg-(--primary-50) dark:bg-white/5"
                         : ""
                     }`}
@@ -184,7 +171,7 @@ export default function Notification() {
                     <div className="shrink-0 mt-1">
                       <i
                         className={`${getIconByType(
-                          notification.notificationType,
+                          notification.category,
                         )} text-xl transition-transform group-hover:scale-110`}
                       />
                     </div>
@@ -193,25 +180,25 @@ export default function Notification() {
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <h4
                           className={`text-sm m-0 truncate leading-tight ${
-                            !notification.isRead
+                            !notification.isSeen
                               ? "font-bold"
                               : "font-medium opacity-90"
                           }`}
                         >
                           {notification.title}
                         </h4>
-                        {!notification.isRead && (
+                        {!notification.isSeen && (
                           <div className="shrink-0 w-2.5 h-2.5 rounded-full bg-blue-500 mt-1 shadow-sm animate-pulse" />
                         )}
                       </div>
 
                       <p className="text-sm m-0 mb-2 line-clamp-2 text-(--text-color-secondary) leading-relaxed">
-                        {notification.content}
+                        {notification.description}
                       </p>
 
                       <span className="text-xs text-(--text-color-secondary) opacity-70 flex items-center gap-1">
                         <i className="pi pi-clock text-[10px]"></i>
-                        {formatTime(notification.createdAt)}
+                        {formatTimeAgo(notification.createdAt)}
                       </span>
                     </div>
                   </div>

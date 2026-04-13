@@ -1,5 +1,5 @@
 import { FacebookIcon, GoogleIcon, ZaloIcon } from "@/assets/icons";
-import SocialButton from "@/components/layout/SocialButton";
+import SocialButton from "@/components/layout/SocialButton/SocialButton";
 import FancyDivider from "@/components/ui/Divider";
 import { Field } from "@/components/ui/Field";
 import { useToast } from "@/context/ToastContext";
@@ -9,6 +9,7 @@ import {
   loginNormal,
   loginWithGoogle,
   loginWithZalo,
+  loginWithFacebook,
 } from "@/services/auth.service";
 import { tokenCache, validators } from "@/utils";
 import FacebookLogin from "@greatsumini/react-facebook-login";
@@ -72,7 +73,7 @@ export default function LoginScreen() {
 
     setLoading(true);
     try {
-      const res = await loginNormal({ username, password });
+      const res: any = await loginNormal({ username, password });
       if (res && res.accessToken) {
         handleLoginSuccess(res);
       } else {
@@ -96,7 +97,9 @@ export default function LoginScreen() {
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await loginWithGoogle(tokenResponse.access_token);
+        const res: any = await loginWithGoogle({
+          idToken: tokenResponse.access_token,
+        });
         if (res && res.accessToken) handleLoginSuccess(res);
       } catch (error: any) {
         showToast({
@@ -107,6 +110,23 @@ export default function LoginScreen() {
       }
     },
   });
+
+  const handleFacebookLogin = async (fbResponse: any) => {
+    try {
+      if (fbResponse?.accessToken) {
+        const res: any = await loginWithFacebook({
+          accessToken: fbResponse.accessToken,
+        });
+        if (res && res.accessToken) handleLoginSuccess(res);
+      }
+    } catch (error: any) {
+      showToast({
+        type: "error",
+        title: "Lỗi Facebook",
+        message: `Đăng nhập Facebook thất bại ${error?.response?.data?.message || ""}`,
+      });
+    }
+  };
 
   const handleZaloLogin = () => {
     const ZALO_APP_ID = import.meta.env.VITE_ZALO_APP_ID;
@@ -127,7 +147,7 @@ export default function LoginScreen() {
         const code = event.data.code;
         window.removeEventListener("message", messageListener);
         try {
-          const res = await loginWithZalo(code);
+          const res: any = await loginWithZalo(code);
           if (res && res.accessToken) handleLoginSuccess(res);
         } catch (error: any) {
           showToast({
@@ -221,8 +241,8 @@ export default function LoginScreen() {
 
           <FacebookLogin
             appId={import.meta.env.VITE_FACEBOOK_APP_ID}
-            scope="public_profile,email"
-            onSuccess={handleLoginSuccess}
+            scope="email,public_profile"
+            onSuccess={handleFacebookLogin}
             render={({ onClick }) => (
               <SocialButton icon={FacebookIcon} onClick={onClick} />
             )}
