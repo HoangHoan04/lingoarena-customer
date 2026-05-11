@@ -31,7 +31,7 @@ export default function RegisterScreen() {
     name: "",
     phone: "",
     email: "",
-    gender: "male",
+    gender: "MALE",
     password: "",
     confirmPassword: "",
     sendMethod: "EMAIL",
@@ -200,9 +200,9 @@ export default function RegisterScreen() {
           <Field label="Giới tính">
             <div className="flex gap-6 p-2.5 bg-slate-50 dark:bg-slate-900 rounded-xl">
               {[
-                { v: "male", l: "Nam" },
-                { v: "female", l: "Nữ" },
-                { v: "other", l: "Khác" },
+                { v: "MALE", l: "Nam" },
+                { v: "FEMALE", l: "Nữ" },
+                { v: "OTHER", l: "Khác" },
               ].map((g) => (
                 <div
                   key={g.v}

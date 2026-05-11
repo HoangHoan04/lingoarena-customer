@@ -162,15 +162,6 @@ export const enumData = {
       color: "#14b8a6",
     },
   },
-
-  TRAVEL_TYPE: {
-    DOMESTIC: { code: "DOMESTIC", name: "Trong nước", value: "DOMESTIC" },
-    INTERNATIONAL: {
-      code: "INTERNATIONAL",
-      name: "Nước ngoài",
-      value: "INTERNATIONAL",
-    },
-  },
 };
 
 export const millisecondInDay = 86400000;

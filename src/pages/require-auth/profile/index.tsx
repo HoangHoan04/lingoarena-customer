@@ -1,17 +1,17 @@
-import { useGetMe } from "@/hooks/auth/useAuth";
+import { formatDate, formatDateTime } from "@/common/helpers";
+import GlobalLoading from "@/components/layout/Loading";
 import { useTheme } from "@/context/ThemeContext";
+import { useGetMe } from "@/hooks/auth/useAuth";
 import { Avatar } from "primereact/avatar";
+import { Button } from "primereact/button";
 import { Skeleton } from "primereact/skeleton";
 import { Tag } from "primereact/tag";
 import { useState } from "react";
-import { Button } from "primereact/button";
-import { formatDate, formatDateTime } from "@/common/helpers";
-import GlobalLoading from "@/components/layout/Loading";
 
 const genderMap: Record<string, string> = {
-  male: "Nam",
-  female: "Nữ",
-  other: "Khác",
+  MALE: "Nam",
+  FEMALE: "Nữ",
+  OTHER: "Khác",
 };
 
 type Tab = "infomation" | "course" | "friends" | "arena" | "history";
@@ -250,9 +250,9 @@ export default function ProfileScreen() {
                     {student?.gender && (
                       <AboutInfoRow
                         icon={
-                          student.gender === "male"
+                          student.gender === "MALE"
                             ? "pi pi-mars"
-                            : student.gender === "female"
+                            : student.gender === "FEMALE"
                               ? "pi pi-venus"
                               : "pi pi-venus-mars"
                         }
