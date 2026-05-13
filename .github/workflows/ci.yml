@@ -12,6 +12,9 @@ env:
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
+    outputs:
+      bundle_size: ${{ steps.measure.outputs.bundle_size || '' }}
+      duration: ${{ steps.duration.outputs.duration || '' }}
 
     steps:
       - name: Notify Telegram - In Progress
@@ -32,9 +35,12 @@ jobs:
           👤 <b>Nhân viên:</b> ${{ github.actor }}
           🌿 <b>Nhánh:</b>     ${{ github.ref_name }} (<code>${SHA_SHORT}</code>)
           💬 <b>Commit:</b>    ${MSG}
-          ⏳ <b>Tiến trình:</b> Build and deloy ${{ github.ref_name }} — in_progress
+          ⏳ <b>Tiến trình:</b> Build and deloy ${{ github.ref_name }} — in_progress"
 
       - uses: actions/checkout@v4
+
+      - name: Record build start time
+        run: echo "BUILD_START_TIME=$(date +%s)" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -50,6 +56,36 @@ jobs:
 
       - name: Build Application
         run: npm run build
+
+      - name: Measure bundle size
+        id: measure
+        if: always()
+        run: |
+          if [ -d dist ]; then
+            SIZE=$(du -sh dist | cut -f1)
+            echo "bundle_size=$SIZE" >> $GITHUB_OUTPUT
+          else
+            echo "bundle_size=N/A" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check build duration
+        id: duration
+        if: always()
+        run: |
+          DURATION=$(($(date +%s) - BUILD_START_TIME))
+          echo "duration=${DURATION}s" >> $GITHUB_OUTPUT
+          if [ $DURATION -gt 600 ]; then
+            REPO_NAME=$(echo '${{ github.repository }}' | cut -d/ -f2)
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="HTML" \
+            -d text="🐢 <b>SLOW BUILD DETECTED</b>
+
+            📁 <b>Dự án:</b>     ${REPO_NAME}
+            🌿 <b>Nhánh:</b>     ${{ github.ref_name }}
+            ⏱️  <b>Duration:</b>  ${DURATION}s
+            ⚠️  <b>Threshold:</b>  600s (10 phút)"
+          fi
 
   notify:
     runs-on: ubuntu-latest
@@ -73,6 +109,8 @@ jobs:
           SHA: ${{ steps.info.outputs.sha_short }}
           MSG: ${{ steps.info.outputs.msg_first }}
           REPO: ${{ steps.info.outputs.repo_name }}
+          BUNDLE: ${{ needs.build-and-lint.outputs.bundle_size }}
+          DURATION: ${{ needs.build-and-lint.outputs.duration }}
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
           -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
@@ -83,7 +121,9 @@ jobs:
           👤 <b>Nhân viên:</b> ${{ github.actor }}
           🌿 <b>Nhánh:</b>     ${{ github.ref_name }} (<code>${SHA}</code>)
           💬 <b>Commit:</b>    ${MSG}
-          ✅ <b>Tiến trình:</b> Build and deloy ${{ github.ref_name }} — success
+          📦 <b>Bundle:</b>    ${BUNDLE}
+          ⏱️  <b>Duration:</b>  ${DURATION}
+          ✅ <b>Tiến trình:</b> Build and deloy ${{ github.ref_name }} — success"
 
       - name: Notify Telegram - Failure
         if: needs.build-and-lint.result == 'failure'
@@ -101,4 +141,5 @@ jobs:
           👤 <b>Nhân viên:</b> ${{ github.actor }}
           🌿 <b>Nhánh:</b>     ${{ github.ref_name }} (<code>${SHA}</code>)
           💬 <b>Commit:</b>    ${MSG}
-          ❌ <b>Tiến trình:</b> Build and deloy ${{ github.ref_name }} — failure
+          ⏱️  <b>Duration:</b>  ${{ needs.build-and-lint.outputs.duration }}
+          ❌ <b>Tiến trình:</b> Build and deloy ${{ github.ref_name }} — failure"
