@@ -1,0 +1,28 @@
+{
+  "Header": {
+    "home": "Home",
+    "courses": "Courses",
+    "leaderboard": "Leaderboard",
+    "login": "Login",
+    "register": "Register",
+    "greeting": "Hi, {name}",
+    "logout": "Log out",
+    "changeLanguage": "Change language",
+    "english": "English",
+    "vietnamese": "Vietnamese"
+  },
+  "Footer": {
+    "examPrep": "Exam Prep",
+    "system": "System",
+    "support": "Help & Support",
+    "hotline": "24/7 Hotline",
+    "email": "Support Email",
+    "developedBy": "Developed by Team Real-time"
+  },
+  "NotFound": {
+    "title": "Arena Map Error!",
+    "desc": "It seems you have wandered away from the LingoArena universe. Don't worry, let's head back home to continue your language-learning journey!",
+    "goBack": "Go Back",
+    "goHome": "Go Home"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "Header": {
+    "home": "Trang chủ",
+    "courses": "Khóa học",
+    "leaderboard": "Bảng xếp hạng",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "greeting": "Xin chào, {name}",
+    "logout": "Đăng xuất",
+    "changeLanguage": "Thay đổi ngôn ngữ",
+    "english": "Tiếng Anh",
+    "vietnamese": "Tiếng Việt"
+  },
+  "Footer": {
+    "examPrep": "Luyện thi",
+    "system": "Hệ thống",
+    "support": "Liên hệ trợ giúp",
+    "hotline": "Hotline 24/7",
+    "email": "Email hỗ trợ",
+    "developedBy": "Phát triển bởi Team Real-time"
+  },
+  "NotFound": {
+    "title": "Bản đồ thi đấu bị lỗi!",
+    "desc": "Có vẻ như bạn đã đi lạc khỏi khu vực vũ trụ LingoArena. Đừng lo lắng, hãy quay lại trang chủ để tiếp tục cuộc hành trình chinh phục ngoại ngữ!",
+    "goBack": "Quay lại",
+    "goHome": "Về trang chủ"
+  }
+}
