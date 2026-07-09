@@ -27,7 +27,6 @@ export default function BackToTop() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    // Chạy kiểm tra ngay khi render/chuyển trang
     handleScroll();
 
     return () => {

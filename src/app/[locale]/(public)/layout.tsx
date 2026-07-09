@@ -1,7 +1,7 @@
-import React from 'react';
-import AppHeader from '@/components/layout/AppHeader';
-import AppFooter from '@/components/layout/AppFooter';
-import BackToTop from '@/components/common/BackToTop';
+import BackToTop from "@/components/common/BackToTop";
+import AppFooter from "@/components/layout/AppFooter";
+import AppHeader from "@/components/layout/AppHeader";
+import React from "react";
 
 export default function PublicLayout({
   children,

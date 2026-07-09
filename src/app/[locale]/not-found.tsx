@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { ArrowLeft, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { ArrowLeft, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React, { useEffect, useMemo, useState } from "react";
 
 const PLANETS = [
   {
@@ -151,7 +150,6 @@ export default function LocalNotFound() {
         .animate-pulse-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
       `}</style>
 
-      {/* Stars particles */}
       <div className="absolute inset-0 pointer-events-none z-10">
         {mounted &&
           stars.map((style, i) => (
@@ -163,7 +161,6 @@ export default function LocalNotFound() {
           ))}
       </div>
 
-      {/* Grid Overlay */}
       <div
         className="absolute inset-0 pointer-events-none z-10 opacity-30 dark:opacity-50"
         style={{
@@ -175,26 +172,23 @@ export default function LocalNotFound() {
         }}
       />
 
-      {/* Accents glows */}
-      <div className="absolute top-[5%] w-[400px] h-[400px] rounded-full bg-indigo-500/5 dark:bg-indigo-500/10 blur-[80px] pointer-events-none z-10" />
-      <div className="absolute bottom-[10%] w-[350px] h-[350px] rounded-full bg-purple-500/5 dark:bg-purple-500/5 blur-[100px] pointer-events-none z-10" />
-      
-      <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-[600px] gap-4">
-        {/* Galaxy / Orbit System */}
-        <div 
-          className="relative w-full h-[280px] flex items-center justify-center"
+      <div className="absolute top-[5%] w-100 h-100 rounded-full bg-indigo-500/5 dark:bg-indigo-500/10 blur-[80px] pointer-events-none z-10" />
+      <div className="absolute bottom-[10%] w-87.5 h-87.5 rounded-full bg-purple-500/5 dark:bg-purple-500/5 blur-[100px] pointer-events-none z-10" />
+
+      <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-150 gap-4">
+        <div
+          className="relative w-full h-70 flex items-center justify-center"
           style={{ perspective: "800px" }}
         >
-          <div 
+          <div
             className="absolute w-0 h-0"
-            style={{ 
-              transform: "rotateX(68deg)", 
-              transformStyle: "preserve-3d" 
+            style={{
+              transform: "rotateX(68deg)",
+              transformStyle: "preserve-3d",
             }}
           >
-            {/* The Sun */}
             <div
-              className="absolute w-[50px] h-[50px] rounded-full"
+              className="absolute w-12.5 h-12.5 rounded-full"
               style={{
                 background:
                   "radial-gradient(circle at 50% 50%, #ffffff 0%, #ffbb00 25%, #ff4500 65%, #6e0b00 100%)",
@@ -204,7 +198,6 @@ export default function LocalNotFound() {
               }}
             />
 
-            {/* Planets and Orbits */}
             {PLANETS.map((planet) => (
               <div
                 key={planet.name}
@@ -218,9 +211,9 @@ export default function LocalNotFound() {
               >
                 <div
                   className="absolute w-full h-full animate-spin-linear"
-                  style={{ 
+                  style={{
                     animationDuration: planet.speed,
-                    transformStyle: "preserve-3d"
+                    transformStyle: "preserve-3d",
                   }}
                 >
                   <div
@@ -235,9 +228,12 @@ export default function LocalNotFound() {
                     }}
                   >
                     {planet.hasRing && (
-                      <div 
-                        className="absolute top-1/2 left-1/2 w-[42px] h-[10px] border-[3px] border-amber-200/50 rounded-full pointer-events-none" 
-                        style={{ transform: "translate(-50%, -50%) rotateX(70deg) rotateY(15deg)" }}
+                      <div
+                        className="absolute top-1/2 left-1/2 w-10.5 h-2.5 border-[3px] border-amber-200/50 rounded-full pointer-events-none"
+                        style={{
+                          transform:
+                            "translate(-50%, -50%) rotateX(70deg) rotateY(15deg)",
+                        }}
                       />
                     )}
                   </div>
@@ -247,9 +243,8 @@ export default function LocalNotFound() {
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="flex flex-col items-center text-center w-full">
-          <div className="font-syne text-[80px] sm:text-[130px] font-extrabold tracking-tighter leading-none bg-gradient-to-br from-foreground via-muted-foreground/80 to-muted-foreground/40 bg-clip-text text-transparent dark:from-white dark:via-zinc-300 dark:to-zinc-500 animate-galaxy-float">
+          <div className="font-syne text-[80px] sm:text-[130px] font-extrabold tracking-tighter leading-none bg-linear-to-br from-foreground via-muted-foreground/80 to-muted-foreground/40 bg-clip-text text-transparent dark:from-white dark:via-zinc-300 dark:to-zinc-500 animate-galaxy-float">
             404
           </div>
 
@@ -257,13 +252,13 @@ export default function LocalNotFound() {
             {t("title")}
           </h1>
 
-          <Label className="text-[15px] text-muted-foreground max-w-[340px] leading-relaxed mb-7 font-normal">
+          <Label className="text-[15px] text-muted-foreground max-w-85 leading-relaxed mb-7 font-normal">
             {t("desc")}
           </Label>
-          
+
           <div className="flex flex-col sm:flex-row items-center gap-3">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => router.back()}
               className="cursor-pointer font-bold px-6 py-2.5 rounded-xl border border-border bg-background hover:bg-muted text-foreground transition-all duration-300 h-auto"
             >
@@ -271,7 +266,7 @@ export default function LocalNotFound() {
               {t("goBack")}
             </Button>
 
-            <Button 
+            <Button
               onClick={() => router.push("/")}
               className="cursor-pointer font-bold px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 transition-all duration-300 h-auto border-none"
             >

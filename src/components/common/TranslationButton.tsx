@@ -46,12 +46,10 @@ const SUPPORTED_LANGUAGES: Record<
   es: { displayName: "Español", name: "Tiếng Tây Ban Nha", code: "es" },
 };
 
-// Word counter helper
 const countWords = (text: string) => {
   return text.trim() ? text.trim().split(/\s+/).length : 0;
 };
 
-// Custom query & mutation hooks for translation
 export function useSupportedLanguages() {
   return useQuery({
     queryKey: ["supportedLanguages"],
@@ -93,7 +91,6 @@ export function useDetectLanguage(text: string) {
     queryKey: ["detectLanguage", text],
     queryFn: async () => {
       if (!text.trim()) return { language: "" };
-      // Fallback/basic client-side detection or default to auto
       return { language: "auto" };
     },
     enabled: text.trim().length > 0,
@@ -221,7 +218,6 @@ export default function TranslationButton() {
             }`}
           >
             <div className="space-y-4">
-              {/* SOURCE SECTION */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -282,7 +278,6 @@ export default function TranslationButton() {
                 </div>
               </div>
 
-              {/* TARGET SECTION */}
               <div className="space-y-2 border-t border-slate-100 dark:border-zinc-800 pt-3">
                 <div className="flex items-center">
                   <Select
@@ -357,7 +352,6 @@ export default function TranslationButton() {
                 </div>
               </div>
 
-              {/* Footer link to full translation page */}
               <div className="flex justify-end pt-1">
                 <Link
                   href="/translation"

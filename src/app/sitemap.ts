@@ -14,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const entries: MetadataRoute.Sitemap = [];
 
-  // Thêm URL mặc định (không locale prefix)
   entries.push({
     url: BASE_URL,
     lastModified: new Date(),
@@ -22,12 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1.0,
   });
 
-  // Thêm URL cho tất cả locale
   for (const locale of locales) {
     for (const page of publicPages) {
-      const url = locale === "vi"
-        ? `${BASE_URL}${page.path}`
-        : `${BASE_URL}/${locale}${page.path}`;
+      const url =
+        locale === "vi"
+          ? `${BASE_URL}${page.path}`
+          : `${BASE_URL}/${locale}${page.path}`;
       entries.push({
         url,
         lastModified: new Date(),

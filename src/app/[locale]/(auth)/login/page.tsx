@@ -8,7 +8,6 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { Eye, EyeOff, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function LoginPage() {
@@ -58,7 +57,6 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col justify-between min-h-screen px-4 py-8 sm:py-12">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center my-auto">
-        {/* Phần tài khoản gần đây, nếu trước đây có đăng nhập tài khoản thì đưa vào đây */}
         <div className="md:col-span-5 flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <div className="w-16 h-16 rounded-full bg-muted" />
@@ -94,7 +92,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Phần đăng nhập */}
         <div className="md:col-span-7 flex flex-col gap-6 w-full max-w-md mx-auto md:max-w-none">
           <Card className="p-6">
             <CardContent className="p-0 flex flex-col gap-5">
@@ -111,7 +108,6 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {/* Password Input */}
                 <div className="flex flex-col gap-1.5">
                   <div className="flex justify-between items-center">
                     <FieldLabel htmlFor="password">Mật khẩu</FieldLabel>
@@ -197,7 +193,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="w-full border-t border-border mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium text-muted-foreground">
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           <Link href="/register" className="hover:underline">

@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
@@ -63,7 +62,6 @@ function Stepper({ current }: { current: Step }) {
               </span>
             </div>
 
-            {/* Connecting line segment */}
             {idx < STEPS.length - 1 && (
               <div className="mx-2 h-0.5 flex-1 relative bg-border rounded-full overflow-hidden">
                 <div
@@ -154,7 +152,6 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          {/* FIX: Thêm lớp padding chung p-6 để card thông thoáng và đẹp mắt */}
           <Card className="p-6">
             {step === "success" ? (
               <CardContent className="flex flex-col items-center justify-center gap-4 p-0 text-center">
@@ -172,7 +169,6 @@ export default function ForgotPasswordPage() {
               </CardContent>
             ) : (
               <form onSubmit={handleStepSubmit} className="space-y-4">
-                {/* FIX: Thay thế padding bằng `p-0` và quản lý khoảng cách bằng `space-y-4` của form để không bị dính */}
                 <CardContent className="p-0">
                   {step === 1 && (
                     <div className="flex flex-col gap-2">
@@ -196,7 +192,6 @@ export default function ForgotPasswordPage() {
                         maxLength={6}
                         value={otp}
                         onChange={setOtp}
-                        // FIX: Thêm pattern để CHỈ cho phép nhập số
                         pattern={REGEXP_ONLY_DIGITS}
                         containerClassName="justify-center"
                       >
@@ -204,9 +199,6 @@ export default function ForgotPasswordPage() {
                           <InputOTPSlot index={0} />
                           <InputOTPSlot index={1} />
                           <InputOTPSlot index={2} />
-                        </InputOTPGroup>
-                        <InputOTPSeparator />
-                        <InputOTPGroup>
                           <InputOTPSlot index={3} />
                           <InputOTPSlot index={4} />
                           <InputOTPSlot index={5} />
@@ -284,7 +276,6 @@ export default function ForgotPasswordPage() {
                   )}
                 </CardContent>
 
-                {/* FIX: Đưa padding của Footer về 0 và đẩy lên bằng khoảng cách form */}
                 <CardFooter className="p-0 pt-2">
                   <Button type="submit" disabled={isLoading} className="w-full">
                     {isLoading && <Spinner />}

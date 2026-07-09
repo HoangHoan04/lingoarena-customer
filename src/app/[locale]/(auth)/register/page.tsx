@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
+import { useRouter } from "@/i18n/routing";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function RegisterPage() {
@@ -31,7 +30,6 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      // Giả lập API Sign up call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const mockUser = {
@@ -52,17 +50,17 @@ export default function RegisterPage() {
   };
 
   const handleSocialRegister = (provider: "google" | "facebook") => {
-    addToast(`Registering with ${provider === "google" ? "Google" : "Facebook"}...`, "success");
+    addToast(
+      `Registering with ${provider === "google" ? "Google" : "Facebook"}...`,
+      "success",
+    );
   };
 
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col justify-between min-h-screen px-4 py-8 sm:py-12">
-      {/* Main Content Layout */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center my-auto">
-        {/* Left Side: Brand Greeting (Tương ứng với cột Recent Logins bên trang cũ) */}
         <div className="md:col-span-5 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            {/* Vòng tròn trống phía trên tiêu đề đồng bộ với trang Login */}
             <div className="w-16 h-16 rounded-full bg-neutral-300 dark:bg-neutral-700" />
             <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-50 text-left mt-2">
               Create Account
@@ -73,13 +71,10 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Right Side: Form Box & External Switch Button */}
         <div className="md:col-span-7 flex flex-col gap-6 w-full max-w-md mx-auto md:max-w-none">
-          {/* Main Form Card */}
           <Card className="p-6">
             <CardContent className="p-0 flex flex-col gap-5">
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                {/* Full Name Input */}
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="name">Full Name</Label>
                   <Input
@@ -92,7 +87,6 @@ export default function RegisterPage() {
                   />
                 </div>
 
-                {/* Email Input */}
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="email">Your email</Label>
                   <Input
@@ -105,7 +99,6 @@ export default function RegisterPage() {
                   />
                 </div>
 
-                {/* Password Input */}
                 <div className="flex flex-col gap-1.5">
                   <div className="flex justify-between items-center">
                     <Label htmlFor="password">Your password</Label>
@@ -136,7 +129,6 @@ export default function RegisterPage() {
                   />
                 </div>
 
-                {/* Submit Button (Pill shape) */}
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -146,16 +138,14 @@ export default function RegisterPage() {
                 </Button>
               </form>
 
-              {/* Separator / Or sign up with */}
               <div className="relative flex py-2 items-center">
-                <div className="flex-grow border-t border-border"></div>
-                <span className="flex-shrink mx-4 text-xs text-muted-foreground uppercase">
+                <div className="grow border-t border-border"></div>
+                <span className="shrink mx-4 text-xs text-muted-foreground uppercase">
                   Or sign up with
                 </span>
-                <div className="flex-grow border-t border-border"></div>
+                <div className="grow border-t border-border"></div>
               </div>
 
-              {/* Social Login Buttons */}
               <div className="grid grid-cols-2 gap-3">
                 <Button
                   type="button"
@@ -163,7 +153,11 @@ export default function RegisterPage() {
                   className="w-full flex items-center justify-center gap-2 h-10 rounded-xl"
                   onClick={() => handleSocialRegister("google")}
                 >
-                  <img src="/icons/google.svg" alt="Google" className="w-5 h-5 mr-1" />
+                  <img
+                    src="/icons/google.svg"
+                    alt="Google"
+                    className="w-5 h-5 mr-1"
+                  />
                   Google
                 </Button>
                 <Button
@@ -172,14 +166,17 @@ export default function RegisterPage() {
                   className="w-full flex items-center justify-center gap-2 h-10 rounded-xl"
                   onClick={() => handleSocialRegister("facebook")}
                 >
-                  <img src="/icons/facebook.svg" alt="Facebook" className="w-5 h-5 mr-1" />
+                  <img
+                    src="/icons/facebook.svg"
+                    alt="Facebook"
+                    className="w-5 h-5 mr-1"
+                  />
                   Facebook
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Log In Button (Outside the container box, following the pattern) */}
           <Link href="/login" className="w-full">
             <Button
               variant="outline"
@@ -191,7 +188,6 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Footer Links */}
       <footer className="w-full border-t border-neutral-200 dark:border-neutral-800 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium text-neutral-500 dark:text-neutral-400">
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           <Link href="/register" className="hover:underline">

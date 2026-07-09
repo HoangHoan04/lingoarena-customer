@@ -4,23 +4,16 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
-  // Bật compress để giảm kích thước response
   compress: true,
-
-  // Tối ưu hóa tự động import các package icon/ui lớn
   experimental: {
     optimizePackageImports: ["lucide-react", "@base-ui/react"],
   },
-
-  // Tối ưu hóa hình ảnh
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 86400,
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
   },
-
-  // Headers bộ nhớ cache cho static assets
   async headers() {
     return [
       {

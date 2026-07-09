@@ -49,7 +49,6 @@ export default function UserMenu() {
       >
         {isAuthenticated && user ? (
           <>
-            {/* User Info */}
             <div className="flex flex-col gap-0.5 px-1 py-0.5">
               <span className="text-xs font-semibold text-foreground truncate">
                 {user.name || "Người dùng LingoArena"}
@@ -61,7 +60,6 @@ export default function UserMenu() {
 
             <Separator />
 
-            {/* Nav links */}
             <div className="flex flex-col gap-0.5">
               <Button
                 variant="ghost"
@@ -86,7 +84,6 @@ export default function UserMenu() {
 
             <Separator />
 
-            {/* Logout */}
             <Button
               variant="ghost"
               className="w-full flex items-center justify-start gap-2 px-2 py-1.5 h-8 text-xs font-medium cursor-pointer rounded-lg text-rose-500 hover:bg-rose-500/10 hover:text-rose-600"

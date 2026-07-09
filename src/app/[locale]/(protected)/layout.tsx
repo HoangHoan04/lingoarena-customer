@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/stores/useAuthStore';
-import AppHeader from '@/components/layout/AppHeader';
-import AppFooter from '@/components/layout/AppFooter';
-import BackToTop from '@/components/common/BackToTop';
+import BackToTop from "@/components/common/BackToTop";
+import AppFooter from "@/components/layout/AppFooter";
+import AppHeader from "@/components/layout/AppHeader";
+import { useRouter } from "@/i18n/routing";
+import { useAuthStore } from "@/stores/useAuthStore";
+import React, { useEffect } from "react";
 
 export default function ProtectedLayout({
   children,
@@ -17,7 +17,7 @@ export default function ProtectedLayout({
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [isAuthenticated, isLoading, router]);
 

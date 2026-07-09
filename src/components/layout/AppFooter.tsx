@@ -78,7 +78,6 @@ export default function AppFooter() {
             </div>
           </div>
 
-          {/* Cột 2: Luyện thi */}
           <div className="md:col-span-2">
             <h3 className="font-bold mb-6 text-lg text-foreground transition-colors">
               {t("examPrep")}
@@ -102,7 +101,6 @@ export default function AppFooter() {
             </ul>
           </div>
 
-          {/* Cột 3: Hệ thống */}
           <div className="md:col-span-2">
             <h3 className="font-bold mb-6 text-lg text-foreground transition-colors">
               {t("system")}
@@ -126,13 +124,11 @@ export default function AppFooter() {
             </ul>
           </div>
 
-          {/* Cột 4: Liên hệ */}
           <div className="md:col-span-4 space-y-6">
             <h3 className="font-bold mb-6 text-lg text-foreground transition-colors">
               {t("support")}
             </h3>
             <div className="space-y-4">
-              {/* Phone */}
               <div className="flex items-center gap-4 group cursor-pointer">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all border bg-secondary text-secondary-foreground border-border group-hover:bg-primary group-hover:text-primary-foreground">
                   <PhoneIcon className="w-4 h-4" />
@@ -147,7 +143,6 @@ export default function AppFooter() {
                 </div>
               </div>
 
-              {/* Email */}
               <div className="flex items-center gap-4 group cursor-pointer">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all border bg-secondary text-secondary-foreground border-border group-hover:bg-primary group-hover:text-primary-foreground">
                   <SendIcon className="w-4 h-4" />
@@ -161,7 +156,7 @@ export default function AppFooter() {
                   </span>
                 </div>
               </div>
-              {/* Địa chỉ */}
+
               <div className="flex items-center gap-4 group cursor-pointer">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all border bg-secondary text-secondary-foreground border-border group-hover:bg-primary group-hover:text-primary-foreground">
                   <MapPinIcon className="w-4 h-4" />
@@ -179,7 +174,6 @@ export default function AppFooter() {
           </div>
         </div>
 
-        {/* Bottom Section */}
         <div className="pt-8 mt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-1">
             <p className="text-xs md:text-sm font-medium tracking-wide text-center md:text-left text-muted-foreground transition-colors">

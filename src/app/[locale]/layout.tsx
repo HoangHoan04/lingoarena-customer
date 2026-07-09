@@ -1,9 +1,9 @@
+import { routing } from "@/i18n/routing";
+import AppProviders from "@/providers";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getLocale } from "next-intl/server";
-import AppProviders from "@/providers";
+import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
 
 export async function generateMetadata({
   params,
@@ -24,8 +24,22 @@ export async function generateMetadata({
       ? "LingoArena – Nền tảng học tiếng Anh trực tuyến với flashcard thông minh, đấu trường từ vựng 1v1 và bảng xếp hạng toàn cầu."
       : "LingoArena – Learn English online with smart flashcards, 1v1 vocabulary battle arenas, and global leaderboards.",
     keywords: isVi
-      ? ["học tiếng Anh", "từ vựng", "flashcard", "đấu trường", "bảng xếp hạng", "lingoarena"]
-      : ["learn english", "vocabulary", "flashcard", "battle arena", "leaderboard", "lingoarena"],
+      ? [
+          "học tiếng Anh",
+          "từ vựng",
+          "flashcard",
+          "đấu trường",
+          "bảng xếp hạng",
+          "lingoarena",
+        ]
+      : [
+          "learn english",
+          "vocabulary",
+          "flashcard",
+          "battle arena",
+          "leaderboard",
+          "lingoarena",
+        ],
     authors: [{ name: "LingoArena Team" }],
     creator: "LingoArena",
     publisher: "LingoArena",
@@ -69,13 +83,16 @@ export async function generateMetadata({
         { url: "/images/favicon.ico" },
       ],
       apple: [
-        { url: "/images/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+        {
+          url: "/images/apple-touch-icon.png",
+          sizes: "180x180",
+          type: "image/png",
+        },
       ],
     },
     manifest: "/manifest.webmanifest",
   };
 }
-
 
 export default async function LocaleLayout({
   children,
@@ -86,12 +103,10 @@ export default async function LocaleLayout({
 }>) {
   const { locale } = await params;
 
-  // Đảm bảo locale nằm trong danh sách hỗ trợ
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }
 
-  // Lấy các messages từ server
   const messages = await getMessages();
 
   return (

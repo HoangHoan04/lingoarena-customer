@@ -63,7 +63,6 @@ export default function AppHeader() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Customer pages list for search
   const customerPages = useMemo(
     () => [
       {
@@ -95,7 +94,6 @@ export default function AppHeader() {
     [t],
   );
 
-  // Search filtering
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase().trim();
@@ -127,7 +125,6 @@ export default function AppHeader() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Left Section: Logo & Hamburger Navigation Menu */}
         <div className="flex items-center gap-3 shrink-0">
           <Link
             href="/"
@@ -151,7 +148,7 @@ export default function AppHeader() {
                     </Button>
                   }
                 />
-                <NavigationMenuContent className="w-48 p-1 flex flex-col gap-0.5 border border-border bg-popover text-popover-foreground shadow-lg rounded-xl z-[9999]">
+                <NavigationMenuContent className="w-48 p-1 flex flex-col gap-0.5 border border-border bg-popover text-popover-foreground shadow-lg rounded-xl z-9999">
                   <NavigationMenuLink
                     href="/"
                     className="cursor-pointer hover:bg-muted p-2 rounded-lg text-sm font-medium"
@@ -176,7 +173,6 @@ export default function AppHeader() {
           </NavigationMenu>
         </div>
 
-        {/* Center Section: Search Bar Trigger */}
         <div className="flex-1 max-w-md mx-auto flex justify-center">
           <div
             onClick={() => setIsSearchOpen(true)}
@@ -190,7 +186,6 @@ export default function AppHeader() {
           </div>
         </div>
 
-        {/* Right Section: Language, Theme, Quick Translate, UserMenu */}
         <div className="flex items-center gap-2.5 shrink-0">
           <ChangeLanguage />
           <ToggleTheme />
@@ -200,13 +195,11 @@ export default function AppHeader() {
         </div>
       </div>
 
-      {/* Global Search Dialog Modal */}
       <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
         <DialogContent
           showCloseButton={false}
           className="sm:max-w-xl p-0 overflow-hidden bg-background border border-border shadow-2xl rounded-2xl transition-all duration-300 z-50"
         >
-          {/* Dialog Header / Search Input */}
           <DialogHeader className="p-4 border-b border-border flex flex-row items-center justify-between gap-3 bg-muted/20">
             <div className="flex items-center gap-3 flex-1">
               <Search className="size-4 text-muted-foreground shrink-0 animate-pulse" />
@@ -244,9 +237,7 @@ export default function AppHeader() {
             </div>
           </DialogHeader>
 
-          {/* Dialog Body / Results & History */}
           <div className="p-3 max-h-96 overflow-y-auto space-y-4">
-            {/* Search Results */}
             {searchQuery && (
               <div className="space-y-1 animate-in fade-in duration-200">
                 <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest block px-2.5 mb-2">
@@ -300,7 +291,6 @@ export default function AppHeader() {
               </div>
             )}
 
-            {/* Recent Search History */}
             {!searchQuery && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between px-2.5 mb-1">
