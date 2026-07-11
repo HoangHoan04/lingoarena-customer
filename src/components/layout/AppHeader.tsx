@@ -66,27 +66,27 @@ export default function AppHeader() {
   const customerPages = useMemo(
     () => [
       {
-        label: t("home") || "Trang chủ",
+        label: "Trang chủ",
         path: "/",
         description: "LingoArena Home Page",
       },
       {
-        label: t("courses") || "Khóa học",
+        label: "Khóa học",
         path: "/courses",
         description: "Learn English Courses",
       },
       {
-        label: t("leaderboard") || "Bảng xếp hạng",
+        label: "Bảng xếp hạng",
         path: "/leaderboard",
         description: "Student Rankings",
       },
       {
-        label: t("login") || "Đăng nhập",
+        label: "Đăng nhập",
         path: "/login",
         description: "Sign in to LingoArena",
       },
       {
-        label: t("register") || "Đăng ký",
+        label: "Đăng ký",
         path: "/register",
         description: "Create a new account",
       },
@@ -153,19 +153,19 @@ export default function AppHeader() {
                     href="/"
                     className="cursor-pointer hover:bg-muted p-2 rounded-lg text-sm font-medium"
                   >
-                    {t("home")}
+                    Trang chủ
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href="/courses"
                     className="cursor-pointer hover:bg-muted p-2 rounded-lg text-sm font-medium"
                   >
-                    {t("courses")}
+                    Khóa học
                   </NavigationMenuLink>
                   <NavigationMenuLink
                     href="/leaderboard"
                     className="cursor-pointer hover:bg-muted p-2 rounded-lg text-sm font-medium"
                   >
-                    {t("leaderboard")}
+                    Bảng xếp hạng
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>

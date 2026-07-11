@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "@/i18n/routing";
 import { ArrowLeft, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useMemo, useState } from "react";
@@ -249,11 +250,12 @@ export default function LocalNotFound() {
           </div>
 
           <h1 className="font-syne text-2xl font-bold text-foreground mt-4 mb-2">
-            {t("title")}
+            Không tìm thấy trang
           </h1>
 
           <Label className="text-[15px] text-muted-foreground max-w-85 leading-relaxed mb-7 font-normal">
-            {t("desc")}
+            Rất tiếc, chúng tôi không thể tìm thấy trang bạn đang tìm kiếm. Hãy
+            kiểm tra lại URL hoặc quay lại trang chủ để tiếp tục khám phá.
           </Label>
 
           <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -263,7 +265,7 @@ export default function LocalNotFound() {
               className="cursor-pointer font-bold px-6 py-2.5 rounded-xl border border-border bg-background hover:bg-muted text-foreground transition-all duration-300 h-auto"
             >
               <ArrowLeft className="size-4" />
-              {t("goBack")}
+              Quay lại
             </Button>
 
             <Button
@@ -271,7 +273,7 @@ export default function LocalNotFound() {
               className="cursor-pointer font-bold px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 transition-all duration-300 h-auto border-none"
             >
               <Send className="size-4" />
-              {t("goHome")}
+              Về trang chủ
             </Button>
           </div>
 

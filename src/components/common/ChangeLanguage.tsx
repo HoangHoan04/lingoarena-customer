@@ -22,8 +22,8 @@ export default function ChangeLanguage() {
   const t = useTranslations("Header");
 
   const languages = [
-    { code: "en", name: t("english"), icon: "/icons/en.svg" },
-    { code: "vi", name: t("vietnamese"), icon: "/icons/vi.svg" },
+    { code: "en", name: "Tiếng anh", icon: "/icons/en.svg" },
+    { code: "vi", name: "Tiếng Việt", icon: "/icons/vi.svg" },
   ];
 
   const currentLanguage =
@@ -52,7 +52,7 @@ export default function ChangeLanguage() {
           }
         />
         <TooltipContent side="bottom" sideOffset={6}>
-          {t("changeLanguage")}
+          Đổi ngôn ngữ
         </TooltipContent>
 
         <PopoverContent

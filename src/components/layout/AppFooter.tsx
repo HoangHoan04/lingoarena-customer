@@ -80,7 +80,7 @@ export default function AppFooter() {
 
           <div className="md:col-span-2">
             <h3 className="font-bold mb-6 text-lg text-foreground transition-colors">
-              {t("examPrep")}
+              Bài thi
             </h3>
             <ul className="space-y-4">
               {FOOTER_LINKS.EXAMS.map((item) => (
@@ -103,7 +103,7 @@ export default function AppFooter() {
 
           <div className="md:col-span-2">
             <h3 className="font-bold mb-6 text-lg text-foreground transition-colors">
-              {t("system")}
+              Hê thống
             </h3>
             <ul className="space-y-4">
               {FOOTER_LINKS.FEATURES.map((item) => (
@@ -126,7 +126,7 @@ export default function AppFooter() {
 
           <div className="md:col-span-4 space-y-6">
             <h3 className="font-bold mb-6 text-lg text-foreground transition-colors">
-              {t("support")}
+              Hỗ trợ
             </h3>
             <div className="space-y-4">
               <div className="flex items-center gap-4 group cursor-pointer">
@@ -135,7 +135,7 @@ export default function AppFooter() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs uppercase font-bold text-muted-foreground">
-                    {t("hotline")}
+                    Hotline
                   </span>
                   <span className="text-sm font-bold text-foreground">
                     1900 123 456
@@ -149,7 +149,7 @@ export default function AppFooter() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xs uppercase font-bold text-muted-foreground">
-                    {t("email")}
+                    Email
                   </span>
                   <span className="text-sm font-bold text-foreground">
                     support@lingoarena.com
@@ -183,7 +183,7 @@ export default function AppFooter() {
             </p>
             <div className="flex items-center gap-2 text-[10px] md:text-[11px] font-bold text-muted-foreground/60 transition-colors">
               <span className="w-8 h-px bg-border"></span>
-              {t("developedBy")}
+              <span>Designed by LingoArena Team</span>
             </div>
           </div>
 

@@ -101,14 +101,14 @@ export default function UserMenu() {
               nativeButton={false}
               render={<Link href="/login" />}
             >
-              {t("login")}
+              Đăng nhâp
             </Button>
             <Button
               className="w-full h-8 text-xs font-medium cursor-pointer bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
               nativeButton={false}
               render={<Link href="/register" />}
             >
-              {t("register")}
+              Đăng ký
             </Button>
           </div>
         )}
