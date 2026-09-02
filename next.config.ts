@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 86400,
     dangerouslyAllowSVG: true,
     contentDispositionType: "inline",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+    ],
   },
   async headers() {
     return [

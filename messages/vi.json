@@ -1,3 +1,248 @@
 {
-  "Header": "Header"
+  "nav": {
+    "home": "Trang chủ",
+    "practice": "Đề thi thử",
+    "questions": "Luyện câu hỏi",
+    "courses": "Khóa học",
+    "vocabulary": "Từ vựng",
+    "arena": "Đấu trường 1v1",
+    "pricing": "Bảng giá",
+    "placementTest": "Test Đầu Vào",
+    "placementTestDesc": "Làm bài Test kiểm tra đầu vào",
+    "practiceRoom": "Vào phòng thi thử",
+    "searchPlaceholder": "Tìm đề thi, khóa học, bài luyện tập...",
+    "recentSearches": "Tìm kiếm gần đây",
+    "clearHistory": "Xóa lịch sử",
+    "noResults": "Không tìm thấy kết quả nào",
+    "popularSuggestions": "Gợi ý tìm kiếm phổ biến:",
+    "translateTooltip": "Dịch thuật thông minh (Google Translate)",
+    "displaySettings": "Tùy chọn hiển thị",
+    "theme": "Giao diện",
+    "dark": "Tối",
+    "light": "Sáng",
+    "language": "Ngôn ngữ",
+    "quickTranslate": "Dịch thuật thông minh (Google Translate)"
+  },
+  "footer": {
+    "description": "Hệ thống luyện thi thông minh bậc nhất. Chúng tôi cung cấp lộ trình cá nhân hóa, thi thử mô phỏng thời gian thực và chấm chữa Writing/Speaking chi tiết chuẩn quốc tế giúp bạn tự tin bứt phá điểm số.",
+    "coursesTitle": "Khóa Học & Luyện Thi",
+    "about": "Về LingoArena",
+    "practice": "Đề thi thử (Mock Test)",
+    "questions": "Ngân hàng câu hỏi",
+    "courses": "Khóa học trực tuyến",
+    "vocabulary": "Từ vựng Flashcard (SRS)",
+    "arena": "Đấu trường 1v1",
+    "pricing": "Bảng giá & Thuê bao",
+    "faq": "Câu hỏi thường gặp",
+    "contactTitle": "Thông Tin Liên Hệ",
+    "addressLabel": "Địa chỉ",
+    "addressVal": "Tầng 6, Tòa nhà Công Nghệ, Cầu Giấy, Hà Nội\nQuận 1, TP. Hồ Chí Minh",
+    "phoneLabel": "Điện thoại",
+    "phoneVal": "1900 8899 (08:00 – 22:00)",
+    "emailLabel": "Email",
+    "hoursLabel": "Giờ làm việc",
+    "hoursVal": "Thứ 2 – Chủ Nhật\n08:00 – 22:00 (Hỗ trợ 24/7)",
+    "newsletterTitle": "Đăng ký nhận bản tin & Bộ đề thi mới",
+    "newsletterDesc": "Cập nhật kho đề thi thử TOEIC, IELTS, VSTEP mới nhất và mẹo bứt phá điểm số",
+    "newsletterPlaceholder": "Nhập email của bạn...",
+    "newsletterBtn": "Đăng ký nhận đề",
+    "newsletterSuccess": "✓ Đã đăng ký",
+    "terms": "Điều khoản dịch vụ",
+    "privacy": "Chính sách bảo mật",
+    "operating": "Quy chế hoạt động",
+    "refund": "Chính sách hoàn tiền"
+  },
+  "home": {
+    "hero": {
+      "badge": "Nền tảng luyện thi chứng chỉ thông minh #1",
+      "titlePart1": "Chinh phục chứng chỉ",
+      "titleHighlight": "TOEIC, IELTS & VSTEP",
+      "titlePart2": "với lộ trình cá nhân hóa",
+      "subtitle": "Hệ thống thi thử mô phỏng thời gian thực, chấm điểm Writing/Speaking chuẩn Rubric quốc tế kết hợp phương pháp Spaced Repetition (SRS) giúp bạn đạt mục tiêu điểm số nhanh hơn 40%.",
+      "ctaPlacement": "Kiểm tra đầu vào miễn phí (15 phút)",
+      "ctaExplore": "Khám phá phòng thi thử",
+      "examHighlightsTitle": "Tiêu điểm chương trình luyện thi:",
+      "activeLearners": "học viên đang online luyện đề",
+      "trustedScore": "Độ chuẩn xác dự đoán điểm",
+      "statPassRate": "Tỉ lệ đạt mục tiêu",
+      "statQuestions": "Câu hỏi chuẩn hóa",
+      "statRating": "Đánh giá học viên",
+      "toeic": {
+        "score": "850+",
+        "label": "Mục tiêu TOEIC L&R",
+        "badge": "Phổ biến nhất",
+        "skills": ["Listening (Part 1-4)", "Reading (Part 5-7)", "Ngữ pháp trọng điểm", "2.500 từ vựng cốt lõi"]
+      },
+      "ielts": {
+        "score": "7.5+",
+        "label": "Mục tiêu IELTS Academic",
+        "badge": "Cam 10-19 Simulator",
+        "skills": ["Reading & Listening", "AI Writing Evaluation", "Ghi âm Speaking chấm Rubric", "Vocabulary Band 7.0+"]
+      },
+      "vstep": {
+        "score": "B2 - C1",
+        "label": "Chuẩn Bậc 3-5 Đại Học",
+        "badge": "Chuẩn Bộ GD&ĐT",
+        "skills": ["Trắc nghiệm Nghe-Đọc", "Khung bài mẫu Viết B1-B2", "Phản xạ Nói 3 phần", "Sổ lỗi & Từ vựng VSTEP"]
+      },
+      "aptis": {
+        "score": "CEFR C1",
+        "label": "Aptis ESOL Toàn Diện",
+        "badge": "British Council Standard",
+        "skills": ["Grammar & Vocabulary", "Listening & Reading", "Writing 4 Tasks", "Speaking 4 Parts"]
+      }
+    },
+    "examCertificates": {
+      "badge": "Kho Đề Thi Chuẩn Hóa",
+      "title": "Hệ Thống Luyện Thi Chứng Chỉ Quốc Tế",
+      "subtitle": "Được thiết kế bám sát 100% cấu trúc đề thi thật mới nhất từ ETS, Cambridge, British Council và Bộ GD&ĐT.",
+      "viewAll": "Xem tất cả đề thi",
+      "startNow": "Luyện đề ngay",
+      "skillsTitle": "Kỹ năng kiểm tra:",
+      "popularBadge": "Hot nhất",
+      "toeic": {
+        "code": "TOEIC L&R",
+        "name": "Luyện thi TOEIC Nghe & Đọc",
+        "target": "Mục tiêu 450 - 990",
+        "description": "Bộ đề thi thử bản quyền chuẩn Format ETS 2026 với lời giải chi tiết từng câu, phân tích bẫy đề thi và từ vựng Part 1-7.",
+        "duration": "120 phút",
+        "questions": "200 câu",
+        "highlights": ["Bộ đề mô phỏng ETS mới nhất", "Phân loại độ khó từng Part", "Sổ lỗi tự động gom câu sai"]
+      },
+      "ielts": {
+        "code": "IELTS ACADEMIC",
+        "name": "Luyện thi IELTS Toàn Diện 4 Kỹ Năng",
+        "target": "Band 5.0 - 8.5+",
+        "description": "Kho đề Cambridge 10-19 chuẩn phòng thi máy tính, tích hợp công nghệ AI & Giảng viên chấm Writing Task 1-2 và Speaking theo chuẩn Rubric.",
+        "duration": "165 phút",
+        "questions": "4 Kỹ năng",
+        "highlights": ["Mô phỏng thi máy tính chuẩn IDP/BC", "Chấm Writing chi tiết theo 4 tiêu chí", "Speaking Voice Analysis trực tiếp"]
+      },
+      "vstep": {
+        "code": "VSTEP B1-B2-C1",
+        "name": "Đánh Giá Năng Lực Tiếng Anh 6 Bậc",
+        "target": "Bậc 3, 4, 5 (B1, B2, C1)",
+        "description": "Giải pháp luyện thi VSTEP hoàn hảo cho sinh viên ra trường và giáo viên với kho đề thi cập nhật từ các trường Đại học trọng điểm.",
+        "duration": "180 phút",
+        "questions": "4 Kỹ năng",
+        "highlights": ["Format chuẩn Bộ Giáo Dục & Đào Tạo", "Dàn ý và bài mẫu Writing B1-B2", "Phòng luyện phản xạ Nói 3 phần"]
+      },
+      "aptis": {
+        "code": "APTIS ESOL",
+        "name": "Chứng Chỉ Tiếng Anh Khung Châu Âu",
+        "target": "CEFR A1 - C2",
+        "description": "Luyện thi Aptis General & Advanced theo cấu trúc mới nhất của Hội Đồng Anh, tối ưu hóa điểm phần Grammar & Vocabulary.",
+        "duration": "140 phút",
+        "questions": "5 Hợp phần",
+        "highlights": ["Đầy đủ 5 phần thi tiêu chuẩn", "Phân tích ngữ pháp nâng cao", "Hệ thống tính điểm CEFR tự động"]
+      }
+    },
+    "steps": {
+      "badge": "Quy Trình Học Tập Tối Ưu",
+      "title": "4 Bước Bứt Phá Điểm Số Tại LingoArena",
+      "subtitle": "Phương pháp học thông minh kết hợp giữa kiểm tra năng lực, phân tích lỗ hổng kiến thức và luyện tập ngắt quãng có mục tiêu.",
+      "step1": {
+        "number": "01",
+        "title": "Kiểm Tra Đầu Vào Chuẩn Xác",
+        "desc": "Bài test 15-30 phút định vị chính xác trình độ CEFR hiện tại và chỉ ra các kỹ năng cần củng cố."
+      },
+      "step2": {
+        "number": "02",
+        "title": "Thiết Lập Lộ Trình Mục Tiêu",
+        "desc": "Hệ thống tự động đề xuất lộ trình luyện thi theo tuần/tháng với các mốc điểm rõ ràng (TOEIC 750+, IELTS 6.5+)."
+      },
+      "step3": {
+        "number": "03",
+        "title": "Luyện Đề Thực Chiến & Chấm AI",
+        "desc": "Làm quen với áp lực phòng thi thật, chấm chữa từng câu và nhận phân tích bẫy lỗi sai lập tức."
+      },
+      "step4": {
+        "number": "04",
+        "title": "Đấu Trường Từ Vựng & Về Đích",
+        "desc": "Thi đấu 1v1 đối kháng trực tuyến, củng cố 3.000+ từ vựng cốt lõi qua Spaced Repetition (SRS)."
+      }
+    },
+    "arenaGamification": {
+      "badge": "Đấu Trường Từ Vựng 1v1",
+      "title": "Học Tập Qua Thi Đấu Đối Kháng Trực Tiếp",
+      "subtitle": "Tạo phòng thi đấu từ vựng và phản xạ tiếng Anh thời gian thực với hàng ngàn người học trên toàn quốc, tích lũy điểm LP và leo bảng xếp hạng danh giá.",
+      "onlineNow": "người đang ghép trận",
+      "leaderboardTitle": "Bảng Xếp Hạng Đấu Thủ",
+      "enterArena": "Tham gia Đấu Trường 1v1 ngay",
+      "feature1Title": "Ghép Trận Ngẫu Nhiên Thời Gian Thực",
+      "feature1Desc": "Hệ thống Matching thông minh kết nối đối thủ cùng trình độ trong vòng 5 giây.",
+      "feature2Title": "Bộ Câu Hỏi Đa Dạng & Phản Xạ Nhanh",
+      "feature2Desc": "Các vòng thi: Nhìn hình đoán chữ, Điền từ ngữ cảnh và Tốc độ nối nghĩa trong 10 giây.",
+      "feature3Title": "Tích Lũy Điểm LP & Nhận Quà Thưởng",
+      "feature3Desc": "Thăng hạng từ Đồng -> Bạc -> Vàng -> Kim Cương -> Đấu Thần Arena với huy hiệu độc quyền."
+    },
+    "testimonials": {
+      "badge": "Cảm Nhận Học Viên",
+      "title": "Hơn 50.000+ Học Viên Đã Đạt Mục Tiêu",
+      "subtitle": "Cùng lắng nghe những chia sẻ thực tế từ các học viên đã vượt qua kỳ thi chứng chỉ với điểm số xuất sắc cùng LingoArena."
+    },
+    "faq": {
+      "badge": "Câu Hỏi Thường Gặp",
+      "title": "Giải Đáp Thắc Mắc Về LingoArena",
+      "subtitle": "Tìm hiểu chi tiết về tài khoản, phương pháp luyện thi, hệ thống chấm điểm và chính sách hỗ trợ học viên.",
+      "item1": {
+        "q": "Đề thi thử trên LingoArena có sát với đề thi thật không?",
+        "a": "Tất cả các bộ đề TOEIC, IELTS, Aptis và VSTEP trên LingoArena đều được biên soạn và cập nhật liên tục theo chuẩn Format mới nhất của ETS, Cambridge và Bộ Giáo Dục. Đề thi có đầy đủ độ khó, số lượng câu, audio giọng đọc chuẩn bản xứ và cấu trúc phân bổ câu hỏi tương đương 100% đề thi chính thức."
+      },
+      "item2": {
+        "q": "Kết quả chấm và dự đoán điểm của hệ thống chính xác bao nhiêu %?",
+        "a": "Hệ thống sử dụng bảng quy đổi điểm chuẩn hóa kết hợp thuật toán phân tích năng lực theo độ khó câu hỏi (Adaptive Scoring). Đối với phần trắc nghiệm Nghe & Đọc, độ chính xác so với điểm thi thật lên đến 95%. Với phần Tự luận Writing & Speaking, các bài chấm đều căn cứ trên ma trận Rubric chính thức của kỳ thi."
+      },
+      "item3": {
+        "q": "Tính năng chấm Writing và Speaking hoạt động như thế nào?",
+        "a": "Sau khi bạn nộp bài luận Writing hoặc bản ghi âm Speaking, hệ thống AI sơ bộ sẽ quét lỗi ngữ pháp, chính tả và gợi ý từ vựng nâng band trong 60 giây. Sau đó, bài làm sẽ được chuyển tới đội ngũ Giảng viên có chứng chỉ IELTS 8.0+ / TOEIC 950+ để chấm chi tiết từng tiêu chí và nhận xét chuyên sâu."
+      },
+      "item4": {
+        "q": "Thuật toán Flashcard Spaced Repetition (SRS) giúp tôi ghi nhớ như thế nào?",
+        "a": "Dựa trên mô hình đường cong quên lãng Ebbinghaus và thuật toán FSRS hiện đại, hệ thống sẽ tự động tính toán thời điểm sắp quên của não bộ để nhắc bạn ôn tập. Nhờ đó, bạn chỉ cần học 15-20 phút mỗi ngày nhưng có thể ghi nhớ vĩnh viễn hàng ngàn từ vựng cốt lõi."
+      },
+      "item5": {
+        "q": "Tôi có thể học trên nhiều thiết bị (điện thoại, máy tính, máy tính bảng) không?",
+        "a": "Có. Toàn bộ tiến độ học tập, bài làm thi thử dở dang, bộ thẻ flashcard và sổ lỗi đều được đồng bộ hóa tức thì trên tài khoản đám mây của bạn. Bạn có thể làm bài thi trên máy tính và tiếp tục ôn flashcard trên điện thoại bất cứ lúc nào."
+      },
+      "item6": {
+        "q": "Chính sách hoàn tiền và hỗ trợ học tập như thế nào?",
+        "a": "LingoArena cam kết hoàn tiền 100% trong vòng 7 ngày đầu tiên nếu bạn không hài lòng về chất lượng nội dung hoặc hệ thống. Đội ngũ hỗ trợ kỹ thuật và học tập luôn sẵn sàng 24/7 qua livechat, hotline và group học viên."
+      }
+    },
+    "about": {
+      "badge": "Về LingoArena",
+      "title": "Sứ Mệnh Phổ Cập Tiếng Anh Thông Minh",
+      "description": "LingoArena ra đời với sứ mệnh mang đến môi trường luyện thi chứng chỉ chuẩn quốc tế, giúp người học Việt Nam tự tin chinh phục TOEIC, IELTS, VSTEP với chi phí hợp lý và hiệu quả cao nhất.",
+      "stat1Number": "150.000+",
+      "stat1Label": "Đề thi đã hoàn thành",
+      "stat2Number": "96.4%",
+      "stat2Label": "Tỉ lệ đạt điểm cam kết",
+      "stat3Number": "24/7",
+      "stat3Label": "Hỗ trợ học thuật liên tục"
+    },
+    "contact": {
+      "badge": "Liên Hệ & Hỗ Trợ",
+      "title": "Chúng Tôi Luôn Sẵn Sàng Đồng Hành",
+      "subtitle": "Gửi câu hỏi hoặc liên hệ đội ngũ tư vấn học thuật LingoArena để nhận hỗ trợ lộ trình cá nhân hóa nhanh nhất.",
+      "formName": "Họ và tên của bạn",
+      "formEmail": "Địa chỉ Email",
+      "formPhone": "Số điện thoại",
+      "formMessage": "Nội dung cần tư vấn hoặc thắc mắc...",
+      "formSubmit": "Gửi thông tin tư vấn",
+      "hotline": "Hotline hỗ trợ",
+      "address": "Địa chỉ trụ sở"
+    },
+    "cta": {
+      "title": "Sẵn Sàng Bứt Phá Điểm Số Chứng Chỉ Của Bạn?",
+      "subtitle": "Tham gia cùng hơn 50.000+ học viên LingoArena ngay hôm nay. Bắt đầu với bài kiểm tra năng lực hoàn toàn miễn phí.",
+      "btnTest": "Bắt đầu làm bài Test đầu vào",
+      "btnPractice": "Khám phá phòng thi thử"
+    },
+    "pricing": {
+      "badge": "Biểu Phí Gói Học",
+      "title": "Lựa Chọn Gói Học Phù Hợp Với Bạn",
+      "subtitle": "Nâng cấp tài khoản PRO để mở khóa toàn bộ kho đề thi bản quyền, chấm AI Writing/Speaking không giới hạn và hỗ trợ 1-1 từ giảng viên."
+    }
+  }
 }

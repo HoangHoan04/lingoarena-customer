@@ -1,5 +1,4 @@
 import { routing } from "@/i18n/routing";
-import AppProviders from "@/providers";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -111,7 +110,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages} locale={locale}>
-      <AppProviders>{children}</AppProviders>
+      {children}
     </NextIntlClientProvider>
   );
 }

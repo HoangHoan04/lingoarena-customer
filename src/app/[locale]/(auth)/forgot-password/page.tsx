@@ -1,336 +1,483 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { Label } from "@/components/ui/label";
-import { Spinner } from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
+import { Link, useRouter } from "@/i18n/routing";
+import { authService } from "@/services/auth.service";
 import { useToastStore } from "@/stores/useToastStore";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Check, CheckCircle2, Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  KeyRound,
+  Lock,
+  Mail,
+  RotateCcw,
+  ShieldAlert,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
 
-type Step = 1 | 2 | 3 | "success";
-
-const STEPS = [
-  { step: 1, label: "Email" },
-  { step: 2, label: "OTP" },
-  { step: 3, label: "Mật khẩu mới" },
-] as const;
-
-function Stepper({ current }: { current: Step }) {
-  const activeIndex = current === "success" ? STEPS.length : current;
-
-  return (
-    <div className="flex w-full items-center justify-between">
-      {STEPS.map(({ step, label }, idx) => {
-        const isDone = activeIndex > step;
-        const isActive = activeIndex === step;
-        const isSegmentFilled = activeIndex > step;
-
-        return (
-          <React.Fragment key={step}>
-            <div className="flex flex-col items-center gap-1.5 relative">
-              <div
-                className={cn(
-                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-semibold transition-colors",
-                  isDone && "border-primary bg-primary text-primary-foreground",
-                  isActive && "border-primary bg-background text-primary",
-                  !isDone &&
-                    !isActive &&
-                    "border-border bg-muted text-muted-foreground",
-                )}
-              >
-                {isDone ? <Check className="h-4 w-4" /> : step}
-              </div>
-              <span
-                className={cn(
-                  "whitespace-nowrap text-[11px] font-medium absolute top-9 left-1/2 -translate-x-1/2",
-                  isActive || isDone
-                    ? "text-foreground"
-                    : "text-muted-foreground",
-                )}
-              >
-                {label}
-              </span>
-            </div>
-
-            {idx < STEPS.length - 1 && (
-              <div className="mx-2 h-0.5 flex-1 relative bg-border rounded-full overflow-hidden">
-                <div
-                  className={cn(
-                    "absolute inset-y-0 left-0 bg-primary transition-all duration-300",
-                    isSegmentFilled ? "w-full" : "w-0",
-                  )}
-                />
-              </div>
-            )}
-          </React.Fragment>
-        );
-      })}
-    </div>
-  );
-}
+type RecoveryStep = "EMAIL" | "OTP" | "NEW_PASSWORD" | "SUCCESS";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const { addToast } = useToastStore();
-  const [step, setStep] = useState<Step>(1);
-  const [isLoading, setIsLoading] = useState(false);
 
+  const [step, setStep] = useState<RecoveryStep>("EMAIL");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
-  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleStepSubmit = async (e: React.FormEvent) => {
+  // 60s countdown timer for OTP resend
+  const [countdown, setCountdown] = useState(60);
+  const [canResend, setCanResend] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (step === "OTP" && countdown > 0) {
+      timer = setInterval(() => setCountdown((c) => c - 1), 1000);
+    } else if (countdown === 0) {
+      setCanResend(true);
+    }
+    return () => clearInterval(timer);
+  }, [step, countdown]);
+
+  // Step 1: Send OTP to email
+  const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (!email) {
+      addToast("Vui lòng nhập địa chỉ email của bạn", "warning");
+      return;
+    }
 
+    setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      if (step === 1) {
-        if (!email) throw new Error("Vui lòng nhập email");
-        addToast("Mã OTP đã được gửi tới email của bạn!", "success");
-        setStep(2);
-      } else if (step === 2) {
-        if (!otp || otp.length < 6) throw new Error("Mã OTP không hợp lệ");
-        addToast("Xác thực OTP thành công!", "success");
-        setStep(3);
-      } else if (step === 3) {
-        if (!password || !confirmPassword)
-          throw new Error("Vui lòng điền đầy đủ thông tin");
-        if (password !== confirmPassword) {
-          addToast("Mật khẩu xác nhận không khớp!", "error");
-          return;
-        }
-        addToast("Đặt lại mật khẩu thành công!", "success");
-        setStep("success");
-      }
+      await authService.forgotPasswordSendOtp(email.trim());
+      addToast(`Mã xác thực OTP 6 số đã được gửi tới ${email}`, "success");
+      setStep("OTP");
+      setCountdown(60);
+      setCanResend(false);
     } catch (err: any) {
-      addToast(err.message || "Đã có lỗi xảy ra. Vui lòng thử lại.", "error");
+      addToast(err?.message || "Không tìm thấy tài khoản với email này.", "error");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
+    }
+  };
+
+  // Step 2: Verify OTP
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (otp.length < 6) {
+      addToast("Vui lòng nhập đầy đủ mã OTP 6 chữ số", "warning");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await authService.forgotPasswordVerifyOtp(email.trim(), otp.trim());
+      addToast("Mã xác thực hợp lệ! Vui lòng nhập mật khẩu mới.", "success");
+      setStep("NEW_PASSWORD");
+    } catch (err: any) {
+      addToast(err?.message || "Mã OTP không chính xác hoặc đã hết hạn.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Resend OTP
+  const handleResendOtp = async () => {
+    if (!canResend) return;
+    setLoading(true);
+    try {
+      await authService.forgotPasswordSendOtp(email.trim());
+      addToast("Mã xác thực mới đã được gửi lại vào email!", "success");
+      setCountdown(60);
+      setCanResend(false);
+      setOtp("");
+    } catch (err: any) {
+      addToast(err?.message || "Gửi lại OTP thất bại.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Step 3: Reset password
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPassword || !confirmPassword) {
+      addToast("Vui lòng điền đầy đủ mật khẩu mới và xác nhận mật khẩu", "warning");
+      return;
+    }
+    if (newPassword.length < 6) {
+      addToast("Mật khẩu mới phải có ít nhất 6 ký tự", "warning");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      addToast("Mật khẩu xác nhận không trùng khớp", "warning");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await authService.forgotPasswordReset(email.trim(), otp.trim(), newPassword);
+      addToast("Đặt lại mật khẩu thành công!", "success");
+      setStep("SUCCESS");
+    } catch (err: any) {
+      addToast(err?.message || "Không thể đặt lại mật khẩu. Vui lòng thử lại.", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-5xl flex-col justify-between px-4 py-8 sm:py-12">
-      <div className="my-auto grid grid-cols-1 items-center gap-12 md:grid-cols-12">
-        <div className="flex flex-col gap-6 md:col-span-5">
-          <div className="flex flex-col gap-2">
-            <div className="h-16 w-16 rounded-full bg-muted" />
-            <h1 className="mt-2 text-left text-3xl font-bold text-foreground">
-              {step === "success" ? "Hoàn tất!" : "Đặt lại mật khẩu"}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {step === 1 &&
-                "Xác thực danh tính để bảo mật và khôi phục tài khoản của bạn."}
-              {step === 2 && "Nhập mã xác thực đã được gửi tới email của bạn."}
-              {step === 3 &&
-                "Chọn một mật khẩu mạnh và duy nhất để bảo vệ tài khoản."}
-              {step === "success" &&
-                "Tài khoản của bạn đã được cập nhật thành công."}
-            </p>
-          </div>
+    <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-4">
+      {/* Left Column: Security Information */}
+      <div className="lg:col-span-6 space-y-6 hidden lg:block pr-4">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+          <ShieldCheck className="size-3.5 text-emerald-500" />
+          Bảo mật tài khoản & dữ liệu
         </div>
 
-        <div className="mx-auto flex w-full max-w-md flex-col gap-6 md:col-span-7 md:max-w-none">
-          {step !== "success" && (
-            <div className="pb-4">
-              <Stepper current={step} />
-            </div>
-          )}
+        <h1 className="text-3xl xl:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+          Khôi phục mật khẩu tài khoản{" "}
+          <span className="bg-linear-to-r from-[#2b417e] via-[#405ea7] to-[#2b417e] bg-clip-text text-transparent dark:from-[#7b9bee] dark:via-[#a0baff] dark:to-[#7b9bee]">
+            LingoArena
+          </span>
+        </h1>
 
-          <Card className="p-6">
-            {step === "success" ? (
-              <CardContent className="flex flex-col items-center justify-center gap-4 p-0 text-center">
-                <CheckCircle2 className="h-16 w-16 text-primary" />
-                <p className="text-sm text-muted-foreground">
-                  Đặt lại mật khẩu thành công! Bạn có thể đăng nhập bằng mật
-                  khẩu mới.
-                </p>
-                <Button
-                  className="mt-2 w-full"
-                  onClick={() => (window.location.href = "/login")}
-                >
-                  Về trang đăng nhập
-                </Button>
-              </CardContent>
-            ) : (
-              <form onSubmit={handleStepSubmit} className="space-y-4">
-                <CardContent className="p-0">
-                  {step === 1 && (
-                    <div className="flex flex-col gap-2">
-                      <Label htmlFor="email">Địa chỉ email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="name@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-                  )}
+        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-lg">
+          Quy trình khôi phục mật khẩu qua xác thực OTP 2 lớp an toàn, giúp bạn lấy lại quyền truy cập lộ trình học và kho đề thi chỉ trong 1 phút.
+        </p>
 
-                  {step === 2 && (
-                    <div className="flex flex-col gap-3">
-                      <Label htmlFor="otp">Nhập mã xác thực (OTP)</Label>
-                      <InputOTP
-                        id="otp"
-                        maxLength={6}
-                        value={otp}
-                        onChange={setOtp}
-                        pattern={REGEXP_ONLY_DIGITS}
-                        containerClassName="justify-center"
-                      >
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} />
-                          <InputOTPSlot index={1} />
-                          <InputOTPSlot index={2} />
-                          <InputOTPSlot index={3} />
-                          <InputOTPSlot index={4} />
-                          <InputOTPSlot index={5} />
-                        </InputOTPGroup>
-                      </InputOTP>
-                      <p className="mt-1 text-center text-xs text-muted-foreground">
-                        Mã đã gửi tới{" "}
-                        <span className="font-medium text-foreground">
-                          {email}
-                        </span>
-                      </p>
-                    </div>
-                  )}
-
-                  {step === 3 && (
-                    <div className="flex flex-col gap-4">
-                      <div className="flex flex-col gap-2">
-                        <div className="flex items-center justify-between">
-                          <Label htmlFor="password">Mật khẩu mới</Label>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="xs"
-                            onClick={() => setShowPassword(!showPassword)}
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-3.5 w-3.5 mr-1" />
-                            ) : (
-                              <Eye className="h-3.5 w-3.5 mr-1" />
-                            )}
-                            {showPassword ? "Ẩn" : "Hiện"}
-                          </Button>
-                        </div>
-                        <Input
-                          id="password"
-                          type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <div className="flex items-center justify-between">
-                          <Label htmlFor="confirmPassword">
-                            Xác nhận mật khẩu
-                          </Label>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="xs"
-                            onClick={() =>
-                              setShowConfirmPassword(!showConfirmPassword)
-                            }
-                          >
-                            {showConfirmPassword ? (
-                              <EyeOff className="h-3.5 w-3.5 mr-1" />
-                            ) : (
-                              <Eye className="h-3.5 w-3.5 mr-1" />
-                            )}
-                            {showConfirmPassword ? "Ẩn" : "Hiện"}
-                          </Button>
-                        </div>
-                        <Input
-                          id="confirmPassword"
-                          type={showConfirmPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-
-                <CardFooter className="p-0 pt-2">
-                  <Button type="submit" disabled={isLoading} className="w-full">
-                    {isLoading && <Spinner />}
-                    {isLoading
-                      ? "Đang xử lý..."
-                      : step === 1
-                        ? "Gửi mã xác thực"
-                        : step === 2
-                          ? "Xác thực OTP"
-                          : "Đặt lại mật khẩu"}
-                  </Button>
-                </CardFooter>
-              </form>
-            )}
-          </Card>
-
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => (window.location.href = "/login")}
+        {/* 3 Step Indicator Display */}
+        <div className="space-y-3 pt-2">
+          <div
+            className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${
+              step === "EMAIL"
+                ? "bg-[#2b417e]/10 border-[#2b417e]/30 shadow-xs"
+                : "bg-white/70 dark:bg-slate-900/60 border-slate-200/70 dark:border-slate-800"
+            }`}
           >
-            Về trang đăng nhập
-          </Button>
+            <div className="w-8 h-8 rounded-xl bg-[#2b417e] text-white flex items-center justify-center font-bold text-xs shrink-0">
+              1
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                Xác thực Email tài khoản
+              </h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Nhập email đã đăng ký tài khoản LingoArena để nhận mã xác thực OTP.
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${
+              step === "OTP"
+                ? "bg-[#2b417e]/10 border-[#2b417e]/30 shadow-xs"
+                : "bg-white/70 dark:bg-slate-900/60 border-slate-200/70 dark:border-slate-800"
+            }`}
+          >
+            <div className="w-8 h-8 rounded-xl bg-[#2b417e] text-white flex items-center justify-center font-bold text-xs shrink-0">
+              2
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                Nhập mã OTP 6 chữ số
+              </h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Kiểm tra hộp thư đến (hoặc Spam) để lấy mã xác thực có hiệu lực trong 5 phút.
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${
+              step === "NEW_PASSWORD"
+                ? "bg-[#2b417e]/10 border-[#2b417e]/30 shadow-xs"
+                : "bg-white/70 dark:bg-slate-900/60 border-slate-200/70 dark:border-slate-800"
+            }`}
+          >
+            <div className="w-8 h-8 rounded-xl bg-[#2b417e] text-white flex items-center justify-center font-bold text-xs shrink-0">
+              3
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                Thiết lập mật khẩu mới
+              </h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Tạo mật khẩu an toàn và đăng nhập lại ngay lập tức.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <footer className="mt-12 flex w-full flex-col items-center justify-between gap-4 border-t border-border pt-6 text-xs font-medium text-muted-foreground sm:flex-row">
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          <Link href="/register" className="hover:underline">
-            Đăng ký
-          </Link>
-          <Link href="/login" className="hover:underline">
-            Đăng nhập
-          </Link>
-          <Link href="#" className="hover:underline">
-            Trợ giúp
-          </Link>
-          <Link href="#" className="hover:underline">
-            Điều khoản
-          </Link>
-          <Link href="#" className="hover:underline">
-            Bảo mật
-          </Link>
-          <Link href="#" className="hover:underline">
-            Giới thiệu
-          </Link>
-          <Link href="#" className="hover:underline">
-            Cài đặt
-          </Link>
+      {/* Right Column: Step-by-Step Form */}
+      <div className="lg:col-span-6 w-full max-w-md mx-auto">
+        <div className="bg-white/95 dark:bg-slate-900/95 rounded-3xl p-6 sm:p-9 border border-slate-200/80 dark:border-slate-800 shadow-2xl shadow-slate-900/5 dark:shadow-black/50 backdrop-blur-xl space-y-6">
+          {/* STEP 1: Enter Email */}
+          {step === "EMAIL" && (
+            <div className="space-y-5 animate-in fade-in duration-300">
+              <div className="space-y-1.5">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                  Quên mật khẩu?
+                </h2>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Nhập địa chỉ email liên kết với tài khoản của bạn để nhận mã OTP khôi phục.
+                </p>
+              </div>
+
+              <form onSubmit={handleSendEmail} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Địa chỉ Email của bạn
+                  </label>
+                  <div className="relative flex items-center">
+                    <Mail className="absolute left-3.5 size-4 text-slate-400 pointer-events-none" />
+                    <Input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="vidu@gmail.com"
+                      className="pl-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e] focus:ring-2 focus:ring-[#2b417e]/20"
+                    />
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 rounded-xl font-bold text-sm bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 hover:shadow-xl hover:shadow-[#2b417e]/35 transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+                >
+                  {loading ? (
+                    <>
+                      <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                      <span>Đang gửi mã xác thực...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Gửi mã xác thực OTP</span>
+                      <ArrowRight className="size-4" />
+                    </>
+                  )}
+                </Button>
+              </form>
+            </div>
+          )}
+
+          {/* STEP 2: Enter OTP */}
+          {step === "OTP" && (
+            <div className="space-y-5 animate-in fade-in duration-300">
+              <div className="space-y-1.5">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                  Nhập mã OTP 6 số
+                </h2>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Mã xác thực đã được gửi tới email <strong className="text-slate-900 dark:text-white">{email}</strong>.
+                </p>
+              </div>
+
+              <form onSubmit={handleVerifyOtp} className="space-y-5">
+                <div className="flex justify-center py-2">
+                  <InputOTP
+                    maxLength={6}
+                    value={otp}
+                    onChange={(value) => setOtp(value)}
+                  >
+                    <InputOTPGroup className="gap-2">
+                      <InputOTPSlot index={0} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
+                      <InputOTPSlot index={1} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
+                      <InputOTPSlot index={2} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
+                      <InputOTPSlot index={3} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
+                      <InputOTPSlot index={4} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
+                      <InputOTPSlot index={5} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+
+                {/* Resend Countdown */}
+                <div className="text-center text-xs text-slate-500">
+                  {canResend ? (
+                    <button
+                      type="button"
+                      onClick={handleResendOtp}
+                      disabled={loading}
+                      className="text-[#2b417e] dark:text-[#7b9bee] font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      <RotateCcw className="size-3.5" />
+                      Gửi lại mã xác thực
+                    </button>
+                  ) : (
+                    <span>
+                      Gửi lại mã xác thực sau <strong className="text-[#2b417e] dark:text-[#7b9bee]">{countdown}s</strong>
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setStep("EMAIL")}
+                    className="w-1/3 h-12 rounded-xl text-xs font-bold border-slate-200 cursor-pointer"
+                  >
+                    Đổi Email
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={loading || otp.length < 6}
+                    className="w-2/3 h-12 rounded-xl font-bold text-sm bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                        <span>Đang kiểm tra...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Xác thực OTP</span>
+                        <ArrowRight className="size-4" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* STEP 3: Enter New Password */}
+          {step === "NEW_PASSWORD" && (
+            <div className="space-y-5 animate-in fade-in duration-300">
+              <div className="space-y-1.5">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                  Mật khẩu mới
+                </h2>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Thiết lập mật khẩu mới an toàn có ít nhất 6 ký tự.
+                </p>
+              </div>
+
+              <form onSubmit={handleResetPassword} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Mật khẩu mới
+                  </label>
+                  <div className="relative flex items-center">
+                    <Lock className="absolute left-3.5 size-4 text-slate-400 pointer-events-none" />
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="pl-10 pr-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
+                    >
+                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Xác nhận mật khẩu mới
+                  </label>
+                  <div className="relative flex items-center">
+                    <Lock className="absolute left-3.5 size-4 text-slate-400 pointer-events-none" />
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="pl-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e]"
+                    />
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 rounded-xl font-bold text-sm bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+                >
+                  {loading ? (
+                    <>
+                      <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                      <span>Đang cập nhật mật khẩu...</span>
+                    </>
+                  ) : (
+                    <>
+                      <KeyRound className="size-4" />
+                      <span>Đổi mật khẩu & Đăng nhập</span>
+                    </>
+                  )}
+                </Button>
+              </form>
+            </div>
+          )}
+
+          {/* Back to Login Link */}
+          <div className="pt-2 text-center text-xs text-slate-500 border-t border-slate-100 dark:border-slate-800 flex items-center justify-center">
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-1.5 font-bold text-[#2b417e] dark:text-[#7b9bee] hover:underline"
+            >
+              <ArrowLeft className="size-3.5" />
+              Quay lại màn hình Đăng nhập
+            </Link>
+          </div>
         </div>
-        <div className="flex cursor-pointer items-center gap-1 hover:underline">
-          <span>Tiếng Việt</span>
-          <span className="text-[10px]">▼</span>
-        </div>
-      </footer>
+      </div>
+
+      {/* Success Dialog Modal */}
+      <Dialog open={step === "SUCCESS"} onOpenChange={() => router.push("/login")}>
+        <DialogContent className="sm:max-w-md p-6 rounded-3xl text-center">
+          <div className="mx-auto w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 flex items-center justify-center mb-2">
+            <CheckCircle2 className="size-9" />
+          </div>
+          <DialogHeader className="space-y-1.5 text-center">
+            <DialogTitle className="text-xl font-extrabold text-slate-900 dark:text-white">
+              Đổi mật khẩu thành công!
+            </DialogTitle>
+            <DialogDescription className="text-xs text-slate-500">
+              Mật khẩu mới của bạn đã được cập nhật an toàn trên hệ thống. Bây giờ bạn có thể đăng nhập để tiếp tục học tập.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="pt-4">
+            <Button
+              className="w-full h-11 rounded-xl font-bold bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 cursor-pointer"
+              onClick={() => router.push("/login")}
+            >
+              Đăng nhập ngay bây giờ
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

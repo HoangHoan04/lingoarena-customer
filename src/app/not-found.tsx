@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "@/i18n/routing";
 import { ArrowLeft, Send } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 const PLANETS = [
@@ -164,15 +164,15 @@ export default function RootNotFound() {
         className="absolute inset-0 pointer-events-none z-10 opacity-30 dark:opacity-50"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(99, 102, 241, 0.04) 1px, transparent 1px)
+            linear-gradient(rgba(43, 65, 126, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(43, 65, 126, 0.05) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
         }}
       />
 
-      <div className="absolute top-[5%] w-100 h-100 rounded-full bg-indigo-500/5 dark:bg-indigo-500/10 blur-[80px] pointer-events-none z-10" />
-      <div className="absolute bottom-[10%] w-87.5 h-87.5 rounded-full bg-purple-500/5 dark:bg-purple-500/5 blur-[100px] pointer-events-none z-10" />
+      <div className="absolute top-[5%] w-100 h-100 rounded-full bg-[#2b417e]/5 dark:bg-[#2b417e]/10 blur-[80px] pointer-events-none z-10" />
+      <div className="absolute bottom-[10%] w-87.5 h-87.5 rounded-full bg-[#4563b0]/5 dark:bg-[#4563b0]/5 blur-[100px] pointer-events-none z-10" />
 
       <div className="relative z-20 flex flex-col items-center justify-center w-full max-w-150 gap-4">
         <div
@@ -269,7 +269,7 @@ export default function RootNotFound() {
 
             <Button
               onClick={() => router.push("/")}
-              className="cursor-pointer font-bold px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 transition-all duration-300 h-auto border-none"
+              className="cursor-pointer font-bold px-6 py-2.5 rounded-xl bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/20 transition-all duration-300 h-auto border-none"
             >
               <Send className="size-4" />
               Trang chủ (Go Home)

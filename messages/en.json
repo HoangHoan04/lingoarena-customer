@@ -1,3 +1,248 @@
 {
-  "Header": "Header"
+  "nav": {
+    "home": "Home",
+    "practice": "Mock Exams",
+    "questions": "Question Bank",
+    "courses": "Courses",
+    "vocabulary": "Vocabulary",
+    "arena": "1v1 Arena",
+    "pricing": "Pricing",
+    "placementTest": "Placement Test",
+    "placementTestDesc": "Take the 15-minute placement test",
+    "practiceRoom": "Enter Mock Exam Room",
+    "searchPlaceholder": "Search exams, courses, practice tests...",
+    "recentSearches": "Recent Searches",
+    "clearHistory": "Clear History",
+    "noResults": "No results found",
+    "popularSuggestions": "Popular suggestions:",
+    "translateTooltip": "Smart Translation (Google Translate)",
+    "displaySettings": "Display Preferences",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "language": "Language",
+    "quickTranslate": "Smart Translation (Google Translate)"
+  },
+  "footer": {
+    "description": "Leading smart English certificate prep platform. We provide personalized learning paths, real-time mock exams, and international-standard Writing/Speaking grading to help you achieve your target score with confidence.",
+    "coursesTitle": "Courses & Test Prep",
+    "about": "About LingoArena",
+    "practice": "Mock Tests",
+    "questions": "Question Bank",
+    "courses": "Online Courses",
+    "vocabulary": "Flashcard Vocabulary (SRS)",
+    "arena": "1v1 Battle Arena",
+    "pricing": "Pricing & Plans",
+    "faq": "Frequently Asked Questions",
+    "contactTitle": "Contact Information",
+    "addressLabel": "Address",
+    "addressVal": "6th Floor, Tech Tower, Cau Giay, Hanoi\nDistrict 1, Ho Chi Minh City",
+    "phoneLabel": "Phone",
+    "phoneVal": "1900 8899 (08:00 – 22:00)",
+    "emailLabel": "Email",
+    "hoursLabel": "Working Hours",
+    "hoursVal": "Mon – Sun\n08:00 – 22:00 (24/7 Support)",
+    "newsletterTitle": "Subscribe to Newsletter & New Test Banks",
+    "newsletterDesc": "Get the latest TOEIC, IELTS, VSTEP practice tests and score boosting tips",
+    "newsletterPlaceholder": "Enter your email...",
+    "newsletterBtn": "Subscribe",
+    "newsletterSuccess": "✓ Subscribed",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "operating": "Operating Regulations",
+    "refund": "Refund Policy"
+  },
+  "home": {
+    "hero": {
+      "badge": "#1 Smart Certificate Prep Platform",
+      "titlePart1": "Master your",
+      "titleHighlight": "TOEIC, IELTS & VSTEP",
+      "titlePart2": "with personalized pathways",
+      "subtitle": "Real-time mock test simulation, international rubric-based AI Writing & Speaking evaluation, combined with Spaced Repetition (SRS) to reach your target score 40% faster.",
+      "ctaPlacement": "Free 15-Minute Placement Test",
+      "ctaExplore": "Explore Mock Exams",
+      "examHighlightsTitle": "Featured prep programs:",
+      "activeLearners": "students actively practicing online",
+      "trustedScore": "Score prediction accuracy",
+      "statPassRate": "Target pass rate",
+      "statQuestions": "Standardized questions",
+      "statRating": "Student rating",
+      "toeic": {
+        "score": "850+",
+        "label": "Target TOEIC L&R",
+        "badge": "Most Popular",
+        "skills": ["Listening (Part 1-4)", "Reading (Part 5-7)", "Core Grammar Focus", "2,500 Essential Words"]
+      },
+      "ielts": {
+        "score": "7.5+",
+        "label": "Target IELTS Academic",
+        "badge": "Cam 10-19 Simulator",
+        "skills": ["Reading & Listening", "AI Writing Evaluation", "Recorded Speaking Rubric", "Band 7.0+ Vocabulary"]
+      },
+      "vstep": {
+        "score": "B2 - C1",
+        "label": "University Standard Level 3-5",
+        "badge": "MOET Certified",
+        "skills": ["Listening & Reading Tests", "Writing Templates B1-B2", "3-Part Speaking Reflex", "Error Log & Vocabulary"]
+      },
+      "aptis": {
+        "score": "CEFR C1",
+        "label": "Aptis ESOL Comprehensive",
+        "badge": "British Council Standard",
+        "skills": ["Grammar & Vocabulary", "Listening & Reading", "Writing 4 Tasks", "Speaking 4 Parts"]
+      }
+    },
+    "examCertificates": {
+      "badge": "Standardized Test Bank",
+      "title": "International Certificate Prep System",
+      "subtitle": "100% aligned with the latest official exam structures from ETS, Cambridge, British Council, and MOET.",
+      "viewAll": "View all exams",
+      "startNow": "Practice Now",
+      "skillsTitle": "Tested skills:",
+      "popularBadge": "Hot",
+      "toeic": {
+        "code": "TOEIC L&R",
+        "name": "TOEIC Listening & Reading Prep",
+        "target": "Target Score 450 - 990",
+        "description": "ETS 2026 standardized mock test suite with in-depth question explanations, trap analysis, and Part 1-7 vocabulary lists.",
+        "duration": "120 mins",
+        "questions": "200 questions",
+        "highlights": ["Latest ETS simulation tests", "Part-by-part difficulty breakdown", "Automated mistake notebook"]
+      },
+      "ielts": {
+        "code": "IELTS ACADEMIC",
+        "name": "IELTS Comprehensive 4 Skills",
+        "target": "Band 5.0 - 8.5+",
+        "description": "Cambridge 10-19 computer-based exam simulator, integrating AI & instructor evaluation for Writing Task 1-2 and Speaking.",
+        "duration": "165 mins",
+        "questions": "4 Skills",
+        "highlights": ["IDP/BC computer test simulation", "Detailed 4-criterion Writing grading", "Live Speaking voice analysis"]
+      },
+      "vstep": {
+        "code": "VSTEP B1-B2-C1",
+        "name": "VSTEP 6-Level English Assessment",
+        "target": "Level 3, 4, 5 (B1, B2, C1)",
+        "description": "Comprehensive VSTEP solution for university graduates and educators with updated test banks from top key universities.",
+        "duration": "180 mins",
+        "questions": "4 Skills",
+        "highlights": ["Official MOET standardized format", "Writing outlines & sample essays", "3-Part Speaking reflex room"]
+      },
+      "aptis": {
+        "code": "APTIS ESOL",
+        "name": "Aptis European Framework Certificate",
+        "target": "CEFR A1 - C2",
+        "description": "Aptis General & Advanced practice following British Council's latest format, optimizing Grammar & Vocabulary scores.",
+        "duration": "140 mins",
+        "questions": "5 Components",
+        "highlights": ["Full 5 standard components", "Advanced grammar breakdown", "Automated CEFR score calculation"]
+      }
+    },
+    "steps": {
+      "badge": "Optimized Learning Process",
+      "title": "4 Steps to Score Breakthrough at LingoArena",
+      "subtitle": "Smart learning methodology combining proficiency testing, knowledge gap analysis, and targeted spaced repetition practice.",
+      "step1": {
+        "number": "01",
+        "title": "Accurate Placement Test",
+        "desc": "A 15-30 minute test accurately identifies your current CEFR level and highlights skills needing improvement."
+      },
+      "step2": {
+        "number": "02",
+        "title": "Personalized Target Pathway",
+        "desc": "The system automatically designs a weekly/monthly prep roadmap with clear milestones (TOEIC 750+, IELTS 6.5+)."
+      },
+      "step3": {
+        "number": "03",
+        "title": "Real-World Practice & AI Grading",
+        "desc": "Experience realistic exam room pressure, instant per-question feedback, and in-depth trap analysis."
+      },
+      "step4": {
+        "number": "04",
+        "title": "Vocabulary Arena & Finish Line",
+        "desc": "Compete 1v1 online, mastering 3,000+ core vocabulary words via Spaced Repetition System (SRS)."
+      }
+    },
+    "arenaGamification": {
+      "badge": "1v1 Vocabulary Battle Arena",
+      "title": "Gamified Learning via Live Head-to-Head Battles",
+      "subtitle": "Create real-time vocabulary and reflex battle rooms with thousands of learners nationwide, earning LP points to climb the prestigious leaderboard.",
+      "onlineNow": "players matching now",
+      "leaderboardTitle": "Arena Leaderboard",
+      "enterArena": "Join 1v1 Arena Now",
+      "feature1Title": "Real-Time Random Matchmaking",
+      "feature1Desc": "Smart matchmaking pairs you with opponents of similar skill level within 5 seconds.",
+      "feature2Title": "Diverse & Fast-Paced Question Rounds",
+      "feature2Desc": "Picture-word guessing, Contextual fill-in, and 10-second Speed Matching challenges.",
+      "feature3Title": "Earn LP Points & Unlock Rewards",
+      "feature3Desc": "Climb ranks from Bronze -> Silver -> Gold -> Diamond -> Arena Legend with exclusive badges."
+    },
+    "testimonials": {
+      "badge": "Learner Reviews",
+      "title": "Over 50,000+ Students Achieved Their Goals",
+      "subtitle": "Hear real stories from learners who conquered their English certificate exams with outstanding scores at LingoArena."
+    },
+    "faq": {
+      "badge": "Frequently Asked Questions",
+      "title": "Everything You Need to Know About LingoArena",
+      "subtitle": "Learn all details about account access, test preparation methods, AI scoring systems, and student support policies.",
+      "item1": {
+        "q": "How closely do LingoArena mock exams resemble real exams?",
+        "a": "All TOEIC, IELTS, Aptis, and VSTEP test banks on LingoArena are continuously curated and updated according to the latest official formats from ETS, Cambridge, and the Ministry of Education. Exams feature accurate difficulty levels, authentic native speaker audios, and question distribution matching 100% of real test conditions."
+      },
+      "item2": {
+        "q": "How accurate is the automated scoring and score prediction?",
+        "a": "The system utilizes standardized score conversion tables combined with adaptive ability algorithms. For Listening & Reading multiple-choice sections, accuracy is up to 95% compared to real exam scores. For Writing & Speaking, evaluations strictly follow official exam rubric criteria."
+      },
+      "item3": {
+        "q": "How does the AI & Teacher Writing and Speaking evaluation work?",
+        "a": "Upon submitting your Writing essay or Speaking audio, the AI instantly scans for grammar, spelling, and vocabulary enhancements within 60 seconds. Subsequently, certified instructors (IELTS 8.0+ / TOEIC 950+) thoroughly evaluate each criterion with detailed feedback."
+      },
+      "item4": {
+        "q": "How does the Spaced Repetition (SRS) algorithm help me remember?",
+        "a": "Based on the Ebbinghaus forgetting curve and modern FSRS algorithms, the system calculates optimal review intervals just before your brain forgets a word. As a result, studying just 15-20 minutes daily guarantees long-term retention of thousands of essential words."
+      },
+      "item5": {
+        "q": "Can I study across multiple devices (phone, laptop, tablet)?",
+        "a": "Yes. All your study progress, ongoing tests, flashcards, and mistake notebooks are synchronized in real time via your cloud account. You can take a mock test on your laptop and review flashcards on your mobile anytime."
+      },
+      "item6": {
+        "q": "What is the refund and academic support policy?",
+        "a": "LingoArena offers a 100% refund guarantee within the first 7 days if you are not satisfied with the content or system quality. Technical and academic support is available 24/7 via live chat, hotline, and student community groups."
+      }
+    },
+    "about": {
+      "badge": "About LingoArena",
+      "title": "Mission to Universalize Smart English Learning",
+      "description": "LingoArena was born to provide an international-standard test prep environment, empowering Vietnamese learners to conquer TOEIC, IELTS, and VSTEP with optimal efficiency and affordable cost.",
+      "stat1Number": "150,000+",
+      "stat1Label": "Completed mock tests",
+      "stat2Number": "96.4%",
+      "stat2Label": "Target score achievement",
+      "stat3Number": "24/7",
+      "stat3Label": "Continuous academic support"
+    },
+    "contact": {
+      "badge": "Contact & Support",
+      "title": "We Are Always Here to Help",
+      "subtitle": "Send your inquiries or get in touch with LingoArena academic advisors to receive your personalized roadmap quickly.",
+      "formName": "Your full name",
+      "formEmail": "Email address",
+      "formPhone": "Phone number",
+      "formMessage": "Your message or question...",
+      "formSubmit": "Send Inquiry",
+      "hotline": "Support Hotline",
+      "address": "Headquarters Address"
+    },
+    "cta": {
+      "title": "Ready to Breakthrough Your Exam Score?",
+      "subtitle": "Join over 50,000+ LingoArena students today. Start with a completely free placement test.",
+      "btnTest": "Start Free Placement Test",
+      "btnPractice": "Explore Mock Exam Room"
+    },
+    "pricing": {
+      "badge": "Subscription Plans",
+      "title": "Choose the Perfect Plan for You",
+      "subtitle": "Upgrade to PRO to unlock the full official test bank, unlimited AI Writing/Speaking evaluation, and 1-on-1 tutor support."
+    }
+  }
 }

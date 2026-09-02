@@ -1,35 +1,128 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Mail, MapPin, MessageSquare, PhoneCall, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { toast } from "sonner";
+
 export default function ContactSection() {
+  const t = useTranslations("home.contact");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Vui lòng nhập địa chỉ email của bạn");
+      return;
+    }
+    setIsSubmitting(true);
+    setTimeout(() => {
+      toast.success("Cảm ơn bạn! Đội ngũ tư vấn sẽ liên hệ lại trong vòng 24 giờ.");
+      setEmail("");
+      setMessage("");
+      setIsSubmitting(false);
+    }, 800);
+  };
+
   return (
-    <section
-      aria-labelledby="contact-heading"
-      className="grid grid-cols-1 md:grid-cols-2 gap-8"
-    >
-      <h2 id="contact-heading" className="sr-only">
-        Liên hệ với chúng tôi
-      </h2>
+    <section className="py-16 sm:py-24 relative overflow-hidden bg-slate-50/60 dark:bg-slate-900/40 border-t border-slate-200/60 dark:border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column */}
+          <div className="lg:col-span-5 space-y-6 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+              <MessageSquare className="size-3.5" />
+              {t("badge")}
+            </div>
 
-      <div className="flex flex-col gap-4">
-        <h3 className="text-2xl font-bold">Liên hệ với chúng tôi</h3>
-        <p className="text-slate-600 dark:text-slate-400">
-          Nếu bạn có bất kỳ câu hỏi hoặc phản hồi nào, vui lòng liên hệ với
-          chúng tôi qua email hoặc mạng xã hội. Chúng tôi luôn sẵn sàng hỗ trợ
-          bạn!
-        </p>
-      </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              {t("title")}
+            </h2>
 
-      <div className="flex flex-col gap-4">
-        <h3 className="text-2xl font-bold">Thông tin liên hệ</h3>
-        <ul className="list-disc list-inside text-slate-600 dark:text-slate-400">
-          <li>
-            Email:{" "}
-            <a
-              href="mailto:info@lingoarena.com"
-              className="text-blue-500 hover:underline"
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              {t("subtitle")}
+            </p>
+
+            <div className="space-y-3.5 pt-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <div className="flex items-center gap-3 justify-center lg:justify-start">
+                <div className="w-9 h-9 rounded-xl bg-[#2b417e]/10 text-[#2b417e] dark:text-[#7b9bee] flex items-center justify-center shrink-0">
+                  <Mail className="size-4" />
+                </div>
+                <span>Email: <strong>support@lingoarena.com</strong></span>
+              </div>
+
+              <div className="flex items-center gap-3 justify-center lg:justify-start">
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <PhoneCall className="size-4" />
+                </div>
+                <span>{t("hotline")}: <strong>1900 8899 (8:00 - 22:00)</strong></span>
+              </div>
+
+              <div className="flex items-center gap-3 justify-center lg:justify-start">
+                <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center shrink-0">
+                  <MapPin className="size-4" />
+                </div>
+                <span>Hanoi & Ho Chi Minh City, Vietnam</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Contact Inquiry Form */}
+          <div className="lg:col-span-7">
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200/80 dark:border-slate-800 shadow-xl space-y-4"
             >
-              info@lingoarena.com
-            </a>
-          </li>
-        </ul>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                {t("formSubmit")}
+              </h3>
+              <p className="text-xs text-slate-500">
+                {t("subtitle")}
+              </p>
+
+              <div className="space-y-3 pt-2">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {t("formEmail")} *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="example@gmail.com"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-sm focus:outline-hidden focus:ring-2 focus:ring-[#2b417e]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {t("formMessage")}
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="E.g. Target TOEIC 750 in 3 months..."
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-sm focus:outline-hidden focus:ring-2 focus:ring-[#2b417e]"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-6 rounded-xl font-bold bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/20 cursor-pointer"
+                >
+                  <Send className="size-4 mr-1.5" />
+                  {isSubmitting ? "..." : t("formSubmit")}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </section>
   );
