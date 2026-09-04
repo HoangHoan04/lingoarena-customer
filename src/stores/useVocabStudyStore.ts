@@ -28,7 +28,12 @@ interface VocabStudyState {
   loading: boolean;
   startedAt: number;
   reset: () => void;
-  start: (deckId: string | undefined, mode: VocabStudyMode) => Promise<void>;
+  start: (
+    deckId: string | undefined,
+    mode: VocabStudyMode,
+    limit?: number,
+    topicId?: string,
+  ) => Promise<void>;
   submitFlashcard: (rating: FlashcardRating) => Promise<StudyAnswerResult>;
   submitQuiz: (optionId: string) => Promise<StudyAnswerResult>;
   next: () => void;
@@ -53,10 +58,10 @@ export const useVocabStudyStore = create<VocabStudyState>((set, get) => ({
 
   reset: () => set({ ...empty }),
 
-  start: async (deckId, mode) => {
+  start: async (deckId, mode, limit, topicId) => {
     set({ ...empty, loading: true });
     try {
-      const session = await vocabularyService.startSession(deckId, mode);
+      const session = await vocabularyService.startSession(deckId, mode, limit, topicId);
       set({
         sessionId: session.sessionId,
         mode: session.mode,

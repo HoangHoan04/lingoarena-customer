@@ -6,6 +6,7 @@ import {
 } from "@/components/course";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useCourseStore } from "@/stores/useCourseStore";
+import { pickLocaleText } from "@/lib/locale-text";
 import { useToastStore } from "@/stores/useToastStore";
 import {
   ArrowLeft,
@@ -34,6 +35,7 @@ import {
 } from "lucide-react";
 import { Link, useRouter } from "@/i18n/routing";
 import { useParams } from "next/navigation";
+import { useLocale } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 const COURSE_FAQS = [
@@ -56,6 +58,7 @@ const COURSE_FAQS = [
 ];
 
 export default function CourseDetailPage() {
+  const locale = useLocale();
   const params = useParams();
   const router = useRouter();
   const slug = params?.slug as string;
@@ -120,7 +123,7 @@ export default function CourseDetailPage() {
     }
     try {
       await enrollCourse(course.id);
-      addToast(`Đã kích hoạt khóa học "${course.title}" thành công!`, "success");
+      addToast(`Đã kích hoạt khóa học "${pickLocaleText(locale, course.title, course.titleEn)}" thành công!`, "success");
       router.push(href);
     } catch (err: any) {
       addToast(err?.message || "Không ghi danh được khóa học", "error");
@@ -169,7 +172,7 @@ export default function CourseDetailPage() {
           >
             <img
               src={course.thumbnailUrl}
-              alt={course.title}
+              alt={pickLocaleText(locale, course.title, course.titleEn)}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             {/* Dark gradient overlay */}
@@ -219,12 +222,12 @@ export default function CourseDetailPage() {
 
               {/* Title */}
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-foreground tracking-tight leading-tight">
-                {course.title}
+                {pickLocaleText(locale, course.title, course.titleEn)}
               </h1>
 
               {/* Short Description */}
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                {course.shortDescription}
+                {pickLocaleText(locale, course.shortDescription, course.shortDescriptionEn)}
               </p>
 
               {/* Key Metrics */}

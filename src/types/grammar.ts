@@ -8,6 +8,37 @@ export interface GrammarLookup {
   canonicalTopicId?: string | null;
 }
 
+export interface GrammarCategoryGroup {
+  id: string;
+  title: string;
+  titleEn: string;
+  icon: string;
+  description: string;
+  color: string;
+  topics: GrammarTopic[];
+}
+
+export interface GrammarQuizQuestion {
+  id: string;
+  topicTitle: string;
+  level: string;
+  question: string;
+  options: string[];
+  correctAnswerIndex: number;
+  explanationVi: string;
+}
+
+export interface CheatSheetItem {
+  name: string;
+  formulaAffirmative: string;
+  formulaNegative: string;
+  formulaQuestion: string;
+  signalWords: string[];
+  example: string;
+  level: string;
+  category: string;
+}
+
 export interface GrammarExample {
   id: string;
   grammarStructureId: string;
@@ -22,24 +53,32 @@ export interface GrammarStructure {
   id: string;
   grammarTopicId: string;
   title: string;
+  titleEn?: string | null;
   formula: string;
   meaningVi: string;
+  meaningEn?: string | null;
   usageContent: string;
+  usageContentEn?: string | null;
   commonMistakes?: string | null;
+  commonMistakesEn?: string | null;
   status?: string;
   grammarTopic?: GrammarTopic | null;
   examples?: GrammarExample[];
+  examplesJson?: Array<Record<string, unknown> | GrammarExample>;
 }
 
 export interface GrammarTopic {
   id: string;
   parentId?: string | null;
   title: string;
+  titleEn?: string | null;
   slug: string;
   cefrLevel?: string | null;
   description?: string | null;
+  descriptionEn?: string | null;
   sortOrder?: number;
   canonicalTopicId?: string | null;
+  parent?: GrammarTopic | null;
   structures?: GrammarStructure[];
 }
 

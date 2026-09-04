@@ -1,6 +1,8 @@
 "use client";
 
+import { GamificationWidget } from "@/components/gamification";
 import { Link, useRouter } from "@/i18n/routing";
+import { pickLocaleText } from "@/lib/locale-text";
 import { learningService } from "@/services/learning.service";
 import { questionService } from "@/services/question.service";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -8,9 +10,11 @@ import { useToastStore } from "@/stores/useToastStore";
 import type { LearningPath, UserErrorItem } from "@/types/learning";
 import type { QuestionLookup } from "@/types/question";
 import { BookOpen, CheckCircle2, ClipboardList, Target, Trophy } from "lucide-react";
+import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 
 export default function LearningPathPage() {
+  const locale = useLocale();
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const { addToast } = useToastStore();
@@ -18,6 +22,7 @@ export default function LearningPathPage() {
   const [path, setPath] = useState<LearningPath | null>(null);
   const [errors, setErrors] = useState<UserErrorItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [form, setForm] = useState({
     examTypeId: "",
     targetScore: "",
@@ -25,6 +30,7 @@ export default function LearningPathPage() {
   });
 
   useEffect(() => {
+    setMounted(true);
     questionService.lookupExamTypes().then((items) => {
       setExamTypes(items);
       setForm((prev) => ({ ...prev, examTypeId: prev.examTypeId || items[0]?.id || "" }));
@@ -32,10 +38,10 @@ export default function LearningPathPage() {
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!mounted || !isAuthenticated) return;
     learningService.currentPath().then(setPath).catch(() => null);
     learningService.errors(0, 5).then((res) => setErrors(res.data)).catch(() => null);
-  }, [isAuthenticated]);
+  }, [mounted, isAuthenticated]);
 
   const handleGenerate = async () => {
     if (!isAuthenticated) {
@@ -72,6 +78,15 @@ export default function LearningPathPage() {
       addToast(err?.message || "Không thể cập nhật hoạt động", "error");
     }
   };
+
+  if (!mounted) {
+    return (
+      <main className="mx-auto max-w-3xl px-4 py-16 text-center space-y-5">
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-sm font-bold text-slate-500">Đang tải lộ trình học tập...</p>
+      </main>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
@@ -110,7 +125,7 @@ export default function LearningPathPage() {
           >
             {examTypes.map((item) => (
               <option key={item.id} value={item.id}>
-                {item.label || item.name}
+                {pickLocaleText(locale, item.name || item.label, item.nameEn)}
               </option>
             ))}
           </select>
@@ -189,6 +204,7 @@ export default function LearningPathPage() {
             <Trophy className="mb-2 size-5" />
             Hoàn thành mục trong lộ trình sẽ cộng điểm gamification.
           </div>
+          <GamificationWidget />
         </aside>
       </section>
     </main>

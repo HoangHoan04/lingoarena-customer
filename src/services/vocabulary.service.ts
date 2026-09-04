@@ -26,7 +26,7 @@ export const vocabularyService = {
   paginationDecks: async (
     skip = 0,
     take = 20,
-    where: { keyword?: string; level?: string; exam?: string } = {},
+    where: { keyword?: string; level?: string; exam?: string; topicId?: string } = {},
   ) => {
     const res = await apiService.post(API_ENDPOINTS.VOCABULARY.DECKS_PAGINATION, { skip, take, where });
     return paginationPayload<VocabDeck>(res);
@@ -65,9 +65,16 @@ export const vocabularyService = {
     return paginationPayload<NotebookWord>(res);
   },
 
-  startSession: async (deckId: string | undefined, mode: VocabStudyMode, limit = 12) => {
-    const payload: { mode: VocabStudyMode; limit: number; deckId?: string } = { mode, limit };
+  startSession: async (
+    deckId: string | undefined,
+    mode: VocabStudyMode,
+    limit?: number,
+    topicId?: string,
+  ) => {
+    const payload: { mode: VocabStudyMode; limit?: number; deckId?: string; topicId?: string } = { mode };
+    if (limit !== undefined) payload.limit = limit;
     if (deckId) payload.deckId = deckId;
+    if (topicId) payload.topicId = topicId;
     const res = await apiService.post(API_ENDPOINTS.VOCABULARY.SESSIONS, payload);
     return extractApiData<StudySessionStart>(res);
   },

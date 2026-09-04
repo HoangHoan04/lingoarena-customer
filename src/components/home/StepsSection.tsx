@@ -53,7 +53,7 @@ export default function StepsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 text-brand dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
             <Sparkles className="size-3.5" />
             {t("badge")}
           </div>
@@ -72,24 +72,24 @@ export default function StepsSection() {
             return (
               <div
                 key={step.number}
-                className="relative bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:shadow-xl hover:border-[#2b417e]/40 dark:hover:border-[#7b9bee]/40 transition-all duration-300 flex flex-col justify-between group"
+                className="relative bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:shadow-xl hover:border-brand/40 dark:hover:border-[#7b9bee]/40 transition-all duration-300 flex flex-col justify-between group"
               >
                 {/* Step Top Badge and Number */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-[#2b417e]/10 dark:bg-[#2b417e]/20 text-[#2b417e] dark:text-[#7b9bee] flex items-center justify-center group-hover:bg-[#2b417e] group-hover:text-white transition-all duration-300 shadow-2xs">
+                    <div className="w-12 h-12 rounded-2xl bg-brand/10 dark:bg-brand/20 text-brand dark:text-[#7b9bee] flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all duration-300 shadow-2xs">
                       <Icon className="size-6" />
                     </div>
-                    <span className="text-3xl font-black text-slate-200 dark:text-slate-800 group-hover:text-[#2b417e]/30 dark:group-hover:text-[#7b9bee]/30 transition-colors">
+                    <span className="text-3xl font-black text-slate-200 dark:text-slate-800 group-hover:text-brand/30 dark:group-hover:text-[#7b9bee]/30 transition-colors">
                       {step.number}
                     </span>
                   </div>
 
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#2b417e] dark:text-[#7b9bee] block mb-1.5">
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-brand dark:text-[#7b9bee] block mb-1.5">
                     {step.badge}
                   </span>
 
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 group-hover:text-[#2b417e] dark:group-hover:text-[#7b9bee] transition-colors">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 group-hover:text-brand dark:group-hover:text-[#7b9bee] transition-colors">
                     {step.title}
                   </h3>
 
@@ -101,7 +101,7 @@ export default function StepsSection() {
                 {/* Bottom connector indicator on desktop */}
                 <div className="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
                   <span className="font-semibold">{idx + 1} / 4</span>
-                  <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform text-[#2b417e] dark:text-[#7b9bee]" />
+                  <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform text-brand dark:text-[#7b9bee]" />
                 </div>
               </div>
             );
@@ -112,7 +112,7 @@ export default function StepsSection() {
         <div className="mt-14 text-center">
           <Button
             size="lg"
-            className="px-10 py-6 rounded-2xl font-bold text-sm bg-[#2b417e] text-white hover:bg-[#1e2f5e] dark:bg-white dark:text-[#2b417e] dark:hover:bg-slate-100 shadow-xl shadow-[#2b417e]/20 cursor-pointer"
+            className="px-10 py-6 rounded-2xl font-bold text-sm bg-brand text-white hover:bg-[#1e2f5e] dark:bg-white dark:text-brand dark:hover:bg-slate-100 shadow-xl shadow-brand/20 cursor-pointer"
             onClick={() => router.push("/placement-test")}
           >
             <GraduationCap className="size-5 mr-1" />

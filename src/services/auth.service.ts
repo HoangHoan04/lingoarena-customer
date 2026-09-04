@@ -186,6 +186,13 @@ export const authService = {
     const res = await apiService.patch(API_ENDPOINTS.AUTH.PROFILE, data);
     return extractData<any>(res);
   },
+
+  logout: async (refreshToken?: string): Promise<{ message?: string }> => {
+    const res = await apiService.post(API_ENDPOINTS.AUTH.LOGOUT, {
+      refreshToken,
+    });
+    return extractData<{ message?: string }>(res);
+  },
 };
 
 export default authService;

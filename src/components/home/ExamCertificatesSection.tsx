@@ -30,7 +30,7 @@ export default function ExamCertificatesSection() {
       duration: t("toeic.duration"),
       questionCount: t("toeic.questions"),
       badge: t("popularBadge"),
-      badgeColor: "bg-[#2b417e]/10 text-[#2b417e] dark:text-[#7b9bee] border-[#2b417e]/20 dark:border-[#2b417e]/30",
+      badgeColor: "bg-brand/10 text-brand dark:text-[#7b9bee] border-brand/20 dark:border-brand/30",
       skills: [
         { name: "Listening (Part 1-4)", icon: Headphones },
         { name: "Reading (Part 5-7)", icon: BookOpen },
@@ -116,7 +116,7 @@ export default function ExamCertificatesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-18 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 text-brand dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
             <Sparkles className="size-3.5" />
             {t("badge")}
           </div>
@@ -135,7 +135,7 @@ export default function ExamCertificatesSection() {
               key={exam.id}
               className={`group relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 ${
                 exam.popular
-                  ? "bg-white dark:bg-slate-900 border-2 border-[#2b417e]/50 dark:border-[#7b9bee]/50 shadow-xl shadow-[#2b417e]/10 dark:shadow-[#2b417e]/5"
+                  ? "bg-white dark:bg-slate-900 border-2 border-brand/50 dark:border-[#7b9bee]/50 shadow-xl shadow-brand/10 dark:shadow-brand/5"
                   : "bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-xs hover:border-slate-300 dark:hover:border-slate-700"
               }`}
             >
@@ -151,10 +151,10 @@ export default function ExamCertificatesSection() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-[#2b417e] dark:group-hover:text-[#7b9bee] transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-brand dark:group-hover:text-[#7b9bee] transition-colors">
                     {exam.name}
                   </h3>
-                  <div className="inline-block mt-1.5 px-2.5 py-0.5 rounded-lg bg-[#2b417e]/10 dark:bg-[#2b417e]/20 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold">
+                  <div className="inline-block mt-1.5 px-2.5 py-0.5 rounded-lg bg-brand/10 dark:bg-brand/20 text-brand dark:text-[#7b9bee] text-xs font-bold">
                     {exam.targetScale}
                   </div>
                 </div>
@@ -185,7 +185,7 @@ export default function ExamCertificatesSection() {
                           key={idx}
                           className="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300"
                         >
-                          <Icon className="size-3.5 text-[#2b417e] dark:text-[#7b9bee] shrink-0" />
+                          <Icon className="size-3.5 text-brand dark:text-[#7b9bee] shrink-0" />
                           <span>{skill.name}</span>
                         </div>
                       );
@@ -209,8 +209,8 @@ export default function ExamCertificatesSection() {
                 <Button
                   className={`w-full py-5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer ${
                     exam.popular
-                      ? "bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-md shadow-[#2b417e]/20"
-                      : "bg-slate-100 dark:bg-slate-800 hover:bg-[#2b417e]/10 text-slate-800 dark:text-slate-200 hover:text-[#2b417e] dark:hover:text-[#7b9bee]"
+                      ? "bg-brand hover:bg-[#1e2f5e] text-white shadow-md shadow-brand/20"
+                      : "bg-slate-100 dark:bg-slate-800 hover:bg-brand/10 text-slate-800 dark:text-slate-200 hover:text-brand dark:hover:text-[#7b9bee]"
                   }`}
                   onClick={() => router.push(`/practice?exam=${exam.id}`)}
                 >

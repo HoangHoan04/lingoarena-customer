@@ -27,9 +27,7 @@ import {
   Lock,
   Mail,
   RotateCcw,
-  ShieldAlert,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -47,7 +45,6 @@ export default function ForgotPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 60s countdown timer for OTP resend
   const [countdown, setCountdown] = useState(60);
   const [canResend, setCanResend] = useState(false);
 
@@ -61,7 +58,6 @@ export default function ForgotPasswordPage() {
     return () => clearInterval(timer);
   }, [step, countdown]);
 
-  // Step 1: Send OTP to email
   const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
@@ -77,13 +73,15 @@ export default function ForgotPasswordPage() {
       setCountdown(60);
       setCanResend(false);
     } catch (err: any) {
-      addToast(err?.message || "Không tìm thấy tài khoản với email này.", "error");
+      addToast(
+        err?.message || "Không tìm thấy tài khoản với email này.",
+        "error",
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Step 2: Verify OTP
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otp.length < 6) {
@@ -97,13 +95,15 @@ export default function ForgotPasswordPage() {
       addToast("Mã xác thực hợp lệ! Vui lòng nhập mật khẩu mới.", "success");
       setStep("NEW_PASSWORD");
     } catch (err: any) {
-      addToast(err?.message || "Mã OTP không chính xác hoặc đã hết hạn.", "error");
+      addToast(
+        err?.message || "Mã OTP không chính xác hoặc đã hết hạn.",
+        "error",
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Resend OTP
   const handleResendOtp = async () => {
     if (!canResend) return;
     setLoading(true);
@@ -120,11 +120,13 @@ export default function ForgotPasswordPage() {
     }
   };
 
-  // Step 3: Reset password
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPassword || !confirmPassword) {
-      addToast("Vui lòng điền đầy đủ mật khẩu mới và xác nhận mật khẩu", "warning");
+      addToast(
+        "Vui lòng điền đầy đủ mật khẩu mới và xác nhận mật khẩu",
+        "warning",
+      );
       return;
     }
     if (newPassword.length < 6) {
@@ -138,11 +140,18 @@ export default function ForgotPasswordPage() {
 
     setLoading(true);
     try {
-      await authService.forgotPasswordReset(email.trim(), otp.trim(), newPassword);
+      await authService.forgotPasswordReset(
+        email.trim(),
+        otp.trim(),
+        newPassword,
+      );
       addToast("Đặt lại mật khẩu thành công!", "success");
       setStep("SUCCESS");
     } catch (err: any) {
-      addToast(err?.message || "Không thể đặt lại mật khẩu. Vui lòng thử lại.", "error");
+      addToast(
+        err?.message || "Không thể đặt lại mật khẩu. Vui lòng thử lại.",
+        "error",
+      );
     } finally {
       setLoading(false);
     }
@@ -152,20 +161,21 @@ export default function ForgotPasswordPage() {
     <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center py-4">
       {/* Left Column: Security Information */}
       <div className="lg:col-span-6 space-y-6 hidden lg:block pr-4">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 text-brand dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
           <ShieldCheck className="size-3.5 text-emerald-500" />
           Bảo mật tài khoản & dữ liệu
         </div>
 
         <h1 className="text-3xl xl:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
           Khôi phục mật khẩu tài khoản{" "}
-          <span className="bg-linear-to-r from-[#2b417e] via-[#405ea7] to-[#2b417e] bg-clip-text text-transparent dark:from-[#7b9bee] dark:via-[#a0baff] dark:to-[#7b9bee]">
+          <span className="bg-linear-to-r from-brand via-[#405ea7] to-brand bg-clip-text text-transparent dark:from-[#7b9bee] dark:via-[#a0baff] dark:to-[#7b9bee]">
             LingoArena
           </span>
         </h1>
 
         <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed max-w-lg">
-          Quy trình khôi phục mật khẩu qua xác thực OTP 2 lớp an toàn, giúp bạn lấy lại quyền truy cập lộ trình học và kho đề thi chỉ trong 1 phút.
+          Quy trình khôi phục mật khẩu qua xác thực OTP 2 lớp an toàn, giúp bạn
+          lấy lại quyền truy cập lộ trình học và kho đề thi chỉ trong 1 phút.
         </p>
 
         {/* 3 Step Indicator Display */}
@@ -173,11 +183,11 @@ export default function ForgotPasswordPage() {
           <div
             className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${
               step === "EMAIL"
-                ? "bg-[#2b417e]/10 border-[#2b417e]/30 shadow-xs"
+                ? "bg-brand/10 border-brand/30 shadow-xs"
                 : "bg-white/70 dark:bg-slate-900/60 border-slate-200/70 dark:border-slate-800"
             }`}
           >
-            <div className="w-8 h-8 rounded-xl bg-[#2b417e] text-white flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-brand text-white flex items-center justify-center font-bold text-xs shrink-0">
               1
             </div>
             <div>
@@ -185,7 +195,8 @@ export default function ForgotPasswordPage() {
                 Xác thực Email tài khoản
               </h4>
               <p className="text-[11px] text-slate-500 mt-0.5">
-                Nhập email đã đăng ký tài khoản LingoArena để nhận mã xác thực OTP.
+                Nhập email đã đăng ký tài khoản LingoArena để nhận mã xác thực
+                OTP.
               </p>
             </div>
           </div>
@@ -193,11 +204,11 @@ export default function ForgotPasswordPage() {
           <div
             className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${
               step === "OTP"
-                ? "bg-[#2b417e]/10 border-[#2b417e]/30 shadow-xs"
+                ? "bg-brand/10 border-brand/30 shadow-xs"
                 : "bg-white/70 dark:bg-slate-900/60 border-slate-200/70 dark:border-slate-800"
             }`}
           >
-            <div className="w-8 h-8 rounded-xl bg-[#2b417e] text-white flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-brand text-white flex items-center justify-center font-bold text-xs shrink-0">
               2
             </div>
             <div>
@@ -205,7 +216,8 @@ export default function ForgotPasswordPage() {
                 Nhập mã OTP 6 chữ số
               </h4>
               <p className="text-[11px] text-slate-500 mt-0.5">
-                Kiểm tra hộp thư đến (hoặc Spam) để lấy mã xác thực có hiệu lực trong 5 phút.
+                Kiểm tra hộp thư đến (hoặc Spam) để lấy mã xác thực có hiệu lực
+                trong 5 phút.
               </p>
             </div>
           </div>
@@ -213,11 +225,11 @@ export default function ForgotPasswordPage() {
           <div
             className={`flex items-start gap-3 p-3.5 rounded-2xl border transition-all ${
               step === "NEW_PASSWORD"
-                ? "bg-[#2b417e]/10 border-[#2b417e]/30 shadow-xs"
+                ? "bg-brand/10 border-brand/30 shadow-xs"
                 : "bg-white/70 dark:bg-slate-900/60 border-slate-200/70 dark:border-slate-800"
             }`}
           >
-            <div className="w-8 h-8 rounded-xl bg-[#2b417e] text-white flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-brand text-white flex items-center justify-center font-bold text-xs shrink-0">
               3
             </div>
             <div>
@@ -243,7 +255,8 @@ export default function ForgotPasswordPage() {
                   Quên mật khẩu?
                 </h2>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Nhập địa chỉ email liên kết với tài khoản của bạn để nhận mã OTP khôi phục.
+                  Nhập địa chỉ email liên kết với tài khoản của bạn để nhận mã
+                  OTP khôi phục.
                 </p>
               </div>
 
@@ -260,7 +273,7 @@ export default function ForgotPasswordPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="vidu@gmail.com"
-                      className="pl-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e] focus:ring-2 focus:ring-[#2b417e]/20"
+                      className="pl-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-brand focus:ring-2 focus:ring-brand/20"
                     />
                   </div>
                 </div>
@@ -268,7 +281,7 @@ export default function ForgotPasswordPage() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-12 rounded-xl font-bold text-sm bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 hover:shadow-xl hover:shadow-[#2b417e]/35 transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+                  className="w-full h-12 rounded-xl font-bold text-sm bg-brand hover:bg-[#1e2f5e] text-white shadow-lg shadow-brand/25 hover:shadow-xl hover:shadow-brand/35 transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
                 >
                   {loading ? (
                     <>
@@ -294,7 +307,11 @@ export default function ForgotPasswordPage() {
                   Nhập mã OTP 6 số
                 </h2>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Mã xác thực đã được gửi tới email <strong className="text-slate-900 dark:text-white">{email}</strong>.
+                  Mã xác thực đã được gửi tới email{" "}
+                  <strong className="text-slate-900 dark:text-white">
+                    {email}
+                  </strong>
+                  .
                 </p>
               </div>
 
@@ -306,12 +323,30 @@ export default function ForgotPasswordPage() {
                     onChange={(value) => setOtp(value)}
                   >
                     <InputOTPGroup className="gap-2">
-                      <InputOTPSlot index={0} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
-                      <InputOTPSlot index={1} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
-                      <InputOTPSlot index={2} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
-                      <InputOTPSlot index={3} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
-                      <InputOTPSlot index={4} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
-                      <InputOTPSlot index={5} className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700" />
+                      <InputOTPSlot
+                        index={0}
+                        className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700"
+                      />
+                      <InputOTPSlot
+                        index={1}
+                        className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700"
+                      />
+                      <InputOTPSlot
+                        index={2}
+                        className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700"
+                      />
+                      <InputOTPSlot
+                        index={3}
+                        className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700"
+                      />
+                      <InputOTPSlot
+                        index={4}
+                        className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700"
+                      />
+                      <InputOTPSlot
+                        index={5}
+                        className="rounded-xl border size-11 sm:size-12 text-lg font-bold border-slate-200 dark:border-slate-700"
+                      />
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
@@ -323,14 +358,17 @@ export default function ForgotPasswordPage() {
                       type="button"
                       onClick={handleResendOtp}
                       disabled={loading}
-                      className="text-[#2b417e] dark:text-[#7b9bee] font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
+                      className="text-brand dark:text-[#7b9bee] font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
                     >
                       <RotateCcw className="size-3.5" />
                       Gửi lại mã xác thực
                     </button>
                   ) : (
                     <span>
-                      Gửi lại mã xác thực sau <strong className="text-[#2b417e] dark:text-[#7b9bee]">{countdown}s</strong>
+                      Gửi lại mã xác thực sau{" "}
+                      <strong className="text-brand dark:text-[#7b9bee]">
+                        {countdown}s
+                      </strong>
                     </span>
                   )}
                 </div>
@@ -347,7 +385,7 @@ export default function ForgotPasswordPage() {
                   <Button
                     type="submit"
                     disabled={loading || otp.length < 6}
-                    className="w-2/3 h-12 rounded-xl font-bold text-sm bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                    className="w-2/3 h-12 rounded-xl font-bold text-sm bg-brand hover:bg-[#1e2f5e] text-white shadow-lg shadow-brand/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
                     {loading ? (
                       <>
@@ -391,14 +429,18 @@ export default function ForgotPasswordPage() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="pl-10 pr-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e]"
+                      className="pl-10 pr-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-brand"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
                     >
-                      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                      {showPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -415,7 +457,7 @@ export default function ForgotPasswordPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="pl-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e]"
+                      className="pl-10 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-brand"
                     />
                   </div>
                 </div>
@@ -423,7 +465,7 @@ export default function ForgotPasswordPage() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-12 rounded-xl font-bold text-sm bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+                  className="w-full h-12 rounded-xl font-bold text-sm bg-brand hover:bg-[#1e2f5e] text-white shadow-lg shadow-brand/25 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
                 >
                   {loading ? (
                     <>
@@ -445,7 +487,7 @@ export default function ForgotPasswordPage() {
           <div className="pt-2 text-center text-xs text-slate-500 border-t border-slate-100 dark:border-slate-800 flex items-center justify-center">
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 font-bold text-[#2b417e] dark:text-[#7b9bee] hover:underline"
+              className="inline-flex items-center gap-1.5 font-bold text-brand dark:text-[#7b9bee] hover:underline"
             >
               <ArrowLeft className="size-3.5" />
               Quay lại màn hình Đăng nhập
@@ -455,7 +497,10 @@ export default function ForgotPasswordPage() {
       </div>
 
       {/* Success Dialog Modal */}
-      <Dialog open={step === "SUCCESS"} onOpenChange={() => router.push("/login")}>
+      <Dialog
+        open={step === "SUCCESS"}
+        onOpenChange={() => router.push("/login")}
+      >
         <DialogContent className="sm:max-w-md p-6 rounded-3xl text-center">
           <div className="mx-auto w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 flex items-center justify-center mb-2">
             <CheckCircle2 className="size-9" />
@@ -465,12 +510,13 @@ export default function ForgotPasswordPage() {
               Đổi mật khẩu thành công!
             </DialogTitle>
             <DialogDescription className="text-xs text-slate-500">
-              Mật khẩu mới của bạn đã được cập nhật an toàn trên hệ thống. Bây giờ bạn có thể đăng nhập để tiếp tục học tập.
+              Mật khẩu mới của bạn đã được cập nhật an toàn trên hệ thống. Bây
+              giờ bạn có thể đăng nhập để tiếp tục học tập.
             </DialogDescription>
           </DialogHeader>
           <div className="pt-4">
             <Button
-              className="w-full h-11 rounded-xl font-bold bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 cursor-pointer"
+              className="w-full h-11 rounded-xl font-bold bg-brand hover:bg-[#1e2f5e] text-white shadow-lg shadow-brand/25 cursor-pointer"
               onClick={() => router.push("/login")}
             >
               Đăng nhập ngay bây giờ

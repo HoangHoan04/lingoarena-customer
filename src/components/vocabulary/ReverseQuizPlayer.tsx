@@ -1,9 +1,11 @@
 "use client";
 
 import VocabAudioButton from "@/components/vocabulary/VocabAudioButton";
+import VocabWordImage from "@/components/vocabulary/VocabWordImage";
+import { playResultFeedback } from "@/lib/sound";
 import type { VocabWord } from "@/types/vocabulary";
 import { ArrowRight, CheckCircle2, XCircle } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 function shuffleOptions(word: VocabWord, pool: VocabWord[]) {
   const distractors = pool
@@ -29,11 +31,14 @@ export default function ReverseQuizPlayer({
   const options = useMemo(() => shuffleOptions(card, pool), [card.id, pool]);
   const [picked, setPicked] = useState<string | null>(null);
 
-  useEffect(() => {
-    setPicked(null);
-  }, [card.id]);
-
   const correct = picked === card.id;
+
+  const handlePick = (optionId: string) => {
+    if (picked) return;
+    setPicked(optionId);
+    const isCorrect = optionId === card.id;
+    playResultFeedback(card, isCorrect, "us", 380);
+  };
 
   const getOptionStyle = (optionId: string) => {
     if (!picked) {
@@ -57,7 +62,9 @@ export default function ReverseQuizPlayer({
             <span className="font-extrabold text-primary dark:text-[#7b9bee] tracking-wider uppercase">
               Trắc Nghiệm Đảo
             </span>
-            <span className="text-slate-400">· Nghĩa tiếng Việt → Chọn từ tiếng Anh</span>
+            <span className="text-slate-400">
+              · Nghĩa tiếng Việt → Chọn từ tiếng Anh
+            </span>
           </div>
           <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary dark:text-[#7b9bee] font-black text-xs">
             {index + 1} / {total}
@@ -65,7 +72,7 @@ export default function ReverseQuizPlayer({
         </div>
         <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-[#2b417e] to-[#4563b0] rounded-full transition-all duration-300"
+            className="h-full bg-linear-to-r from-brand to-[#4563b0] rounded-full transition-all duration-300"
             style={{
               width: `${Math.round(((index + (picked ? 1 : 0)) / Math.max(total, 1)) * 100)}%`,
             }}
@@ -81,6 +88,15 @@ export default function ReverseQuizPlayer({
         <h2 className="text-2xl sm:text-3xl font-black text-primary dark:text-[#7b9bee]">
           “{card.meaningVi}”
         </h2>
+        <VocabWordImage
+          word={card}
+          className="mx-auto w-full max-w-44 aspect-4/3 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 relative"
+        />
+        {card.definitionVi && (
+          <p className="text-xs text-slate-600 dark:text-slate-300 max-w-lg mx-auto italic">
+            {card.definitionVi}
+          </p>
+        )}
         {card.definitionEn && (
           <p className="text-xs text-slate-500 max-w-lg mx-auto italic">
             {card.definitionEn}
@@ -95,14 +111,22 @@ export default function ReverseQuizPlayer({
           const isSelected = picked === option.id;
 
           return (
-            <button
+            <div
               key={option.id}
-              type="button"
-              disabled={!!picked}
-              onClick={() => setPicked(option.id)}
-              className={`group flex items-center justify-between p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer disabled:cursor-default select-none ${getOptionStyle(
-                option.id,
-              )}`}
+              role="button"
+              tabIndex={picked ? -1 : 0}
+              onClick={() => {
+                if (!picked) handlePick(option.id);
+              }}
+              onKeyDown={(e) => {
+                if ((e.key === "Enter" || e.key === " ") && !picked) {
+                  e.preventDefault();
+                  handlePick(option.id);
+                }
+              }}
+              className={`group flex items-center justify-between p-4 rounded-2xl border-2 transition-all duration-200 select-none ${
+                picked ? "cursor-default" : "cursor-pointer"
+              } ${getOptionStyle(option.id)}`}
             >
               <div className="flex items-center gap-3.5">
                 <span className="flex items-center justify-center size-8 rounded-xl bg-slate-100 dark:bg-slate-800 group-hover:bg-primary group-hover:text-white text-xs font-black text-slate-600 dark:text-slate-300 transition-colors shrink-0">
@@ -119,7 +143,9 @@ export default function ReverseQuizPlayer({
               </div>
 
               <div className="flex items-center gap-2">
-                {picked && <VocabAudioButton word={option} accent="us" compact />}
+                {picked && (
+                  <VocabAudioButton word={option} accent="us" compact />
+                )}
                 {picked && option.id === card.id && (
                   <CheckCircle2 className="size-5 text-emerald-500 shrink-0" />
                 )}
@@ -127,7 +153,7 @@ export default function ReverseQuizPlayer({
                   <XCircle className="size-5 text-rose-500 shrink-0" />
                 )}
               </div>
-            </button>
+            </div>
           );
         })}
       </div>
@@ -138,7 +164,9 @@ export default function ReverseQuizPlayer({
           onClick={() => onNext(correct)}
           className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-primary hover:bg-primary/90 text-white text-sm font-black shadow-lg shadow-primary/25 transition-all cursor-pointer active:scale-98 animate-in fade-in"
         >
-          <span>{index + 1 >= total ? "Hoàn thành lượt luyện" : "Từ tiếp theo"}</span>
+          <span>
+            {index + 1 >= total ? "Hoàn thành lượt luyện" : "Từ tiếp theo"}
+          </span>
           <ArrowRight className="size-4" />
         </button>
       )}

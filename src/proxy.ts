@@ -5,7 +5,35 @@ import { routing } from "./i18n/routing";
 
 const handleI18nRouting = createMiddleware(routing);
 
+const PROTECTED_PREFIXES = [
+  "/dashboard",
+  "/path",
+  "/arena",
+  "/profile",
+  "/classes",
+  "/notifications",
+];
+
+function isProtectedPath(pathname: string) {
+  if (
+    PROTECTED_PREFIXES.some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+    )
+  ) {
+    return true;
+  }
+  if (pathname.startsWith("/practice/")) return true;
+  if (/^\/courses\/.+\/learn(\/|$)/.test(pathname)) return true;
+  return false;
+}
+
 export function proxy(request: NextRequest) {
+  // wait-on + Cursor port-forward poll HEAD /. Don't run the full i18n
+  // render path for those probes — a 404 here retries forever and floods logs.
+  if (request.method === "HEAD") {
+    return new NextResponse(null, { status: 200 });
+  }
+
   const { pathname } = request.nextUrl;
   const pathnameLocaleSegment = routing.locales.find(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
@@ -17,17 +45,12 @@ export function proxy(request: NextRequest) {
 
   const token = request.cookies.get("token")?.value;
 
-  const isProtectedPath =
-    pathnameWithoutLocale.startsWith("/dashboard") ||
-    pathnameWithoutLocale.startsWith("/arena") ||
-    pathnameWithoutLocale.startsWith("/profile");
-
   const isAuthPath =
     pathnameWithoutLocale.startsWith("/login") ||
     pathnameWithoutLocale.startsWith("/register") ||
     pathnameWithoutLocale.startsWith("/forgot-password");
 
-  if (isProtectedPath && !token) {
+  if (isProtectedPath(pathnameWithoutLocale) && !token) {
     const redirectPath = pathnameLocaleSegment
       ? `/${pathnameLocaleSegment}/login`
       : "/login";
@@ -47,5 +70,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|images|icons|favicon.ico).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|images|icons|favicon.ico|manifest.webmanifest|manifest.json|robots.txt|sitemap.xml).*)",
+  ],
 };

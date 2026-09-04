@@ -20,13 +20,19 @@ export default function ArenaLeaderboard() {
         <div>
           <h2 className="text-base sm:text-lg font-extrabold text-foreground flex items-center gap-2">
             <Trophy className="size-5 text-amber-400" />
-            <span>Bảng Xếp Hạng Đấu Thủ Mùa 4</span>
+            <span>Bảng xếp hạng</span>
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Cập nhật theo điểm Elo thời gian thực toàn hệ thống
+            Điểm học tập từ leaderboard API
           </p>
         </div>
       </div>
+
+      {leaderboard.length === 0 && (
+        <div className="p-8 rounded-3xl bg-card border border-border text-center text-sm text-muted-foreground">
+          Chưa có dữ liệu
+        </div>
+      )}
 
       {/* TOP 3 PODIUM HERO */}
       <div className="grid grid-cols-3 gap-2 sm:gap-4 items-end pt-8 pb-4">

@@ -270,7 +270,7 @@ export default function LocalNotFound() {
 
             <Button
               onClick={() => router.push("/")}
-              className="cursor-pointer font-bold px-6 py-2.5 rounded-xl bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/20 transition-all duration-300 h-auto border-none"
+              className="cursor-pointer font-bold px-6 py-2.5 rounded-xl bg-brand hover:bg-[#1e2f5e] text-white shadow-lg shadow-brand/20 transition-all duration-300 h-auto border-none"
             >
               <Send className="size-4" />
               Về trang chủ

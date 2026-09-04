@@ -12,6 +12,7 @@ const ENDPOINTS = {
   ANSWERS: (id: string) => `/user/assessment/attempts/${id}/answers`,
   SUBMIT: (id: string) => `/user/assessment/attempts/${id}/submit`,
   RESULT: (id: string) => `/user/assessment/attempts/${id}/result`,
+  GRADING_RUN: (id: string) => `/user/assessment/grading-tasks/${id}/run`,
 };
 
 function paginationPayload(res: any): AssessmentPageResponse {
@@ -23,6 +24,8 @@ function paginationPayload(res: any): AssessmentPageResponse {
   return { data: (inner?.data || []) as AssessmentSummary[], total: Number(inner?.total || 0) };
 }
 
+const inFlightStarts = new Map<string, Promise<AssessmentAttempt>>();
+
 export const assessmentService = {
   list: async (where: Record<string, unknown> = {}, skip = 0, take = 50) => {
     const res = await apiService.post(ENDPOINTS.PAGINATION, { skip, take, where });
@@ -33,8 +36,23 @@ export const assessmentService = {
     return extractApiData<AssessmentSummary>(res);
   },
   start: async (payload: { slug?: string; assessmentId?: string }) => {
-    const res = await apiService.post(ENDPOINTS.START, payload);
-    return extractApiData<AssessmentAttempt>(res);
+    const dedupeKey = `${payload.slug || ''}:${payload.assessmentId || ''}`;
+    const inFlight = inFlightStarts.get(dedupeKey);
+    if (inFlight) {
+      return inFlight;
+    }
+
+    const startPromise = (async () => {
+      try {
+        const res = await apiService.post(ENDPOINTS.START, payload);
+        return extractApiData<AssessmentAttempt>(res);
+      } finally {
+        inFlightStarts.delete(dedupeKey);
+      }
+    })();
+
+    inFlightStarts.set(dedupeKey, startPromise);
+    return startPromise;
   },
   attempt: async (id: string) => {
     const res = await apiService.get(ENDPOINTS.ATTEMPT(id));
@@ -55,5 +73,9 @@ export const assessmentService = {
   result: async (id: string) => {
     const res = await apiService.get(ENDPOINTS.RESULT(id));
     return extractApiData<AssessmentAttempt>(res);
+  },
+  runGradingTask: async (id: string) => {
+    const res = await apiService.post(ENDPOINTS.GRADING_RUN(id));
+    return extractApiData(res);
   },
 };

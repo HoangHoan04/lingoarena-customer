@@ -8,25 +8,29 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/hooks/useAuth";
 import { Link, useRouter } from "@/i18n/routing";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { Lock, LogOut, User as UserIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
-import React, { useEffect, useState } from "react";
+import { Bell, GraduationCap, LogOut, User as UserIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function UserMenu() {
-  const { user, isAuthenticated, clearAuth } = useAuthStore();
-  const t = useTranslations("Header");
+  const { user, isAuthenticated, logout } = useAuth();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const handleLogout = () => {
-    clearAuth();
-    router.push("/login");
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await logout();
+      router.push("/login");
+    } finally {
+      setLoggingOut(false);
+    }
   };
 
   const getInitials = () => {
@@ -48,11 +52,11 @@ export default function UserMenu() {
         render={
           <Button
             variant="ghost"
-            className="relative size-9 rounded-full p-0 flex items-center justify-center border border-slate-200 dark:border-slate-800 overflow-hidden cursor-pointer shrink-0 hover:border-[#2b417e]/50 transition-colors"
+            className="relative size-9 rounded-full p-0 flex items-center justify-center border border-slate-200 dark:border-slate-800 overflow-hidden cursor-pointer shrink-0 hover:border-brand/50 transition-colors"
           >
             <Avatar className="size-8">
-              <AvatarImage src={user?.avatarUrl || ""} />
-              <AvatarFallback className="bg-[#2b417e]/10 text-[#2b417e] dark:text-[#7b9bee] font-bold text-xs flex items-center justify-center size-full">
+              {user?.avatarUrl ? <AvatarImage src={user.avatarUrl} /> : null}
+              <AvatarFallback className="bg-brand/10 text-brand dark:text-[#7b9bee] font-bold text-xs flex items-center justify-center size-full">
                 {getInitials()}
               </AvatarFallback>
             </Avatar>
@@ -92,10 +96,20 @@ export default function UserMenu() {
                 variant="ghost"
                 className="w-full flex items-center justify-start gap-2 px-2 py-1.5 h-8 text-xs font-medium cursor-pointer rounded-lg text-muted-foreground hover:text-foreground"
                 nativeButton={false}
-                render={<Link href="/settings" />}
+                render={<Link href="/classes" />}
               >
-                <Lock className="size-3.5" />
-                <span>Đổi mật khẩu</span>
+                <GraduationCap className="size-3.5" />
+                <span>Lớp học</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full flex items-center justify-start gap-2 px-2 py-1.5 h-8 text-xs font-medium cursor-pointer rounded-lg text-muted-foreground hover:text-foreground"
+                nativeButton={false}
+                render={<Link href="/notifications" />}
+              >
+                <Bell className="size-3.5" />
+                <span>Thông báo</span>
               </Button>
             </div>
 
@@ -105,9 +119,10 @@ export default function UserMenu() {
               variant="ghost"
               className="w-full flex items-center justify-start gap-2 px-2 py-1.5 h-8 text-xs font-medium cursor-pointer rounded-lg text-rose-500 hover:bg-rose-500/10 hover:text-rose-600"
               onClick={handleLogout}
+              disabled={loggingOut}
             >
               <LogOut className="size-3.5" />
-              <span>Đăng xuất</span>
+              <span>{loggingOut ? "Đang đăng xuất..." : "Đăng xuất"}</span>
             </Button>
           </>
         ) : (
@@ -121,7 +136,7 @@ export default function UserMenu() {
               Đăng nhập
             </Button>
             <Button
-              className="w-full h-9 text-xs font-bold cursor-pointer bg-[#2b417e] hover:bg-[#1e2f5e] text-white rounded-xl shadow-md shadow-[#2b417e]/20"
+              className="w-full h-9 text-xs font-bold cursor-pointer bg-brand hover:bg-[#1e2f5e] text-white rounded-xl shadow-md shadow-brand/20"
               nativeButton={false}
               render={<Link href="/register" />}
             >

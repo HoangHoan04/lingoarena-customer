@@ -1,6 +1,7 @@
 "use client";
 
 import { type Course, useCourseStore } from "@/stores/useCourseStore";
+import { pickLocaleText } from "@/lib/locale-text";
 import { useToastStore } from "@/stores/useToastStore";
 import {
   Award,
@@ -20,9 +21,11 @@ import {
   Zap,
 } from "lucide-react";
 import { Link } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 import React, { useState } from "react";
 
 export default function CoursePricingSidebar({ course }: { course: Course }) {
+  const locale = useLocale();
   const { enrolledCourseIds, enrollCourse } = useCourseStore();
   const { addToast } = useToastStore();
   const isEnrolled = enrolledCourseIds.includes(course.id);
@@ -51,7 +54,7 @@ export default function CoursePricingSidebar({ course }: { course: Course }) {
 
   const handleEnroll = () => {
     enrollCourse(course.id);
-    addToast(`Đã kích hoạt khóa học "${course.title}" thành công!`, "success");
+    addToast(`Đã kích hoạt khóa học "${pickLocaleText(locale, course.title, course.titleEn)}" thành công!`, "success");
   };
 
   const finalPrice = discountApplied ? Math.round(course.price * 0.9) : course.price;
@@ -66,7 +69,7 @@ export default function CoursePricingSidebar({ course }: { course: Course }) {
       >
         <img
           src={course.thumbnailUrl}
-          alt={course.title}
+          alt={pickLocaleText(locale, course.title, course.titleEn)}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-2 group-hover:bg-black/50 transition-colors">

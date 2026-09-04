@@ -3,14 +3,17 @@
 import AssessmentAttemptPlayer from "@/components/assessment/AssessmentAttemptPlayer";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/routing";
+import { pickLocaleText } from "@/lib/locale-text";
 import { assessmentService } from "@/services/assessment.service";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
 import type { AssessmentAttempt, AssessmentSummary } from "@/types/assessment";
 import { Compass, Loader2 } from "lucide-react";
+import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 
 export default function PlacementTestPage() {
+  const locale = useLocale();
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const { addToast } = useToastStore();
@@ -21,7 +24,9 @@ export default function PlacementTestPage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.replace(`/login?redirect=${encodeURIComponent("/placement-test")}`);
+      router.replace(
+        `/login?redirect=${encodeURIComponent("/placement-test")}`,
+      );
       return;
     }
     let mounted = true;
@@ -29,7 +34,9 @@ export default function PlacementTestPage() {
     assessmentService
       .list({ assessmentType: "PLACEMENT_TEST" }, 0, 1)
       .then(async (res) => {
-        const first = res.data[0] || (await assessmentService.bySlug("placement-toeic").catch(() => null));
+        const first =
+          res.data[0] ||
+          (await assessmentService.bySlug("placement-toeic").catch(() => null));
         if (mounted) setAssessment(first);
       })
       .catch(() => {
@@ -57,21 +64,28 @@ export default function PlacementTestPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-[#2b417e]" />
+        <Loader2 className="size-8 animate-spin text-brand" />
       </div>
     );
   }
 
   if (attempt) {
-    return <AssessmentAttemptPlayer initialAttempt={attempt} onBack={() => router.push("/practice")} />;
+    return (
+      <AssessmentAttemptPlayer
+        initialAttempt={attempt}
+        onBack={() => router.push("/practice")}
+      />
+    );
   }
 
   if (!assessment) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-12 text-center">
         <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 space-y-4">
-          <Compass className="mx-auto size-10 text-[#2b417e] dark:text-[#7b9bee]" />
-          <h1 className="text-2xl font-black text-slate-900 dark:text-white">Chưa có bài xếp lớp</h1>
+          <Compass className="mx-auto size-10 text-brand dark:text-[#7b9bee]" />
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white">
+            Chưa có bài xếp lớp
+          </h1>
           <p className="text-sm text-slate-500">
             Hệ thống chưa xuất bản bài placement test. Vui lòng quay lại sau.
           </p>
@@ -85,15 +99,21 @@ export default function PlacementTestPage() {
 
   return (
     <div className="w-full max-w-4xl mx-auto py-10 px-4">
-      <div className="rounded-3xl bg-linear-to-r from-[#1b2950] via-[#2b417e] to-[#1b2950] text-white p-8 sm:p-10 shadow-2xl space-y-5">
+      <div className="rounded-3xl bg-linear-to-r from-brand-dark via-brand to-brand-dark text-white p-8 sm:p-10 shadow-2xl space-y-5">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[#a0baff] text-xs font-bold uppercase tracking-wider">
           <Compass className="size-3.5" />
           Đánh giá năng lực đầu vào
         </div>
         <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-black">{assessment.title}</h1>
+          <h1 className="text-3xl sm:text-4xl font-black">
+            {pickLocaleText(locale, assessment.title, assessment.titleEn)}
+          </h1>
           <p className="text-sm text-slate-200 leading-relaxed">
-            {assessment.description ||
+            {pickLocaleText(
+              locale,
+              assessment.description,
+              assessment.descriptionEn,
+            ) ||
               "Làm bài xếp lớp ngắn để xác định trình độ hiện tại và nhận kết quả ngay sau khi nộp."}
           </p>
         </div>
@@ -102,15 +122,21 @@ export default function PlacementTestPage() {
             {Math.round(Number(assessment.durationSeconds || 0) / 60)} phút
           </span>
           <span className="rounded-full bg-white/10 px-3 py-1">
-            {assessment.sections?.reduce((sum, section) => sum + (section.items?.length || 0), 0) || 0} câu
+            {assessment.sections?.reduce(
+              (sum, section) => sum + (section.items?.length || 0),
+              0,
+            ) || 0}{" "}
+            câu
           </span>
-          <span className="rounded-full bg-emerald-500 px-3 py-1 font-bold">Miễn phí</span>
+          <span className="rounded-full bg-emerald-500 px-3 py-1 font-bold">
+            Miễn phí
+          </span>
         </div>
         <Button
           size="lg"
           disabled={starting}
           onClick={start}
-          className="bg-white text-[#2b417e] hover:bg-slate-100 font-black"
+          className="bg-white text-brand hover:bg-slate-100 font-black"
         >
           {starting ? <Loader2 className="size-4 animate-spin" /> : null}
           Bắt đầu làm bài

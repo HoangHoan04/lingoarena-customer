@@ -3,8 +3,8 @@
 import { FacebookIcon, GoogleIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useRouter } from "@/i18n/routing";
 import { useAuth } from "@/hooks/useAuth";
+import { Link, useRouter } from "@/i18n/routing";
 import { getSocialAuthUrl } from "@/lib/auth";
 import { useToastStore } from "@/stores/useToastStore";
 import {
@@ -69,7 +69,7 @@ function LoginFormContent() {
       {/* Left Column: Brand Value & Social Proof Showcase */}
       <div className="lg:col-span-6 space-y-6 hidden lg:block pr-4">
         {/* Micro-badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 text-brand dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
           <Sparkles className="size-3.5 text-amber-400" />
           Đấu trường luyện thi thông minh
         </div>
@@ -77,7 +77,7 @@ function LoginFormContent() {
         {/* Heading */}
         <h1 className="text-3xl xl:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
           Chào mừng bạn trở lại với{" "}
-          <span className="bg-linear-to-r from-[#2b417e] via-[#405ea7] to-[#2b417e] bg-clip-text text-transparent dark:from-[#7b9bee] dark:via-[#a0baff] dark:to-[#7b9bee]">
+          <span className="bg-linear-to-r from-brand via-[#405ea7] to-brand bg-clip-text text-transparent dark:from-[#7b9bee] dark:via-[#a0baff] dark:to-[#7b9bee]">
             LingoArena
           </span>
         </h1>
@@ -90,7 +90,7 @@ function LoginFormContent() {
         {/* 3 Value Pillars */}
         <div className="space-y-3 pt-2">
           <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-slate-200/70 dark:border-slate-800 shadow-2xs backdrop-blur-xs">
-            <div className="w-9 h-9 rounded-xl bg-[#2b417e]/10 text-[#2b417e] dark:text-[#7b9bee] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-brand/10 text-brand dark:text-[#7b9bee] flex items-center justify-center shrink-0">
               <BrainCircuit className="size-4.5" />
             </div>
             <div>
@@ -138,7 +138,7 @@ function LoginFormContent() {
         {/* Live Social Proof Badge */}
         <div className="pt-2 flex items-center gap-3 text-xs text-slate-500">
           <div className="flex -space-x-2">
-            <div className="w-7 h-7 rounded-full bg-[#2b417e] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white dark:border-slate-900">
+            <div className="w-7 h-7 rounded-full bg-brand text-white text-[10px] font-bold flex items-center justify-center border-2 border-white dark:border-slate-900">
               TM
             </div>
             <div className="w-7 h-7 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white dark:border-slate-900">
@@ -232,7 +232,7 @@ function LoginFormContent() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="vidu@gmail.com"
-                  className="!pl-9.5 !pr-3 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e] focus:ring-2 focus:ring-[#2b417e]/20"
+                  className="pl-9.5! pr-3! h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-brand focus:ring-2 focus:ring-brand/20"
                 />
               </div>
             </div>
@@ -245,7 +245,7 @@ function LoginFormContent() {
                 </label>
                 <Link
                   href="/forgot-password"
-                  className="text-xs font-semibold text-[#2b417e] dark:text-[#7b9bee] hover:underline"
+                  className="text-xs font-semibold text-brand dark:text-[#7b9bee] hover:underline"
                 >
                   Quên mật khẩu?
                 </Link>
@@ -260,7 +260,7 @@ function LoginFormContent() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="!pl-9.5 !pr-9.5 h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-[#2b417e] focus:ring-2 focus:ring-[#2b417e]/20"
+                  className="pl-9.5! pr-9.5! h-11 rounded-xl text-xs sm:text-sm bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:border-brand focus:ring-2 focus:ring-brand/20"
                 />
                 <button
                   type="button"
@@ -284,7 +284,7 @@ function LoginFormContent() {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="size-4 rounded-md border-slate-300 dark:border-slate-700 text-[#2b417e] focus:ring-[#2b417e] cursor-pointer"
+                  className="size-4 rounded-md border-slate-300 dark:border-slate-700 text-brand focus:ring-brand cursor-pointer"
                 />
                 <span>Ghi nhớ đăng nhập trên thiết bị này</span>
               </label>
@@ -294,7 +294,7 @@ function LoginFormContent() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 rounded-xl font-bold text-sm bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25 hover:shadow-xl hover:shadow-[#2b417e]/35 transition-all cursor-pointer flex items-center justify-center gap-2"
+              className="w-full h-12 rounded-xl font-bold text-sm bg-brand hover:bg-[#1e2f5e] text-white shadow-lg shadow-brand/25 hover:shadow-xl hover:shadow-brand/35 transition-all cursor-pointer flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -319,7 +319,7 @@ function LoginFormContent() {
                   ? `/register?redirect=${encodeURIComponent(redirectUrl)}`
                   : "/register"
               }
-              className="font-bold text-[#2b417e] dark:text-[#7b9bee] hover:underline"
+              className="font-bold text-brand dark:text-[#7b9bee] hover:underline"
             >
               Đăng ký tài khoản mới
             </Link>
@@ -334,8 +334,8 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-[400px] flex items-center justify-center">
-          <div className="h-8 w-8 rounded-full border-3 border-[#2b417e]/30 border-t-[#2b417e] animate-spin" />
+        <div className="min-h-100 flex items-center justify-center">
+          <div className="h-8 w-8 rounded-full border-3 border-brand/30 border-t-brand animate-spin" />
         </div>
       }
     >

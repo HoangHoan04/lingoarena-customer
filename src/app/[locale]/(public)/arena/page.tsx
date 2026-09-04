@@ -23,10 +23,17 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ArenaLobbyPage() {
   const [isCustomRoomOpen, setIsCustomRoomOpen] = useState(false);
+  const { fetchLeaderboard, fetchUserStats, fetchMatchHistory } = useArenaStore();
+
+  useEffect(() => {
+    fetchLeaderboard();
+    fetchUserStats();
+    fetchMatchHistory();
+  }, [fetchLeaderboard, fetchUserStats, fetchMatchHistory]);
 
   return (
     <div className="min-h-screen bg-background text-foreground py-8 sm:py-12">
@@ -95,8 +102,10 @@ export default function ArenaLobbyPage() {
         </div>
       </div>
 
-      {/* OVERLAY MODALS */}
+      {/* 6. MATCHMAKING RADAR & VS POPUP MODAL */}
       <ArenaMatchmakingModal />
+
+      {/* 7. CUSTOM ROOM CREATION MODAL */}
       <ArenaCustomRoomModal
         isOpen={isCustomRoomOpen}
         onClose={() => setIsCustomRoomOpen(false)}

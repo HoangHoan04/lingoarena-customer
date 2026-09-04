@@ -1,6 +1,8 @@
 "use client";
 
 import VocabAudioButton from "@/components/vocabulary/VocabAudioButton";
+import VocabWordImage from "@/components/vocabulary/VocabWordImage";
+import { wordImageUrl } from "@/lib/vocab";
 import { cefrBadgeClass, formatIpa, relationLabel } from "@/lib/vocab";
 import type { VocabWord } from "@/types/vocabulary";
 import { ChevronDown, Sparkles, BookOpen, GitFork } from "lucide-react";
@@ -22,6 +24,13 @@ export default function WordRow({
   return (
     <div className="group border-b border-slate-100 dark:border-slate-800/80 transition-colors last:border-b-0 hover:bg-slate-50/70 dark:hover:bg-slate-800/30">
       <div className="flex items-center gap-3 px-4 sm:px-5 py-3.5">
+        {wordImageUrl(word) && (
+          <VocabWordImage
+            word={word}
+            className="relative size-12 shrink-0 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/60"
+            sizes="48px"
+          />
+        )}
         <button
           type="button"
           onClick={() => setOpen((value) => !value)}
@@ -79,8 +88,23 @@ export default function WordRow({
 
       {open && (
         <div className="px-4 sm:px-5 pb-4 pt-1 space-y-3 bg-slate-50/40 dark:bg-slate-900/30 text-xs text-slate-600 dark:text-slate-300 border-t border-dashed border-slate-100 dark:border-slate-800">
-          {word.definitionEn && (
+          <VocabWordImage
+            word={word}
+            className="w-full max-w-56 aspect-4/3 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 relative"
+          />
+          {word.definitionVi && (
             <div className="pt-2">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 flex items-center gap-1">
+                <BookOpen className="size-3" /> Định nghĩa tiếng Việt
+              </p>
+              <p className="text-xs text-slate-700 dark:text-slate-200 leading-relaxed pl-4 border-l-2 border-emerald-500/40">
+                {word.definitionVi}
+              </p>
+            </div>
+          )}
+
+          {word.definitionEn && (
+            <div className={word.definitionVi ? "pt-1" : "pt-2"}>
               <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1 flex items-center gap-1">
                 <BookOpen className="size-3" /> Định nghĩa tiếng Anh
               </p>

@@ -26,7 +26,7 @@ export default function ArenaMatchHistory() {
 
       <div className="space-y-3">
         {matchHistory.map((item) => {
-          const isVictory = item.result === "VICTORY";
+          const isVictory = item.result === "WIN";
           const isDraw = item.result === "DRAW";
 
           return (

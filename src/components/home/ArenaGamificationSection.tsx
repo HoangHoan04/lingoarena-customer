@@ -3,35 +3,39 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/routing";
+import { leaderboardService } from "@/services/leaderboard.service";
+import type { LeaderboardRow } from "@/types/learning";
 import {
   ArrowRight,
   Crown,
   Flame,
   Gamepad2,
   Swords,
-  Timer,
   Trophy,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
 export default function ArenaGamificationSection() {
   const router = useRouter();
   const t = useTranslations("home.arenaGamification");
+  const [rows, setRows] = useState<LeaderboardRow[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const leaderboardPreview = [
-    { rank: 1, name: "Minh Trang", score: "2,850 pts", streak: "48d", badge: "IELTS 8.0", avatar: "MT", color: "bg-amber-500" },
-    { rank: 2, name: "Hoàng Nam", score: "2,710 pts", streak: "35d", badge: "TOEIC 920", avatar: "HN", color: "bg-slate-400" },
-    { rank: 3, name: "Thu Hà", score: "2,640 pts", streak: "29d", badge: "VSTEP B2", avatar: "TH", color: "bg-amber-700" },
-  ];
+  useEffect(() => {
+    leaderboardService
+      .snapshots("STUDY_POINTS", "ALL_TIME")
+      .then((data) => setRows(Array.isArray(data) ? data.slice(0, 5) : []))
+      .catch(() => setRows([]))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <section className="py-16 sm:py-24 relative overflow-hidden">
-      {/* Background Accent Gradients */}
-      <div className="pointer-events-none absolute -bottom-20 right-0 -z-10 h-100 w-100 rounded-full bg-linear-to-bl from-orange-500/10 via-[#2b417e]/10 to-[#4563b0]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 right-0 -z-10 h-100 w-100 rounded-full bg-linear-to-bl from-orange-500/10 via-brand/10 to-[#4563b0]/10 blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Value Proposition */}
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800 text-orange-600 dark:text-orange-400 text-xs font-bold uppercase tracking-wider">
               <Swords className="size-3.5" />
@@ -52,8 +56,12 @@ export default function ArenaGamificationSection() {
                   <Gamepad2 className="size-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">{t("feature1Title")}</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{t("feature1Desc")}</p>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                    {t("feature1Title")}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    {t("feature1Desc")}
+                  </p>
                 </div>
               </div>
 
@@ -62,18 +70,26 @@ export default function ArenaGamificationSection() {
                   <Flame className="size-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">{t("feature2Title")}</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{t("feature2Desc")}</p>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                    {t("feature2Title")}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    {t("feature2Desc")}
+                  </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3.5 text-left">
-                <div className="w-10 h-10 rounded-xl bg-[#2b417e]/10 dark:bg-[#2b417e]/20 text-[#2b417e] dark:text-[#7b9bee] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-brand/10 dark:bg-brand/20 text-brand dark:text-[#7b9bee] flex items-center justify-center shrink-0">
                   <Trophy className="size-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">{t("feature3Title")}</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{t("feature3Desc")}</p>
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                    {t("feature3Title")}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    {t("feature3Desc")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -91,81 +107,46 @@ export default function ArenaGamificationSection() {
             </div>
           </div>
 
-          {/* Right Column: Live Battle Arena Mockup */}
           <div className="lg:col-span-6">
             <div className="rounded-3xl bg-slate-900 text-white p-6 sm:p-8 shadow-2xl border border-slate-800 space-y-6">
-              {/* Battle Header */}
               <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                 <div className="flex items-center gap-2">
-                  <div className="size-3 rounded-full bg-emerald-500 animate-ping" />
-                  <span className="text-xs font-bold text-slate-300">Live 1v1 Battle Arena</span>
+                  <Crown className="size-4 text-amber-400" />
+                  <span className="text-xs font-bold text-slate-300">
+                    {t("leaderboardTitle")}
+                  </span>
                 </div>
                 <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30 text-[11px]">
-                  1,480 {t("onlineNow")}
+                  STUDY_POINTS
                 </Badge>
               </div>
 
-              {/* 1v1 Match Card */}
-              <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700/60 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="size-12 rounded-2xl bg-linear-to-tr from-[#2b417e] to-[#405ea7] flex items-center justify-center font-black text-white text-base shadow-md">
-                    YOU
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-sm">Player (You)</h5>
-                    <p className="text-xs text-emerald-400 font-semibold">Streak: 12 Match Won</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <span className="text-xs font-black text-orange-400 uppercase tracking-widest">VS</span>
-                  <span className="text-[10px] font-mono text-slate-400 mt-1">Round 3/5</span>
-                </div>
-
-                <div className="flex items-center gap-3 text-right">
-                  <div>
-                    <h5 className="font-bold text-sm">Alex Tran</h5>
-                    <p className="text-xs text-amber-400 font-semibold">Diamond Rank</p>
-                  </div>
-                  <div className="size-12 rounded-2xl bg-linear-to-tr from-purple-600 to-indigo-600 flex items-center justify-center font-black text-white text-base shadow-md">
-                    AT
-                  </div>
-                </div>
-              </div>
-
-              {/* Leaderboard Table Mini */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  <span className="flex items-center gap-1.5">
-                    <Crown className="size-3.5 text-amber-400" />
-                    {t("leaderboardTitle")}
-                  </span>
-                  <span className="text-orange-400">Top Weekly LP</span>
-                </div>
-
-                <div className="space-y-2">
-                  {leaderboardPreview.map((item) => (
-                    <div
-                      key={item.rank}
-                      className="flex items-center justify-between p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 text-xs"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="font-black text-slate-400 w-4">{item.rank}</span>
-                        <div className={`size-7 rounded-lg ${item.color} flex items-center justify-center font-black text-[10px]`}>
-                          {item.avatar}
-                        </div>
-                        <div>
-                          <span className="font-bold text-slate-200">{item.name}</span>
-                          <span className="text-[10px] text-slate-400 ml-2">({item.badge})</span>
-                        </div>
-                      </div>
-
-                      <div className="text-right font-mono font-bold text-amber-400">
-                        {item.score}
-                      </div>
+              {loading && <p className="text-xs text-slate-400">Đang tải...</p>}
+              {!loading && rows.length === 0 && (
+                <p className="text-sm text-slate-400 text-center py-8">
+                  Chưa có dữ liệu
+                </p>
+              )}
+              <div className="space-y-2">
+                {rows.map((item) => (
+                  <div
+                    key={item.id || `${item.userId}-${item.rank}`}
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 text-xs"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="font-black text-slate-400 w-4">
+                        {item.rank}
+                      </span>
+                      <span className="font-bold text-slate-200">
+                        {item.metadataJson?.username ||
+                          `Học viên #${item.rank}`}
+                      </span>
                     </div>
-                  ))}
-                </div>
+                    <div className="text-right font-mono font-bold text-amber-400">
+                      {Number(item.score || 0).toLocaleString("vi-VN")} pts
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

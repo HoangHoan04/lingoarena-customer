@@ -1,18 +1,15 @@
+import { MatchMakingStatus, MatchMode, MatchResult, RankTier } from "@/common";
+import { arenaService, type ArenaMatch, type ArenaParticipant } from "@/services/arena.service";
+import { gamificationService } from "@/services/gamification.service";
+import { leaderboardService } from "@/services/leaderboard.service";
+import { questionService } from "@/services/question.service";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { create } from "zustand";
-
-export type RankTier =
-  | "BRONZE"
-  | "SILVER"
-  | "GOLD"
-  | "PLATINUM"
-  | "DIAMOND"
-  | "MASTER"
-  | "GRANDMASTER";
 
 export interface RankInfo {
   tier: RankTier;
   tierName: string;
-  division: string; // I, II, III
+  division: string;
   minElo: number;
   maxElo: number;
   badgeColor: string;
@@ -46,13 +43,13 @@ export interface LeaderboardPlayer {
 
 export interface MatchHistoryItem {
   id: string;
-  mode: "RANKED" | "CASUAL" | "BOT" | "CUSTOM";
+  mode: string;
   opponentName: string;
   opponentAvatar: string;
   opponentElo: number;
   myScore: number;
   opponentScore: number;
-  result: "VICTORY" | "DEFEAT" | "DRAW";
+  result: MatchResult;
   eloChange: number;
   xpEarned: number;
   playedAt: string;
@@ -60,15 +57,15 @@ export interface MatchHistoryItem {
 
 export interface ArenaQuestion {
   id: string;
+  matchQuestionId?: string;
   question: string;
   vietnameseMeaning?: string;
   options: string[];
+  optionKeys?: string[];
   correctIndex: number;
   explanation: string;
   timeLimitSeconds: number;
 }
-
-export type MatchmakingStatus = "IDLE" | "SEARCHING" | "MATCH_FOUND" | "CONNECTING";
 
 interface ArenaState {
   userStats: ArenaUserStats;
@@ -79,17 +76,13 @@ interface ArenaState {
     title: string;
     endDate: string;
     totalPrizePool: string;
-  };
-
-  // Matchmaking State
-  matchmakingStatus: MatchmakingStatus;
+  } | null;
+  matchmakingStatus: MatchMakingStatus;
   searchTimeSeconds: number;
   matchedOpponent: LeaderboardPlayer | null;
-
-  // Active Match State
   activeMatch: {
     matchId: string;
-    mode: "RANKED" | "CASUAL" | "BOT" | "CUSTOM";
+    mode: MatchMode;
     currentQuestionIndex: number;
     totalQuestions: number;
     questions: ArenaQuestion[];
@@ -102,24 +95,25 @@ interface ArenaState {
     opponentAnswered: boolean;
     timeLeft: number;
     isFinished: boolean;
-    result: "VICTORY" | "DEFEAT" | "DRAW" | null;
+    result: MatchResult | null;
     eloDelta: number;
     xpEarned: number;
   } | null;
+  isLoading: boolean;
 
-  // Actions
-  startMatchmaking: (mode: "RANKED" | "CASUAL" | "BOT" | "CUSTOM") => void;
+  fetchLeaderboard: () => Promise<void>;
+  fetchUserStats: (examSkillId?: string) => Promise<void>;
+  fetchMatchHistory: () => Promise<void>;
+  startMatchmaking: (mode: MatchMode, examSkillId?: string) => Promise<void>;
   cancelMatchmaking: () => void;
-  initMatch: (mode: "RANKED" | "CASUAL" | "BOT" | "CUSTOM", opponent?: LeaderboardPlayer) => void;
-  submitAnswer: (answerIndex: number) => void;
+  initMatch: (mode: MatchMode, questions: ArenaQuestion[], matchId?: string, opponent?: LeaderboardPlayer) => void;
+  loadMatch: (matchId: string) => Promise<void>;
+  submitAnswer: (answerIndex: number) => Promise<void>;
   nextQuestion: () => void;
-  finishMatch: () => void;
+  finishMatch: () => Promise<void>;
   resetMatch: () => void;
 }
 
-// ----------------------------------------------------
-// MOCK DATA: Rank Tiers Config
-// ----------------------------------------------------
 export const RANK_CONFIGS: Record<RankTier, RankInfo> = {
   BRONZE: {
     tier: "BRONZE",
@@ -186,211 +180,257 @@ export const RANK_CONFIGS: Record<RankTier, RankInfo> = {
   },
 };
 
-// ----------------------------------------------------
-// MOCK DATA: Leaderboard Top Players
-// ----------------------------------------------------
-const MOCK_LEADERBOARD: LeaderboardPlayer[] = [
-  {
-    rank: 1,
-    userId: "user-top-1",
-    name: "Lê Hoàng Long",
-    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80",
-    elo: 2840,
-    rankTier: "GRANDMASTER",
-    winRate: 84.5,
-    winCount: 342,
-    badge: "Quán Quân Mùa 3",
-  },
-  {
-    rank: 2,
-    userId: "user-top-2",
-    name: "Trần Minh Châu",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
-    elo: 2795,
-    rankTier: "GRANDMASTER",
-    winRate: 81.2,
-    winCount: 298,
-    badge: "Thần Tốc IELTS",
-  },
-  {
-    rank: 3,
-    userId: "user-top-3",
-    name: "Phạm Quốc Bảo",
-    avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&auto=format&fit=crop&q=80",
-    elo: 2720,
-    rankTier: "GRANDMASTER",
-    winRate: 78.9,
-    winCount: 275,
-    badge: "Vua Từ Vựng C2",
-  },
-  {
-    rank: 4,
-    userId: "user-top-4",
-    name: "Đặng Thùy Dương",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
-    elo: 2560,
-    rankTier: "MASTER",
-    winRate: 75.0,
-    winCount: 210,
-  },
-  {
-    rank: 5,
-    userId: "user-top-5",
-    name: "Nguyễn Hải Đăng",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
-    elo: 2480,
-    rankTier: "MASTER",
-    winRate: 72.4,
-    winCount: 195,
-  },
-];
+export function calculateRankTier(elo: number): RankTier {
+  if (elo >= 2700) return "GRANDMASTER";
+  if (elo >= 2400) return "MASTER";
+  if (elo >= 2100) return "DIAMOND";
+  if (elo >= 1800) return "PLATINUM";
+  if (elo >= 1500) return "GOLD";
+  if (elo >= 1200) return "SILVER";
+  return "BRONZE";
+}
 
-// ----------------------------------------------------
-// MOCK DATA: Match History
-// ----------------------------------------------------
-const MOCK_MATCH_HISTORY: MatchHistoryItem[] = [
-  {
-    id: "match-101",
-    mode: "RANKED",
-    opponentName: "Trần Minh Châu",
-    opponentAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
-    opponentElo: 2795,
-    myScore: 480,
-    opponentScore: 420,
-    result: "VICTORY",
-    eloChange: 26,
-    xpEarned: 120,
-    playedAt: "15 phút trước",
-  },
-  {
-    id: "match-102",
-    mode: "RANKED",
-    opponentName: "Phạm Quốc Bảo",
-    opponentAvatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&auto=format&fit=crop&q=80",
-    opponentElo: 2720,
-    myScore: 350,
-    opponentScore: 450,
-    result: "DEFEAT",
-    eloChange: -18,
-    xpEarned: 40,
-    playedAt: "1 giờ trước",
-  },
-  {
-    id: "match-103",
-    mode: "BOT",
-    opponentName: "AI Master Bot",
-    opponentAvatar: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80",
-    opponentElo: 2200,
-    myScore: 500,
-    opponentScore: 380,
-    result: "VICTORY",
-    eloChange: 0,
-    xpEarned: 80,
-    playedAt: "Hôm qua",
-  },
-];
+const DEFAULT_USER_STATS: ArenaUserStats = {
+  elo: 0,
+  rankTier: "BRONZE",
+  division: "I",
+  winCount: 0,
+  lossCount: 0,
+  winStreak: 0,
+  seasonRank: 0,
+  totalMatches: 0,
+  bestWinStreak: 0,
+  averageResponseTimeMs: 0,
+};
 
-// ----------------------------------------------------
-// MOCK DATA: Arena Questions Pool
-// ----------------------------------------------------
-const MOCK_ARENA_QUESTIONS: ArenaQuestion[] = [
-  {
-    id: "q-1",
-    question: "Select the word closest in meaning to 'UBIQUITOUS':",
-    vietnameseMeaning: "Phổ biến, xuất hiện ở khắp mọi nơi",
-    options: ["Omnipresent", "Ephemeral", "Obscure", "Meticulous"],
-    correctIndex: 0,
-    explanation: "'Ubiquitous' = 'Omnipresent' mang nghĩa xuất hiện khắp mọi nơi, rất phổ biến.",
-    timeLimitSeconds: 10,
-  },
-  {
-    id: "q-2",
-    question: "Complete the sentence: 'The CEO's decision will ________ significant implications for the market.'",
-    options: ["engender", "abate", "curtail", "relinquish"],
-    correctIndex: 0,
-    explanation: "'Engender' có nghĩa là đem lại, gây ra, tạo ra (thường dùng trong văn phong học thuật C1/C2).",
-    timeLimitSeconds: 10,
-  },
-  {
-    id: "q-3",
-    question: "Choose the antonym of 'LACONIC':",
-    vietnameseMeaning: "Trái nghĩa với 'ngắn gọn, súc tích'",
-    options: ["Verbose", "Taciturn", "Concise", "Succinct"],
-    correctIndex: 0,
-    explanation: "'Laconic' = kiệm lời, súc tích. Trái nghĩa là 'Verbose' = dài dòng, nhiều lời.",
-    timeLimitSeconds: 10,
-  },
-  {
-    id: "q-4",
-    question: "Which idiom means 'to face a difficult situation with courage'?",
-    options: ["Bite the bullet", "Spill the beans", "Break the ice", "Burn the candle at both ends"],
-    correctIndex: 0,
-    explanation: "'Bite the bullet' = ngậm đắng nuốt cay, dũng cảm đối mặt với khó khăn thử thách.",
-    timeLimitSeconds: 10,
-  },
-  {
-    id: "q-5",
-    question: "Identify the grammatically correct sentence:",
-    options: [
-      "Hardly had she arrived when the lecture began.",
-      "Hardly she had arrived than the lecture began.",
-      "No sooner she arrived when the lecture began.",
-      "Scarcely had she arrived than the lecture began.",
-    ],
-    correctIndex: 0,
-    explanation: "Cấu trúc đảo ngữ chuẩn: 'Hardly + had + S + Vp2 + WHEN + S + Ved'.",
-    timeLimitSeconds: 10,
-  },
-];
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function myUserId() {
+  return useAuthStore.getState().user?.id;
+}
+
+function mapMatchMode(matchMode?: string): MatchMode {
+  if (matchMode === "QUICKPLAY") return "BOT";
+  if (matchMode === "FRIENDLY") return "CASUAL";
+  if (matchMode === "BOT" || matchMode === "CASUAL" || matchMode === "CUSTOM") return matchMode;
+  return "RANKED";
+}
+
+function mapQueueMode(mode: MatchMode) {
+  if (mode === "CASUAL" || mode === "CUSTOM") return "FRIENDLY";
+  return "RANKED";
+}
+
+function mapMatchQuestions(match: ArenaMatch): ArenaQuestion[] {
+  return (match.matchQuestions || []).map((item) => {
+    const options = item.question?.options || [];
+    return {
+      id: item.question?.id || item.id,
+      matchQuestionId: item.id,
+      question: item.question?.prompt || "",
+      options: options.map((opt) => opt.content),
+      optionKeys: options.map((opt) => opt.optionKey),
+      correctIndex: options.findIndex((opt) => opt.isCorrect),
+      explanation: "",
+      timeLimitSeconds: 10,
+    };
+  });
+}
+
+function mapOpponent(match: ArenaMatch, userId?: string): LeaderboardPlayer | null {
+  const opponent = (match.participants || []).find((item: ArenaParticipant) => item.userId !== userId);
+  if (!opponent) return null;
+  const elo = Number(opponent.eloRating || 0);
+  return {
+    rank: 0,
+    userId: opponent.userId,
+    name: opponent.user?.fullName || opponent.user?.displayName || "Đối thủ",
+    avatar: opponent.user?.avatarUrl || "",
+    elo,
+    rankTier: calculateRankTier(elo),
+    winRate: 0,
+    winCount: 0,
+  };
+}
+
+async function resolveExamSkillId(examSkillId?: string) {
+  if (examSkillId && examSkillId !== "default") return examSkillId;
+  try {
+    const skills = await questionService.lookupSkills();
+    return skills[0]?.id || "";
+  } catch {
+    return "";
+  }
+}
+
+function historyFromMatch(match: ArenaMatch, userId?: string): MatchHistoryItem {
+  const me = (match.participants || []).find((item) => item.userId === userId);
+  const opponent = (match.participants || []).find((item) => item.userId !== userId);
+  const myScore = Number(me?.score || 0);
+  const opponentScore = Number(opponent?.score || 0);
+  const apiResult = String(me?.result || "").toUpperCase();
+  const result: MatchResult =
+    apiResult === "WIN" || apiResult === "LOSS" || apiResult === "DRAW"
+      ? (apiResult as MatchResult)
+      : myScore > opponentScore
+        ? "WIN"
+        : myScore < opponentScore
+          ? "LOSS"
+          : "DRAW";
+  return {
+    id: match.id,
+    mode: mapMatchMode(match.matchMode),
+    opponentName: opponent?.user?.fullName || opponent?.user?.displayName || "Đối thủ",
+    opponentAvatar: opponent?.user?.avatarUrl || "",
+    opponentElo: Number(opponent?.eloRating || 0),
+    myScore,
+    opponentScore,
+    result,
+    eloChange: Number(me?.eloChange || 0),
+    xpEarned: 0,
+    playedAt: match.createdAt ? new Date(match.createdAt).toLocaleString("vi-VN") : "",
+  };
+}
+
+let matchmakingGen = 0;
 
 export const useArenaStore = create<ArenaState>((set, get) => ({
-  userStats: {
-    elo: 2180,
-    rankTier: "DIAMOND",
-    division: "I",
-    winCount: 148,
-    lossCount: 62,
-    winStreak: 4,
-    seasonRank: 18,
-    totalMatches: 210,
-    bestWinStreak: 9,
-    averageResponseTimeMs: 2450,
-  },
-  leaderboard: MOCK_LEADERBOARD,
-  matchHistory: MOCK_MATCH_HISTORY,
-  currentSeason: {
-    number: 4,
-    title: "Huyền Thoại Từ Vựng & Ngữ Pháp 2026",
-    endDate: "30/09/2026",
-    totalPrizePool: "50.000.000 VNĐ + Học Bổng VIP",
-  },
+  userStats: DEFAULT_USER_STATS,
+  leaderboard: [],
+  matchHistory: [],
+  currentSeason: null,
 
   matchmakingStatus: "IDLE",
   searchTimeSeconds: 0,
   matchedOpponent: null,
   activeMatch: null,
+  isLoading: false,
 
-  startMatchmaking: (mode) => {
-    set({ matchmakingStatus: "SEARCHING", searchTimeSeconds: 0 });
-
-    // Simulate matchmaking find within 2.5s
-    setTimeout(() => {
-      const opponent =
-        MOCK_LEADERBOARD[Math.floor(Math.random() * MOCK_LEADERBOARD.length)];
-      set({
-        matchmakingStatus: "MATCH_FOUND",
-        matchedOpponent: opponent,
+  fetchLeaderboard: async () => {
+    try {
+      set({ isLoading: true });
+      let rows = await leaderboardService.snapshots("ARENA_ELO", "ALL_TIME");
+      if (!rows.length) {
+        rows = await leaderboardService.snapshots("STUDY_POINTS", "ALL_TIME");
+      }
+      const mapped: LeaderboardPlayer[] = rows.map((row, idx) => {
+        const score = Number(row.score) || 0;
+        return {
+          rank: row.rank || idx + 1,
+          userId: row.userId || row.id,
+          name: row.metadataJson?.username || `Đấu thủ #${row.rank || idx + 1}`,
+          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${row.userId || idx}`,
+          elo: score,
+          rankTier: calculateRankTier(score),
+          winRate: Number(row.metadataJson?.currentStreakDays || 0),
+          winCount: 0,
+        };
       });
+      set({ leaderboard: mapped });
+    } catch {
+      set({ leaderboard: [] });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 
-      // Transition to connecting
-      setTimeout(() => {
-        set({ matchmakingStatus: "CONNECTING" });
-        get().initMatch(mode, opponent);
-      }, 1500);
-    }, 2500);
+  fetchUserStats: async (examSkillId) => {
+    try {
+      await gamificationService.myStats();
+      const skillId = await resolveExamSkillId(examSkillId);
+      if (!skillId) {
+        set({ userStats: DEFAULT_USER_STATS });
+        return;
+      }
+      const rating = await arenaService.rating(skillId);
+      const data = (rating as { data?: Record<string, unknown> } | Record<string, unknown> | null) as any;
+      const payload = data?.data || data;
+      if (!payload) {
+        set({ userStats: DEFAULT_USER_STATS });
+        return;
+      }
+      const elo = Number(payload.eloRating || payload.elo || 0);
+      const winCount = Number(payload.wins || payload.winCount || 0);
+      const lossCount = Number(payload.losses || payload.lossCount || 0);
+      set({
+        userStats: {
+          elo,
+          rankTier: calculateRankTier(elo),
+          division: "I",
+          winCount,
+          lossCount,
+          winStreak: Number(payload.winStreak || 0),
+          seasonRank: Number(payload.seasonRank || payload.rank || 0),
+          totalMatches: Number(payload.matchesPlayed || winCount + lossCount),
+          bestWinStreak: Number(payload.bestWinStreak || payload.winStreak || 0),
+          averageResponseTimeMs: Number(payload.averageResponseTimeMs || 0),
+        },
+      });
+    } catch {
+      set({ userStats: DEFAULT_USER_STATS });
+    }
+  },
+
+  fetchMatchHistory: async () => {
+    try {
+      const res = await arenaService.myMatches(0, 20);
+      const uid = myUserId();
+      set({ matchHistory: (res.data || []).map((match) => historyFromMatch(match, uid)) });
+    } catch {
+      set({ matchHistory: [] });
+    }
+  },
+
+  startMatchmaking: async (mode, examSkillId) => {
+    const gen = ++matchmakingGen;
+    set({ matchmakingStatus: "SEARCHING", searchTimeSeconds: 0, matchedOpponent: null });
+    try {
+      const skillId = await resolveExamSkillId(examSkillId);
+      if (!skillId) {
+        set({ matchmakingStatus: "IDLE" });
+        return;
+      }
+
+      let match: ArenaMatch | null = null;
+      if (mode === "BOT" || mode === "CASUAL" || mode === "CUSTOM") {
+        match = await arenaService.practiceMatch(skillId);
+      } else {
+        const ticket = await arenaService.queue(skillId, mapQueueMode(mode));
+        for (let i = 0; i < 20; i += 1) {
+          if (gen !== matchmakingGen) return;
+          const status = await arenaService.queueTicket(ticket.id);
+          if (status?.matchedMatchId) {
+            match = await arenaService.match(status.matchedMatchId);
+            break;
+          }
+          await sleep(1500);
+        }
+      }
+
+      if (gen !== matchmakingGen) return;
+      if (!match?.id || !mapMatchQuestions(match).length) {
+        set({ matchmakingStatus: "IDLE", matchedOpponent: null });
+        return;
+      }
+
+      const uid = myUserId();
+      const opponent = mapOpponent(match, uid);
+      set({ matchmakingStatus: "MATCH_FOUND", matchedOpponent: opponent });
+      await sleep(1200);
+      if (gen !== matchmakingGen) return;
+      set({ matchmakingStatus: "CONNECTING" });
+      get().initMatch(mode, mapMatchQuestions(match), match.id, opponent || undefined);
+    } catch {
+      if (gen === matchmakingGen) {
+        set({ matchmakingStatus: "IDLE", matchedOpponent: null });
+      }
+    }
   },
 
   cancelMatchmaking: () => {
+    matchmakingGen += 1;
     set({
       matchmakingStatus: "IDLE",
       searchTimeSeconds: 0,
@@ -398,16 +438,15 @@ export const useArenaStore = create<ArenaState>((set, get) => ({
     });
   },
 
-  initMatch: (mode, opponent) => {
-    const opp = opponent || MOCK_LEADERBOARD[1];
+  initMatch: (mode, questions, matchId, opponent) => {
     set({
-      matchmakingStatus: "IDLE",
+      matchedOpponent: opponent || get().matchedOpponent,
       activeMatch: {
-        matchId: `match-${Date.now()}`,
+        matchId: matchId || "",
         mode,
         currentQuestionIndex: 0,
-        totalQuestions: MOCK_ARENA_QUESTIONS.length,
-        questions: MOCK_ARENA_QUESTIONS,
+        totalQuestions: questions.length,
+        questions,
         myScore: 0,
         myCombo: 0,
         mySelectedAnswer: null,
@@ -424,20 +463,78 @@ export const useArenaStore = create<ArenaState>((set, get) => ({
     });
   },
 
-  submitAnswer: (answerIndex) => {
+  loadMatch: async (matchId) => {
+    try {
+      const match = await arenaService.match(matchId);
+      if (!match?.id) return;
+      const uid = myUserId();
+      const questions = mapMatchQuestions(match);
+      const opponent = mapOpponent(match, uid);
+      const me = (match.participants || []).find((item) => item.userId === uid);
+      const opp = (match.participants || []).find((item) => item.userId !== uid);
+      const finished = match.status === "FINISHED";
+      const history = historyFromMatch(match, uid);
+      set({
+        matchedOpponent: opponent,
+        matchmakingStatus: "IDLE",
+        activeMatch: {
+          matchId: match.id,
+          mode: mapMatchMode(match.matchMode),
+          currentQuestionIndex: 0,
+          totalQuestions: questions.length,
+          questions,
+          myScore: Number(me?.score || 0),
+          myCombo: 0,
+          mySelectedAnswer: null,
+          isMyAnswerCorrect: null,
+          opponentScore: Number(opp?.score || 0),
+          opponentCombo: 0,
+          opponentAnswered: Number(opp?.totalAnswered || 0) > 0,
+          timeLeft: 10,
+          isFinished: finished,
+          result: finished ? history.result : null,
+          eloDelta: Number(me?.eloChange || 0),
+          xpEarned: 0,
+        },
+      });
+    } catch {
+      // Keep empty active match; page shows not-found state
+    }
+  },
+
+  submitAnswer: async (answerIndex) => {
     const { activeMatch } = get();
     if (!activeMatch || activeMatch.mySelectedAnswer !== null) return;
 
     const currentQ = activeMatch.questions[activeMatch.currentQuestionIndex];
-    const isCorrect = answerIndex === currentQ.correctIndex;
+    let isCorrect = currentQ?.correctIndex >= 0 ? answerIndex === currentQ.correctIndex : false;
+    let myScore = activeMatch.myScore;
+    let opponentScore = activeMatch.opponentScore;
+    let opponentAnswered = activeMatch.opponentAnswered;
 
-    const speedBonus = Math.max(10, activeMatch.timeLeft * 8);
-    const comboMultiplier = activeMatch.myCombo >= 3 ? 1.5 : activeMatch.myCombo >= 1 ? 1.2 : 1.0;
-    const addedScore = isCorrect ? Math.round((100 + speedBonus) * comboMultiplier) : 0;
-
-    // Simulate opponent response
-    const oppCorrect = Math.random() > 0.35;
-    const oppScoreAdded = oppCorrect ? Math.round(90 + Math.random() * 40) : 0;
+    if (currentQ?.matchQuestionId && activeMatch.matchId) {
+      try {
+        const optionKey = currentQ.optionKeys?.[answerIndex];
+        const result = await arenaService.answer(
+          activeMatch.matchId,
+          currentQ.matchQuestionId,
+          optionKey ? { optionKey } : { selectedIndex: answerIndex },
+          Math.max(0, (10 - activeMatch.timeLeft) * 1000),
+        );
+        const payload = (result as any)?.data || result;
+        if (typeof payload?.isCorrect === "boolean") isCorrect = payload.isCorrect;
+        else if (typeof payload?.grading?.isCorrect === "boolean") isCorrect = payload.grading.isCorrect;
+        const refreshed = await arenaService.match(activeMatch.matchId);
+        const uid = myUserId();
+        const me = (refreshed.participants || []).find((item) => item.userId === uid);
+        const opp = (refreshed.participants || []).find((item) => item.userId !== uid);
+        myScore = Number(me?.score || myScore);
+        opponentScore = Number(opp?.score || opponentScore);
+        opponentAnswered = Number(opp?.totalAnswered || 0) > 0;
+      } catch {
+        // Keep local correctness if the API call fails
+      }
+    }
 
     set((state) => {
       if (!state.activeMatch) return state;
@@ -446,11 +543,10 @@ export const useArenaStore = create<ArenaState>((set, get) => ({
           ...state.activeMatch,
           mySelectedAnswer: answerIndex,
           isMyAnswerCorrect: isCorrect,
-          myScore: state.activeMatch.myScore + addedScore,
+          myScore,
           myCombo: isCorrect ? state.activeMatch.myCombo + 1 : 0,
-          opponentScore: state.activeMatch.opponentScore + oppScoreAdded,
-          opponentCombo: oppCorrect ? state.activeMatch.opponentCombo + 1 : 0,
-          opponentAnswered: true,
+          opponentScore,
+          opponentAnswered,
         },
       };
     });
@@ -480,39 +576,50 @@ export const useArenaStore = create<ArenaState>((set, get) => ({
     });
   },
 
-  finishMatch: () => {
-    const { activeMatch, userStats } = get();
+  finishMatch: async () => {
+    const { activeMatch } = get();
     if (!activeMatch) return;
 
-    const isVictory = activeMatch.myScore >= activeMatch.opponentScore;
-    const isDraw = activeMatch.myScore === activeMatch.opponentScore;
-    const result = isVictory ? (isDraw ? "DRAW" : "VICTORY") : "DEFEAT";
+    let result: MatchResult =
+      activeMatch.myScore > activeMatch.opponentScore
+        ? "WIN"
+        : activeMatch.myScore < activeMatch.opponentScore
+          ? "LOSS"
+          : "DRAW";
+    let eloDelta = 0;
+    let myScore = activeMatch.myScore;
+    let opponentScore = activeMatch.opponentScore;
 
-    const eloDelta = isVictory ? (isDraw ? 0 : 25) : -18;
-    const xpEarned = isVictory ? 120 : 40;
+    try {
+      const finished = await arenaService.finish(activeMatch.matchId);
+      const uid = myUserId();
+      const history = historyFromMatch(finished, uid);
+      result = history.result;
+      eloDelta = history.eloChange;
+      myScore = history.myScore;
+      opponentScore = history.opponentScore;
+      set((state) => ({
+        matchHistory: [history, ...state.matchHistory.filter((item) => item.id !== history.id)],
+        matchedOpponent: mapOpponent(finished, uid) || state.matchedOpponent,
+      }));
+    } catch {
+      // Keep locally computed result if finish API is unavailable
+    }
 
-    // Update user stats
-    const updatedElo = Math.max(0, userStats.elo + eloDelta);
-
-    set((state) => {
-      if (!state.activeMatch) return state;
-      return {
-        userStats: {
-          ...state.userStats,
-          elo: updatedElo,
-          winCount: isVictory && !isDraw ? state.userStats.winCount + 1 : state.userStats.winCount,
-          lossCount: !isVictory && !isDraw ? state.userStats.lossCount + 1 : state.userStats.lossCount,
-          winStreak: isVictory && !isDraw ? state.userStats.winStreak + 1 : 0,
-        },
-        activeMatch: {
-          ...state.activeMatch,
-          isFinished: true,
-          result,
-          eloDelta,
-          xpEarned,
-        },
-      };
-    });
+    set((state) => ({
+      activeMatch: state.activeMatch
+        ? {
+            ...state.activeMatch,
+            myScore,
+            opponentScore,
+            isFinished: true,
+            result,
+            eloDelta,
+            xpEarned: 0,
+          }
+        : null,
+    }));
+    await get().fetchUserStats();
   },
 
   resetMatch: () => {

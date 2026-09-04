@@ -1,9 +1,11 @@
 "use client";
 
 import VocabAudioButton from "@/components/vocabulary/VocabAudioButton";
+import VocabWordImage from "@/components/vocabulary/VocabWordImage";
+import { playResultFeedback } from "@/lib/sound";
 import { formatIpa, hasVocabAudio, playVocabAudio } from "@/lib/vocab";
 import type { StudyAnswerResult, VocabWord } from "@/types/vocabulary";
-import { ArrowRight, CheckCircle2, HelpCircle, Sparkles, XCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function QuizPlayer({
@@ -28,9 +30,14 @@ export default function QuizPlayer({
   const ipa = formatIpa(card);
 
   useEffect(() => {
-    setPicked(null);
     if (hasVocabAudio(card)) playVocabAudio(card, "us");
   }, [card.id]);
+
+  useEffect(() => {
+    if (lastAnswer) {
+      playResultFeedback(card, lastAnswer.correct, "us", 380);
+    }
+  }, [lastAnswer, card.id]);
 
   if (!quiz) {
     return (
@@ -70,7 +77,7 @@ export default function QuizPlayer({
         </div>
         <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-[#2b417e] to-[#4563b0] rounded-full transition-all duration-300"
+            className="h-full bg-linear-to-r from-brand to-[#4563b0] rounded-full transition-all duration-300"
             style={{
               width: `${Math.round(((index + (picked ? 1 : 0)) / Math.max(total, 1)) * 100)}%`,
             }}
@@ -88,6 +95,11 @@ export default function QuizPlayer({
         <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
           {quiz.prompt}
         </h2>
+
+        <VocabWordImage
+          word={card}
+          className="w-full max-w-44 mx-auto aspect-4/3 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 relative"
+        />
 
         {ipa && (
           <p className="text-xs font-mono text-slate-400 dark:text-slate-500">
@@ -160,6 +172,11 @@ export default function QuizPlayer({
                 {lastAnswer.explanation.meaningVi}
               </span>
             </p>
+            {lastAnswer.explanation.definitionVi && (
+              <p className="text-slate-700 dark:text-slate-200 text-xs">
+                {lastAnswer.explanation.definitionVi}
+              </p>
+            )}
             {lastAnswer.explanation.definitionEn && (
               <p className="text-slate-600 dark:text-slate-300 text-xs">
                 {lastAnswer.explanation.definitionEn}
@@ -177,7 +194,9 @@ export default function QuizPlayer({
             onClick={onNext}
             className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-primary hover:bg-primary/90 text-white text-sm font-black shadow-lg shadow-primary/25 transition-all cursor-pointer active:scale-98"
           >
-            <span>{index + 1 >= total ? "Xem kết quả bài học" : "Câu tiếp theo"}</span>
+            <span>
+              {index + 1 >= total ? "Xem kết quả bài học" : "Câu tiếp theo"}
+            </span>
             <ArrowRight className="size-4" />
           </button>
         </div>

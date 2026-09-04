@@ -22,6 +22,7 @@ export default function ArenaMatchmakingModal() {
     cancelMatchmaking,
     matchedOpponent,
     activeMatch,
+    userStats,
   } = useArenaStore();
   const { user } = useAuthStore();
   const router = useRouter();
@@ -120,7 +121,7 @@ export default function ArenaMatchmakingModal() {
                     {mounted && user?.fullName ? user.fullName : "Bạn"}
                   </span>
                   <span className="text-[10.5px] font-bold text-primary">
-                    2,180 ELO
+                    {userStats.elo} ELO
                   </span>
                 </div>
 
@@ -134,7 +135,10 @@ export default function ArenaMatchmakingModal() {
                 {/* Opponent (Right) */}
                 <div className="col-span-2 flex flex-col items-center space-y-1.5">
                   <img
-                    src={matchedOpponent.avatar}
+                    src={
+                      matchedOpponent.avatar ||
+                      `https://api.dicebear.com/7.x/bottts/svg?seed=${matchedOpponent.userId}`
+                    }
                     alt={matchedOpponent.name}
                     className="size-14 sm:size-16 rounded-full object-cover border-2 border-rose-500 shadow-md"
                   />

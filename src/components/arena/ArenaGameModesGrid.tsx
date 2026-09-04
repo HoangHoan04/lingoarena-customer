@@ -3,8 +3,6 @@
 import { useArenaStore } from "@/stores/useArenaStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { useRouter } from "@/i18n/routing";
-import { arenaService } from "@/services/arena.service";
-import { questionService } from "@/services/question.service";
 import {
   ArrowRight,
   Bot,
@@ -17,67 +15,29 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 export default function ArenaGameModesGrid({
   onOpenCustomRoom,
 }: {
   onOpenCustomRoom: () => void;
 }) {
-  const { startMatchmaking } = useArenaStore();
+  const { startMatchmaking, matchmakingStatus } = useArenaStore();
   const { addToast } = useToastStore();
-  const router = useRouter();
-  const [loadingMode, setLoadingMode] = useState<string | null>(null);
 
-  const firstSkillId = async () => {
-    const skills = await questionService.lookupSkills();
-    const id = skills[0]?.id;
-    if (!id) throw new Error("Chưa có kỹ năng thi đấu khả dụng");
-    return id;
-  };
-
-  const handleStartRanked = async () => {
-    setLoadingMode("RANKED");
+  const handleStartRanked = () => {
     startMatchmaking("RANKED");
-    try {
-      const ticket = await arenaService.queue(await firstSkillId(), "RANKED");
-      if (ticket.matchedMatchId) {
-        router.push(`/arena/match/${ticket.matchedMatchId}`);
-      } else {
-        addToast("Đã vào hàng đợi. Hãy thử lại khi có đối thủ hoặc chọn đấu bot.", "info", 5000);
-      }
-    } catch (err: any) {
-      addToast(err?.message || "Không thể vào hàng đợi Arena", "error");
-    } finally {
-      setLoadingMode(null);
-    }
   };
 
-  const handleStartCasual = async () => {
-    setLoadingMode("CASUAL");
+  const handleStartCasual = () => {
     startMatchmaking("CASUAL");
-    try {
-      const match = await arenaService.practiceMatch(await firstSkillId(), 5);
-      router.push(`/arena/match/${match.id}`);
-    } catch (err: any) {
-      addToast(err?.message || "Không thể tạo trận luyện", "error");
-    } finally {
-      setLoadingMode(null);
-    }
   };
 
-  const handleStartBot = async () => {
-    setLoadingMode("BOT");
+  const handleStartBot = () => {
     startMatchmaking("BOT");
-    try {
-      const match = await arenaService.practiceMatch(await firstSkillId(), 5);
-      router.push(`/arena/match/${match.id}`);
-    } catch (err: any) {
-      addToast(err?.message || "Không thể tạo trận bot", "error");
-    } finally {
-      setLoadingMode(null);
-    }
   };
+
+  const isSearching = matchmakingStatus !== "IDLE";
 
   return (
     <div className="space-y-4 select-none">
@@ -106,17 +66,18 @@ export default function ArenaGameModesGrid({
                 Đấu Xếp Hạng 1v1
               </h3>
               <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-                Ghép ngẫu nhiên đối thủ cùng trình độ Elo. Thắng nhận +25 Elo và leo Rank mùa giải.
+                Ghép ngẫu nhiên đối thủ cùng trình độ Elo. Thắng nhận +28 Elo và leo Rank mùa giải.
               </p>
             </div>
           </div>
 
           <button
             type="button"
+            disabled={isSearching}
             onClick={handleStartRanked}
-            className="w-full py-3 px-4 rounded-2xl bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-purple-600/30 transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3 px-4 rounded-2xl bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-purple-600/30 transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
-            <span>{loadingMode === "RANKED" ? "Đang tìm..." : "Tìm Trận Rank"}</span>
+            <span>{isSearching ? "Đang ghép trận..." : "Tìm Trận Rank"}</span>
             <ArrowRight className="size-4" />
           </button>
         </div>
@@ -145,10 +106,11 @@ export default function ArenaGameModesGrid({
 
           <button
             type="button"
+            disabled={isSearching}
             onClick={handleStartCasual}
-            className="w-full py-3 px-4 rounded-2xl bg-linear-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3 px-4 rounded-2xl bg-linear-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
-            <span>{loadingMode === "CASUAL" ? "Đang tạo..." : "Vào Đấu Nhanh"}</span>
+            <span>{isSearching ? "Đang ghép trận..." : "Vào Đấu Nhanh"}</span>
             <ArrowRight className="size-4" />
           </button>
         </div>
@@ -177,10 +139,11 @@ export default function ArenaGameModesGrid({
 
           <button
             type="button"
+            disabled={isSearching}
             onClick={handleStartBot}
-            className="w-full py-3 px-4 rounded-2xl bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-emerald-600/30 transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3 px-4 rounded-2xl bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black uppercase tracking-wider shadow-lg shadow-emerald-600/30 transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
-            <span>{loadingMode === "BOT" ? "Đang tạo..." : "Đấu Với Bot"}</span>
+            <span>{isSearching ? "Đang ghép bot..." : "Đấu Với Bot"}</span>
             <ArrowRight className="size-4" />
           </button>
         </div>

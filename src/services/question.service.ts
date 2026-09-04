@@ -4,6 +4,8 @@ import type {
   PracticeAnswer,
   PracticeFilter,
   PublicQuestion,
+  QuestionGroup,
+  QuestionGroupFilter,
   QuestionLookup,
 } from "@/types/question";
 import apiService from "./api.service";
@@ -61,6 +63,34 @@ export const questionService = {
     return asList<QuestionLookup>(res);
   },
 
+  lookupSections: async (examSkillId?: string) => {
+    const res = await apiService.get(API_ENDPOINTS.QUESTION.LOOKUP_SECTIONS, {
+      params: examSkillId ? { examSkillId } : undefined,
+    });
+    return asList<QuestionLookup>(res);
+  },
+
+  paginationGroups: async (skip = 0, take = 20, where: QuestionGroupFilter = {}) => {
+    const res = await apiService.post(API_ENDPOINTS.QUESTION.GROUPS_PAGINATION, {
+      skip,
+      take,
+      where,
+    });
+    return paginationPayload<QuestionGroup>(res);
+  },
+
+  getGroup: async (id: string) => {
+    const res = await apiService.get(API_ENDPOINTS.QUESTION.GROUP_DETAIL(id));
+    return extractApiData<QuestionGroup>(res);
+  },
+
+  startGroupSession: async (id: string, sessionType?: string) => {
+    const res = await apiService.post(API_ENDPOINTS.QUESTION.GROUP_START_SESSION(id), {
+      sessionType,
+    });
+    return extractApiData(res);
+  },
+
   startPractice: async (filter: PracticeFilter) => {
     const res = await apiService.post(API_ENDPOINTS.QUESTION.PRACTICE_START, filter);
     const data = extractApiData<{ items?: PublicQuestion[]; total?: number }>(res);
@@ -69,7 +99,7 @@ export const questionService = {
 
   grade: async (payload: {
     questionId: string;
-    questionVersionId: string;
+    questionVersionId?: string;
     answerJson: PracticeAnswer;
   }) => {
     const res = await apiService.post(API_ENDPOINTS.QUESTION.PRACTICE_GRADE, payload);

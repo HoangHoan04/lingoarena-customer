@@ -1,9 +1,17 @@
 "use client";
 
 import VocabAudioButton from "@/components/vocabulary/VocabAudioButton";
+import VocabWordImage from "@/components/vocabulary/VocabWordImage";
 import { formatIpa, hasVocabAudio, playVocabAudio } from "@/lib/vocab";
 import type { VocabWord } from "@/types/vocabulary";
-import { ArrowRight, Eye, Mic, RotateCcw, Sparkles, Volume2 } from "lucide-react";
+import {
+  ArrowRight,
+  Eye,
+  Mic,
+  RotateCcw,
+  Sparkles,
+  Volume2,
+} from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 type Phase = "listen" | "reveal";
@@ -32,8 +40,6 @@ export default function RepeatPlayer({
   }, [card]);
 
   useEffect(() => {
-    setPhase("listen");
-    setPlayCount(0);
     if (hasVocabAudio(card)) {
       playVocabAudio(card, "us");
       setPlayCount(1);
@@ -61,7 +67,9 @@ export default function RepeatPlayer({
             <span className="font-extrabold text-primary dark:text-[#7b9bee] tracking-wider uppercase">
               Luyện Shadowing (Nhắc Lại)
             </span>
-            <span className="text-slate-400">· Nghe audio & nói to trước khi xem đáp án</span>
+            <span className="text-slate-400">
+              · Nghe audio & nói to trước khi xem đáp án
+            </span>
           </div>
           <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary dark:text-[#7b9bee] font-black text-xs">
             {index + 1} / {total}
@@ -69,7 +77,7 @@ export default function RepeatPlayer({
         </div>
         <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-[#2b417e] to-[#4563b0] rounded-full transition-all duration-300"
+            className="h-full bg-linear-to-r from-brand to-[#4563b0] rounded-full transition-all duration-300"
             style={{
               width: `${Math.round(((index + (phase === "reveal" ? 1 : 0)) / Math.max(total, 1)) * 100)}%`,
             }}
@@ -104,7 +112,11 @@ export default function RepeatPlayer({
 
           {hasAudio ? (
             <p className="text-xs text-slate-400 font-medium">
-              Đã phát <span className="font-bold text-primary dark:text-[#7b9bee]">{playCount}</span> lần · Nhấn Space để nghe lại
+              Đã phát{" "}
+              <span className="font-bold text-primary dark:text-[#7b9bee]">
+                {playCount}
+              </span>{" "}
+              lần · Nhấn Space để nghe lại
             </p>
           ) : (
             <p className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-3.5 py-2 rounded-xl">
@@ -117,7 +129,9 @@ export default function RepeatPlayer({
             <p className="text-3xl font-black text-slate-300 dark:text-slate-600 tracking-widest">
               • • • • •
             </p>
-            <p className="text-xs text-slate-400 mt-1">Từ vựng & nghĩa đang được ẩn</p>
+            <p className="text-xs text-slate-400 mt-1">
+              Từ vựng & nghĩa đang được ẩn
+            </p>
           </div>
 
           <div className="flex gap-2">
@@ -146,6 +160,11 @@ export default function RepeatPlayer({
               {card.headword}
             </h2>
 
+            <VocabWordImage
+              word={card}
+              className="mx-auto w-full max-w-44 aspect-4/3 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 relative"
+            />
+
             {ipa && (
               <p className="text-xs font-mono text-slate-400 dark:text-slate-500">
                 /{ipa.replace(/^\/|\/$/g, "")}/
@@ -155,6 +174,12 @@ export default function RepeatPlayer({
             <p className="text-xl font-black text-primary dark:text-[#7b9bee]">
               {card.meaningVi}
             </p>
+
+            {card.definitionVi && (
+              <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
+                {card.definitionVi}
+              </p>
+            )}
 
             {card.definitionEn && (
               <p className="text-xs text-slate-500 max-w-md mx-auto">
@@ -199,7 +224,9 @@ export default function RepeatPlayer({
             onClick={onNext}
             className="mt-auto w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-primary hover:bg-primary/90 text-white text-sm font-black shadow-lg shadow-primary/25 transition-all cursor-pointer active:scale-98"
           >
-            <span>{index + 1 >= total ? "Hoàn thành lượt luyện" : "Từ tiếp theo"}</span>
+            <span>
+              {index + 1 >= total ? "Hoàn thành lượt luyện" : "Từ tiếp theo"}
+            </span>
             <ArrowRight className="size-4" />
           </button>
         </div>

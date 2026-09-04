@@ -25,6 +25,7 @@ export default function ArenaLiveMatchPlayer() {
   const [mounted, setMounted] = useState(false);
   const {
     activeMatch,
+    matchedOpponent,
     submitAnswer,
     nextQuestion,
     resetMatch,
@@ -163,7 +164,7 @@ export default function ArenaLiveMatchPlayer() {
                   </span>
                 )}
                 <span className="font-extrabold text-xs sm:text-sm text-foreground truncate">
-                  Đối Thủ
+                  {matchedOpponent?.name || "Đối Thủ"}
                 </span>
               </div>
               <p className="text-base sm:text-2xl font-black text-rose-500">
@@ -171,7 +172,10 @@ export default function ArenaLiveMatchPlayer() {
               </p>
             </div>
             <img
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80"
+              src={
+                matchedOpponent?.avatar ||
+                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80"
+              }
               alt="Opponent"
               className="size-11 sm:size-14 rounded-2xl object-cover border-2 border-rose-500 shrink-0 shadow-md"
             />
@@ -281,7 +285,7 @@ export default function ArenaLiveMatchPlayer() {
               {/* Header Banner */}
               <div className="space-y-2">
                 <div className="size-20 rounded-full mx-auto flex items-center justify-center shadow-xl">
-                  {activeMatch.result === "VICTORY" ? (
+                  {activeMatch.result === "WIN" ? (
                     <div className="size-20 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center shadow-amber-400/40 shadow-2xl animate-bounce">
                       <Trophy className="size-10" />
                     </div>
@@ -298,14 +302,14 @@ export default function ArenaLiveMatchPlayer() {
 
                 <h2
                   className={`text-2xl sm:text-3xl font-black uppercase tracking-tight ${
-                    activeMatch.result === "VICTORY"
+                    activeMatch.result === "WIN"
                       ? "text-amber-500"
                       : activeMatch.result === "DRAW"
                       ? "text-purple-500"
                       : "text-rose-500"
                   }`}
                 >
-                  {activeMatch.result === "VICTORY"
+                  {activeMatch.result === "WIN"
                     ? "CHIẾN THẮNG TUYỆT ĐỐI! 🏆"
                     : activeMatch.result === "DRAW"
                     ? "TRẬN ĐẤU HÒA ĐIỂM!"
@@ -313,7 +317,7 @@ export default function ArenaLiveMatchPlayer() {
                 </h2>
 
                 <p className="text-xs text-muted-foreground">
-                  {activeMatch.result === "VICTORY"
+                  {activeMatch.result === "WIN"
                     ? "Bạn đã xuất sắc vượt qua đối thủ với điểm số cao hơn!"
                     : "Hãy rèn luyện thêm từ vựng để phục thù ở trận tiếp theo!"}
                 </p>

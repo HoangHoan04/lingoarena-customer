@@ -1,13 +1,11 @@
 "use client";
 
-import { STUDY_MODES } from "@/lib/vocab";
 import { cn } from "@/lib/utils";
+import { STUDY_MODES } from "@/lib/vocab";
 import type { VocabStudyModeUI } from "@/types/vocabulary";
 import {
   BookOpen,
-  CheckCircle2,
   FileEdit,
-  Flame,
   HelpCircle,
   Layers3,
   Mic,
@@ -147,7 +145,7 @@ export default function StudySidebar({
             </div>
             <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
               <div
-                className="h-full bg-linear-to-r from-[#2b417e] to-[#4563b0] transition-all duration-300"
+                className="h-full bg-linear-to-r from-brand to-[#4563b0] transition-all duration-300"
                 style={{ width: `${percent}%` }}
               />
             </div>
@@ -155,10 +153,23 @@ export default function StudySidebar({
 
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 space-y-1.5">
             <p className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
-              <Sparkles className="size-3 text-amber-500" /> Phím tắt thao tác nhanh
+              <Sparkles className="size-3 text-amber-500" /> Phím tắt thao tác
+              nhanh
             </p>
-            <p>• <kbd className="font-mono bg-white dark:bg-slate-700 px-1 py-0.5 rounded border text-[10px]">Space</kbd>: Lật thẻ / Nghe lại audio</p>
-            <p>• <kbd className="font-mono bg-white dark:bg-slate-700 px-1 py-0.5 rounded border text-[10px]">1 - 4</kbd>: Chấm điểm Again / Hard / Good / Easy</p>
+            <p>
+              •{" "}
+              <kbd className="font-mono bg-white dark:bg-slate-700 px-1 py-0.5 rounded border text-[10px]">
+                Space
+              </kbd>
+              : Lật thẻ / Nghe lại audio
+            </p>
+            <p>
+              •{" "}
+              <kbd className="font-mono bg-white dark:bg-slate-700 px-1 py-0.5 rounded border text-[10px]">
+                1 - 4
+              </kbd>
+              : Chấm điểm Again / Hard / Good / Easy
+            </p>
           </div>
         </div>
       </div>

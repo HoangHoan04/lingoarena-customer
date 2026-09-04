@@ -86,8 +86,10 @@ export interface Product {
   id: string;
   code: string;
   name: string;
+  nameEn?: string | null;
   productType: string;
   description?: string | null;
+  descriptionEn?: string | null;
   thumbnailUrl?: string | null;
   status: string;
   prices?: ProductPrice[];

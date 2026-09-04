@@ -1,5 +1,6 @@
 import axios from "axios";
 import { resolveApiBaseUrl } from "@/lib/auth";
+import { resolveClientLang } from "@/lib/locale-text";
 
 export const getDeviceId = () => {
   if (typeof window === "undefined") return "server-client";
@@ -27,6 +28,7 @@ apiService.interceptors.request.use(
       }
       if (config.headers) {
         config.headers["tokenid"] = getDeviceId();
+        config.headers["x-lang"] = resolveClientLang();
       }
     }
     return config;

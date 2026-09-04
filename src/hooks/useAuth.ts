@@ -155,7 +155,15 @@ export function useAuth() {
     forgotPassword,
     loginWithGoogle,
     loginWithFacebook,
-    logout: clearAuth,
+    logout: async () => {
+      const refreshToken = useAuthStore.getState().refreshToken;
+      try {
+        await authService.logout(refreshToken || undefined);
+      } catch {
+        // Still clear local session if the API call fails.
+      }
+      clearAuth();
+    },
   };
 }
 

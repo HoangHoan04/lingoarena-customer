@@ -1,9 +1,16 @@
 "use client";
 
 import VocabAudioButton from "@/components/vocabulary/VocabAudioButton";
-import { cefrBadgeClass, formatIpa, hasVocabAudio, playVocabAudio, relationLabel } from "@/lib/vocab";
+import VocabWordImage from "@/components/vocabulary/VocabWordImage";
+import {
+  cefrBadgeClass,
+  formatIpa,
+  hasVocabAudio,
+  playVocabAudio,
+  relationLabel,
+} from "@/lib/vocab";
 import type { FlashcardRating, VocabWord } from "@/types/vocabulary";
-import { BookOpen, CheckCircle2, ChevronRight, HelpCircle, Rotate3d, Sparkles } from "lucide-react";
+import { Rotate3d, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const RATINGS: {
@@ -21,7 +28,8 @@ const RATINGS: {
     hint: "< 10 phút",
     shortcut: "1",
     borderClass: "border-rose-300 dark:border-rose-800 hover:border-rose-500",
-    bgClass: "bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/60",
+    bgClass:
+      "bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/60",
     textClass: "text-rose-600 dark:text-rose-400",
   },
   {
@@ -29,8 +37,10 @@ const RATINGS: {
     label: "Khó (Hard)",
     hint: "~1 ngày",
     shortcut: "2",
-    borderClass: "border-amber-300 dark:border-amber-800 hover:border-amber-500",
-    bgClass: "bg-amber-50/70 hover:bg-amber-100 dark:bg-amber-950/30 dark:hover:bg-amber-950/60",
+    borderClass:
+      "border-amber-300 dark:border-amber-800 hover:border-amber-500",
+    bgClass:
+      "bg-amber-50/70 hover:bg-amber-100 dark:bg-amber-950/30 dark:hover:bg-amber-950/60",
     textClass: "text-amber-600 dark:text-amber-400",
   },
   {
@@ -39,7 +49,8 @@ const RATINGS: {
     hint: "~3 ngày",
     shortcut: "3",
     borderClass: "border-blue-300 dark:border-blue-800 hover:border-blue-500",
-    bgClass: "bg-blue-50/70 hover:bg-blue-100 dark:bg-blue-950/30 dark:hover:bg-blue-950/60",
+    bgClass:
+      "bg-blue-50/70 hover:bg-blue-100 dark:bg-blue-950/30 dark:hover:bg-blue-950/60",
     textClass: "text-blue-600 dark:text-blue-400",
   },
   {
@@ -47,8 +58,10 @@ const RATINGS: {
     label: "Dễ (Easy)",
     hint: "~7 ngày",
     shortcut: "4",
-    borderClass: "border-emerald-300 dark:border-emerald-800 hover:border-emerald-500",
-    bgClass: "bg-emerald-50/70 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:hover:bg-emerald-950/60",
+    borderClass:
+      "border-emerald-300 dark:border-emerald-800 hover:border-emerald-500",
+    bgClass:
+      "bg-emerald-50/70 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:hover:bg-emerald-950/60",
     textClass: "text-emerald-600 dark:text-emerald-400",
   },
 ];
@@ -69,7 +82,6 @@ export default function FlashcardPlayer({
   const [flipped, setFlipped] = useState(false);
 
   useEffect(() => {
-    setFlipped(false);
     if (hasVocabAudio(card)) playVocabAudio(card, "us");
   }, [card.id]);
 
@@ -100,7 +112,9 @@ export default function FlashcardPlayer({
   const extraExamples = (card.examples || []).slice(1);
   const collocations = card.collocations || [];
   const relations = card.relations || [];
-  const percent = Math.round(((index + (flipped ? 1 : 0)) / Math.max(total, 1)) * 100);
+  const percent = Math.round(
+    ((index + (flipped ? 1 : 0)) / Math.max(total, 1)) * 100,
+  );
 
   return (
     <div className="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-5 sm:p-8 shadow-xl space-y-6">
@@ -121,7 +135,7 @@ export default function FlashcardPlayer({
         </div>
         <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-[#2b417e] to-[#4563b0] rounded-full transition-all duration-300"
+            className="h-full bg-linear-to-r from-brand to-[#4563b0] rounded-full transition-all duration-300"
             style={{ width: `${Math.max(percent, 6)}%` }}
           />
         </div>
@@ -139,13 +153,13 @@ export default function FlashcardPlayer({
               setFlipped((value) => !value);
             }
           }}
-          className="relative min-h-[340px] sm:min-h-[380px] w-full transition-transform duration-500 [transform-style:preserve-3d] cursor-pointer text-left select-none outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-3xl"
+          className="relative min-h-[420px] sm:min-h-[460px] w-full transition-transform duration-500 [transform-style:preserve-3d] cursor-pointer text-left select-none outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-3xl"
           style={{ transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
         >
           {/* FRONT SIDE */}
           <div className="absolute inset-0 rounded-3xl border-2 border-slate-200/90 dark:border-slate-800 bg-linear-to-b from-slate-50/80 via-white to-slate-50/40 dark:from-slate-800/50 dark:via-slate-900 dark:to-slate-900 p-6 sm:p-10 flex flex-col items-center justify-center text-center shadow-lg [backface-visibility:hidden]">
             {/* Pronunciation & Level Badge */}
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-2 shrink-0">
               <VocabAudioButton word={card} accent="us" />
               <VocabAudioButton word={card} accent="uk" />
               {card.cefrLevel && (
@@ -159,15 +173,23 @@ export default function FlashcardPlayer({
               )}
             </div>
 
+            {/* Word Image */}
+            <VocabWordImage
+              word={card}
+              className="my-2.5 w-full max-w-56 sm:max-w-64 aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 relative shadow-sm shrink-0"
+            />
+
             {/* Headword */}
-            <h2 className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+            <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight mt-1">
               {card.headword}
             </h2>
 
             {/* Part of Speech & IPA */}
-            <div className="flex items-center gap-2 mt-3 text-slate-500 dark:text-slate-400 text-sm">
+            <div className="flex items-center gap-2 mt-2 text-slate-500 dark:text-slate-400 text-sm">
               {card.partOfSpeech && (
-                <span className="font-semibold italic">({card.partOfSpeech})</span>
+                <span className="font-semibold italic">
+                  ({card.partOfSpeech})
+                </span>
               )}
               {ipa && (
                 <span className="font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-xs">
@@ -177,7 +199,7 @@ export default function FlashcardPlayer({
             </div>
 
             {/* Flip Hint */}
-            <div className="mt-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800/80 text-xs font-bold text-slate-500 dark:text-slate-400">
+            <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800/80 text-xs font-bold text-slate-500 dark:text-slate-400 shrink-0">
               <Rotate3d className="size-4 text-primary dark:text-[#7b9bee]" />
               <span>Chạm hoặc nhấn Space để lật thẻ xem nghĩa</span>
             </div>
@@ -188,9 +210,9 @@ export default function FlashcardPlayer({
             className="absolute inset-0 rounded-3xl border-2 border-primary/40 dark:border-primary/50 bg-white dark:bg-slate-900 p-6 sm:p-8 overflow-y-auto shadow-2xl [backface-visibility:hidden]"
             style={{ transform: "rotateY(180deg)" }}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 shrink-0">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-black text-slate-900 dark:text-white">
+                <span className="text-xl font-black text-slate-900 dark:text-white">
                   {card.headword}
                 </span>
                 {card.partOfSpeech && (
@@ -205,16 +227,29 @@ export default function FlashcardPlayer({
               </div>
             </div>
 
-            {/* Meaning & Definition */}
-            <div className="py-4 space-y-2 text-left">
-              <div className="text-2xl font-black text-primary dark:text-[#7b9bee]">
-                {card.meaningVi}
+            {/* Image + Meaning Grid */}
+            <div className="flex flex-col sm:flex-row gap-4 items-start pt-3">
+              <VocabWordImage
+                word={card}
+                className="w-full sm:w-48 aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 relative shrink-0 shadow-xs"
+              />
+
+              {/* Meaning & Definition */}
+              <div className="flex-1 min-w-0 space-y-2 text-left">
+                <div className="text-2xl sm:text-3xl font-black text-primary dark:text-[#7b9bee]">
+                  {card.meaningVi}
+                </div>
+                {card.definitionVi && (
+                  <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed pl-3 border-l-2 border-emerald-500/40">
+                    {card.definitionVi}
+                  </p>
+                )}
+                {card.definitionEn && (
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-3 border-l-2 border-primary/30">
+                    {card.definitionEn}
+                  </p>
+                )}
               </div>
-              {card.definitionEn && (
-                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-3 border-l-2 border-primary/30">
-                  {card.definitionEn}
-                </p>
-              )}
             </div>
 
             {/* Examples */}
@@ -236,7 +271,10 @@ export default function FlashcardPlayer({
                   </div>
                 )}
                 {extraExamples.map((item) => (
-                  <div key={item.id || item.sentence} className="pt-1 border-t border-slate-200/50 dark:border-slate-700/50">
+                  <div
+                    key={item.id || item.sentence}
+                    className="pt-1 border-t border-slate-200/50 dark:border-slate-700/50"
+                  >
                     <p className="text-xs font-medium text-slate-800 dark:text-slate-200 italic">
                       “{item.sentence}”
                     </p>
@@ -266,7 +304,9 @@ export default function FlashcardPlayer({
                         {item.collocation}
                       </strong>
                       {item.meaningVi && (
-                        <span className="text-slate-400">({item.meaningVi})</span>
+                        <span className="text-slate-400">
+                          ({item.meaningVi})
+                        </span>
                       )}
                     </span>
                   ))}
@@ -311,7 +351,9 @@ export default function FlashcardPlayer({
               className={`group flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none active:scale-95 shadow-2xs hover:shadow-md ${item.borderClass} ${item.bgClass}`}
             >
               <div className="flex items-center gap-1.5">
-                <span className={`text-xs sm:text-sm font-black ${item.textClass}`}>
+                <span
+                  className={`text-xs sm:text-sm font-black ${item.textClass}`}
+                >
                   {item.label}
                 </span>
                 <span className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.2 rounded bg-black/10 dark:bg-white/10 text-slate-600 dark:text-slate-300">
@@ -327,7 +369,8 @@ export default function FlashcardPlayer({
 
         {!flipped ? (
           <p className="text-center text-xs text-slate-400 font-medium">
-            💡 Lật thẻ (Space) để kiểm tra đáp án trước khi tự đánh giá mức độ nhớ
+            💡 Lật thẻ (Space) để kiểm tra đáp án trước khi tự đánh giá mức độ
+            nhớ
           </p>
         ) : (
           <p className="text-center text-xs text-slate-400 font-medium">

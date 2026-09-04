@@ -1,6 +1,7 @@
 "use client";
 
 import { type Course } from "@/stores/useCourseStore";
+import { pickLocaleText } from "@/lib/locale-text";
 import {
   Award,
   BookOpen,
@@ -12,9 +13,11 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 import React from "react";
 
 export default function CourseCatalogCard({ course }: { course: Course }) {
+  const locale = useLocale();
   const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
@@ -32,7 +35,7 @@ export default function CourseCatalogCard({ course }: { course: Course }) {
       >
         <img
           src={course.thumbnailUrl}
-          alt={course.title}
+          alt={pickLocaleText(locale, course.title, course.titleEn)}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-106"
         />
 
@@ -85,13 +88,13 @@ export default function CourseCatalogCard({ course }: { course: Course }) {
           {/* Title */}
           <Link href={`/courses/${course.slug}`}>
             <h3 className="font-extrabold text-sm sm:text-base text-foreground line-clamp-2 leading-snug group-hover:text-primary transition-colors">
-              {course.title}
+              {pickLocaleText(locale, course.title, course.titleEn)}
             </h3>
           </Link>
 
           {/* Short Description */}
           <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed font-normal">
-            {course.shortDescription}
+            {pickLocaleText(locale, course.shortDescription, course.shortDescriptionEn)}
           </p>
         </div>
 

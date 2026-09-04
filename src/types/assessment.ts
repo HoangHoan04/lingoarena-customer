@@ -5,15 +5,17 @@ export interface AssessmentSummary {
   examTypeId: string;
   assessmentType: string;
   title: string;
+  titleEn?: string | null;
   slug: string;
   description?: string | null;
+  descriptionEn?: string | null;
   durationSeconds: number;
   maxAttempts?: number | null;
   passingScore?: number | null;
   showAnswersPolicy?: string;
   status: string;
   isFree: boolean;
-  examType?: { id: string; code?: string; name?: string } | null;
+  examType?: { id: string; code?: string; name?: string; nameEn?: string | null } | null;
   sections?: AssessmentSection[];
 }
 
@@ -22,10 +24,12 @@ export interface AssessmentSection {
   assessmentId: string;
   examSkillId: string;
   title: string;
+  titleEn?: string | null;
   instructions?: string | null;
+  instructionsEn?: string | null;
   durationSeconds?: number | null;
   sortOrder: number;
-  examSkill?: { id: string; code?: string; name?: string } | null;
+  examSkill?: { id: string; code?: string; name?: string; nameEn?: string | null } | null;
   items?: Array<{ id: string; questionId: string }>;
   attemptQuestions?: AttemptQuestion[];
 }

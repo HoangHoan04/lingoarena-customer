@@ -24,35 +24,61 @@ export default function LeaderboardPage() {
             <Trophy className="size-8" />
           </div>
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-500">Leaderboard</p>
-            <h1 className="text-3xl sm:text-4xl font-black">Bảng xếp hạng học tập</h1>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-500">
+              Leaderboard
+            </p>
+            <h1 className="text-3xl sm:text-4xl font-black">
+              Bảng xếp hạng học tập
+            </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Xếp hạng live theo tổng điểm gamification khi chưa có snapshot được lưu.
+              Xếp hạng live theo tổng điểm gamification khi chưa có snapshot
+              được lưu.
             </p>
           </div>
         </div>
       </section>
 
       <section className="rounded-3xl border border-border bg-card p-4 sm:p-6">
-        {loading && <p className="p-6 text-sm text-muted-foreground">Đang tải bảng xếp hạng...</p>}
-        {!loading && !rows.length && <p className="p-6 text-sm text-muted-foreground">Chưa có dữ liệu xếp hạng.</p>}
+        {loading && (
+          <p className="p-6 text-sm text-muted-foreground">
+            Đang tải bảng xếp hạng...
+          </p>
+        )}
+        {!loading && !rows.length && (
+          <p className="p-6 text-sm text-muted-foreground">
+            Chưa có dữ liệu xếp hạng.
+          </p>
+        )}
         <div className="space-y-3">
           {rows.map((row) => (
-            <div key={`${row.userId}-${row.rank}`} className="flex items-center justify-between rounded-2xl border border-border bg-background p-4">
+            <div
+              key={`${row.userId}-${row.rank}`}
+              className="flex items-center justify-between rounded-2xl border border-border bg-background p-4"
+            >
               <div className="flex items-center gap-4">
-                <div className={`flex size-11 items-center justify-center rounded-2xl font-black ${row.rank <= 3 ? "bg-amber-500 text-white" : "bg-muted text-muted-foreground"}`}>
+                <div
+                  className={`flex size-11 items-center justify-center rounded-2xl font-black ${row.rank <= 3 ? "bg-amber-500 text-white" : "bg-muted text-muted-foreground"}`}
+                >
                   {row.rank <= 3 ? <Medal className="size-5" /> : row.rank}
                 </div>
                 <div>
-                  <p className="font-black">{row.metadataJson?.username || `Learner ${row.rank}`}</p>
-                  <p className="text-xs text-muted-foreground">Streak {row.metadataJson?.currentStreakDays || 0} ngày</p>
+                  <p className="font-black">
+                    {row.metadataJson?.username || `Learner ${row.rank}`}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Streak {row.metadataJson?.currentStreakDays || 0} ngày
+                  </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xl font-black text-primary">{Number(row.score || 0).toLocaleString("vi-VN")}</p>
+                <p className="text-xl font-black text-primary">
+                  {Number(row.score || 0).toLocaleString("vi-VN")}
+                </p>
                 <p className="text-xs text-muted-foreground">điểm</p>
               </div>
-              {row.rank === 1 && <Crown className="hidden size-6 text-amber-500 sm:block" />}
+              {row.rank === 1 && (
+                <Crown className="hidden size-6 text-amber-500 sm:block" />
+              )}
             </div>
           ))}
         </div>

@@ -36,6 +36,8 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import React, { useMemo, useRef, useState } from "react";
+import { pickLocaleText } from "@/lib/locale-text";
+import { useLocale } from "next-intl";
 
 export default function CourseLessonPlayer({
   course,
@@ -44,6 +46,7 @@ export default function CourseLessonPlayer({
   course: Course;
   currentLessonId: string;
 }) {
+  const locale = useLocale();
   const {
     completedLessonIds,
     toggleCompleteLesson,
@@ -62,8 +65,8 @@ export default function CourseLessonPlayer({
   >("overview");
 
   const [newNoteContent, setNewNoteContent] = useState("");
-  const [selectedQuizOption, setSelectedQuizOption] = useState<number | null>(null);
-  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [selectedQuizOption, setSelectedQuizOption] = useState<Record<string, number | null>>({});
+  const [quizSubmitted, setQuizSubmitted] = useState<Record<string, boolean>>({});
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     course.sections.forEach((sec) => {
@@ -81,11 +84,11 @@ export default function CourseLessonPlayer({
     const list: { lesson: Lesson; sectionTitle: string; sectionId: string }[] = [];
     course.sections.forEach((sec) => {
       sec.lessons.forEach((l) => {
-        list.push({ lesson: l, sectionTitle: sec.title, sectionId: sec.id });
+        list.push({ lesson: l, sectionTitle: pickLocaleText(locale, sec.title, sec.titleEn), sectionId: sec.id });
       });
     });
     return list;
-  }, [course]);
+  }, [course, locale]);
 
   const currentIndex = allLessons.findIndex(
     (item) => item.lesson.id === currentLessonId
@@ -154,6 +157,58 @@ export default function CourseLessonPlayer({
     }
   };
 
+  const quizQuestions = useMemo(() => {
+    const blocks = currentLesson?.blocks || [];
+    const questions: Array<{
+      id: string;
+      prompt: string;
+      options: string[];
+      correctIndex: number;
+      explanation?: string;
+    }> = [];
+
+    const pushQuestion = (id: string, prompt: string, options: any[], explanation?: string) => {
+      const labels = options.map((o) =>
+        typeof o === "string" ? o : o.content || o.label || o.optionKey || "",
+      );
+      const correctIndex = options.findIndex((o) => typeof o !== "string" && o.isCorrect === true);
+      questions.push({
+        id,
+        prompt,
+        options: labels.length ? labels : [],
+        correctIndex: correctIndex >= 0 ? correctIndex : 0,
+        explanation,
+      });
+    };
+
+    blocks.forEach((block, blockIdx) => {
+      const type = String(block.blockType || "").toUpperCase();
+      const isQuestionBlock =
+        type.includes("QUIZ") || type.includes("QUESTION") || Boolean(block.items?.length);
+      if (!isQuestionBlock) return;
+
+      (block.items || []).forEach((item, itemIdx) => {
+        const q = item.questionVersion || item.question?.currentVersion || item.question;
+        const prompt = q?.prompt || (q as any)?.content || "";
+        const options = (q as any)?.options || [];
+        if (prompt && options.length) {
+          pushQuestion(item.id || `${block.id}-${itemIdx}`, prompt, options, (q as any)?.explanation);
+        }
+      });
+
+      const json = block.contentJson || {};
+      if (Array.isArray(json.questions)) {
+        json.questions.forEach((q: any, idx: number) => {
+          pushQuestion(q.id || `${block.id}-q-${idx}`, q.prompt || q.question || "", q.options || [], q.explanation);
+        });
+      } else if (json.prompt && Array.isArray(json.options)) {
+        pushQuestion(block.id || `block-${blockIdx}`, String(json.prompt), json.options, json.explanation as string);
+      }
+    });
+
+    return questions;
+  }, [currentLesson]);
+
   const getLessonTypeIcon = (type: Lesson["type"]) => {
     switch (type) {
       case "video":
@@ -188,11 +243,11 @@ export default function CourseLessonPlayer({
                   {course.examType.toUpperCase()}
                 </span>
                 <span className="text-xs text-muted-foreground font-semibold truncate max-w-xs">
-                  {course.title}
+                  {pickLocaleText(locale, course.title, course.titleEn)}
                 </span>
               </div>
               <h1 className="text-sm sm:text-base font-extrabold text-foreground truncate max-w-md sm:max-w-lg mt-0.5">
-                {currentLesson?.title}
+                {pickLocaleText(locale, currentLesson?.title, currentLesson?.titleEn)}
               </h1>
             </div>
           </div>
@@ -291,8 +346,6 @@ export default function CourseLessonPlayer({
                   { id: "overview", label: "Tổng quan bài giảng", icon: BookOpen },
                   { id: "quiz", label: "Bài tập củng cố", icon: FileQuestion },
                   { id: "notes", label: `Ghi chú (${currentNotes.length})`, icon: PenTool },
-                  { id: "qa", label: "Hỏi đáp Q&A", icon: MessageSquare },
-                  { id: "ai", label: "Hỏi LingoBot AI", icon: Bot },
                 ].map((tab) => {
                   const Icon = tab.icon;
                   const active = activeTab === tab.id;
@@ -365,55 +418,58 @@ export default function CourseLessonPlayer({
                   <div className="flex items-center justify-between pb-2 border-b border-border">
                     <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
                       <FileQuestion className="size-4 text-emerald-500" />
-                      <span>Câu Hỏi Thực Hành Củng Cố</span>
+                      <span>Câu hỏi từ khối bài học</span>
                     </h3>
                     <span className="text-xs text-muted-foreground font-semibold">
-                      1 / 1 câu hỏi
+                      {quizQuestions.length} câu
                     </span>
                   </div>
 
-                  <div className="space-y-3">
-                    <p className="text-xs sm:text-sm font-semibold text-foreground leading-relaxed">
-                      Which sentence uses the most academic vocabulary for IELTS Writing Task 2?
+                  {quizQuestions.length === 0 && (
+                    <p className="text-sm text-muted-foreground py-6 text-center">
+                      Chưa có dữ liệu. Bài học này chưa có khối câu hỏi (INTERACTIVE_QUIZ / lesson_block_items).
                     </p>
+                  )}
 
-                    <div className="space-y-2">
-                      {[
-                        "Computers make people lazy because they do everything.",
-                        "Excessive reliance on automated systems tends to engender sedentary lifestyle habits.",
-                        "People are using phones a lot and it is very bad.",
-                        "Technology is good but it has some bad things.",
-                      ].map((opt, optIdx) => (
-                        <button
-                          key={optIdx}
-                          type="button"
-                          onClick={() => {
-                            setSelectedQuizOption(optIdx);
-                            setQuizSubmitted(true);
-                          }}
-                          className={`w-full p-3.5 rounded-2xl border text-left text-xs sm:text-[13px] font-medium transition-all cursor-pointer ${
-                            selectedQuizOption === optIdx
-                              ? optIdx === 1
-                                ? "bg-emerald-500/10 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-bold"
-                                : "bg-rose-500/10 border-rose-500 text-rose-700 dark:text-rose-300 font-bold"
-                              : "bg-muted/40 border-border hover:bg-muted text-foreground"
-                          }`}
-                        >
-                          <span className="mr-2 font-bold">{String.fromCharCode(65 + optIdx)}.</span>
-                          {opt}
-                        </button>
-                      ))}
-                    </div>
-
-                    {quizSubmitted && (
-                      <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-300 space-y-1">
-                        <p className="font-bold">✓ Giải thích chi tiết:</p>
-                        <p className="font-normal text-muted-foreground leading-relaxed">
-                          Đáp án <strong>B</strong> sử dụng cấu trúc danh từ hóa (*excessive reliance*), động từ học thuật C1 (*engender*), và cụm từ nâng band (*sedentary lifestyle habits*).
+                  {quizQuestions.map((question, qIdx) => {
+                    const selected = selectedQuizOption[question.id];
+                    const submitted = quizSubmitted[question.id];
+                    return (
+                      <div key={question.id} className="space-y-3">
+                        <p className="text-xs sm:text-sm font-semibold text-foreground leading-relaxed">
+                          {qIdx + 1}. {question.prompt}
                         </p>
+                        <div className="space-y-2">
+                          {question.options.map((opt, optIdx) => (
+                            <button
+                              key={`${question.id}-${optIdx}`}
+                              type="button"
+                              onClick={() => {
+                                setSelectedQuizOption((prev) => ({ ...prev, [question.id]: optIdx }));
+                                setQuizSubmitted((prev) => ({ ...prev, [question.id]: true }));
+                              }}
+                              className={`w-full p-3.5 rounded-2xl border text-left text-xs sm:text-[13px] font-medium transition-all cursor-pointer ${
+                                selected === optIdx
+                                  ? optIdx === question.correctIndex
+                                    ? "bg-emerald-500/10 border-emerald-500 text-emerald-700 dark:text-emerald-300 font-bold"
+                                    : "bg-rose-500/10 border-rose-500 text-rose-700 dark:text-rose-300 font-bold"
+                                  : "bg-muted/40 border-border hover:bg-muted text-foreground"
+                              }`}
+                            >
+                              <span className="mr-2 font-bold">{String.fromCharCode(65 + optIdx)}.</span>
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
+                        {submitted && question.explanation && (
+                          <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-300 space-y-1">
+                            <p className="font-bold">Giải thích:</p>
+                            <p className="font-normal text-muted-foreground leading-relaxed">{question.explanation}</p>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
+                    );
+                  })}
                 </div>
               )}
 
@@ -480,62 +536,15 @@ export default function CourseLessonPlayer({
 
               {/* TAB 4: Q&A */}
               {activeTab === "qa" && (
-                <div className="space-y-4 animate-in fade-in max-w-2xl">
-                  <div className="p-5 rounded-3xl bg-muted/40 border border-border space-y-3">
-                    <h4 className="text-xs font-bold text-foreground">
-                      Đặt Câu Hỏi Cho Giảng Viên & Bạn Học
-                    </h4>
-                    <textarea
-                      rows={2}
-                      placeholder="Mô tả thắc mắc của bạn về bài giảng này..."
-                      className="w-full p-3 rounded-2xl border border-border bg-card text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
-                    />
-                    <div className="flex justify-end">
-                      <button
-                        type="button"
-                        onClick={() => addToast("Đã gửi câu hỏi lên diễn đàn bài học", "success")}
-                        className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold cursor-pointer shadow-xs"
-                      >
-                        Gửi Câu Hỏi
-                      </button>
-                    </div>
-                  </div>
+                <div className="p-6 rounded-2xl bg-muted/40 text-sm text-muted-foreground">
+                  Hỏi đáp Q&A sẽ có khi có diễn đàn.
                 </div>
               )}
 
               {/* TAB 5: LINGOBOT AI */}
               {activeTab === "ai" && (
-                <div className="space-y-4 animate-in fade-in max-w-2xl p-5 rounded-3xl bg-muted/30 border border-border">
-                  <div className="flex items-center gap-2.5 pb-3 border-b border-border">
-                    <div className="size-9 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shadow-xs">
-                      <Bot className="size-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-foreground">
-                        Trợ Lý AI LingoBot Đồng Hành
-                      </h3>
-                      <p className="text-[11px] text-muted-foreground">
-                        Hỏi đáp tức thì về từ vựng, ngữ pháp hoặc bài tập trong video này
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      "Tóm tắt 3 ý chính của bài giảng",
-                      "Trích xuất từ vựng C1 xuất hiện trong video",
-                      "Tạo 3 câu bài tập tương tự",
-                    ].map((prompt, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => addToast(`Đang gửi: "${prompt}" đến LingoBot`, "info")}
-                        className="px-3.5 py-2 rounded-xl bg-card hover:bg-primary/10 hover:text-primary border border-border text-xs font-semibold text-muted-foreground transition-all cursor-pointer shadow-2xs"
-                      >
-                        {prompt} ➜
-                      </button>
-                    ))}
-                  </div>
+                <div className="p-6 rounded-2xl bg-muted/40 text-sm text-muted-foreground">
+                  LingoBot sẽ có khi có diễn đàn.
                 </div>
               )}
             </div>
@@ -577,7 +586,7 @@ export default function CourseLessonPlayer({
                       >
                         <div className="min-w-0 pr-2">
                           <span className="text-xs font-bold text-foreground block truncate">
-                            {secIdx + 1}. {sec.title}
+                            {secIdx + 1}. {pickLocaleText(locale, sec.title, sec.titleEn)}
                           </span>
                           <span className="text-[10px] text-muted-foreground">
                             {secLessonsCompleted}/{sec.lessons.length} bài hoàn thành
@@ -617,7 +626,7 @@ export default function CourseLessonPlayer({
                                   ) : (
                                     getLessonTypeIcon(l.type)
                                   )}
-                                  <span className="truncate text-xs">{l.title}</span>
+                                  <span className="truncate text-xs">{pickLocaleText(locale, l.title, l.titleEn)}</span>
                                 </div>
 
                                 <span

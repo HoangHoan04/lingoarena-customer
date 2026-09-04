@@ -1,5 +1,25 @@
 import { create } from "zustand";
 
+export type AiChatMode =
+  | "tutor"
+  | "writing_grader"
+  | "speaking_partner"
+  | "grammar_explainer"
+  | "roadmap"
+  | "speaking_coach"
+  | "ielts_expert"
+  | "grammar_checker"
+  | "general";
+
+export type AiModelId =
+  | "gemini-2.5-flash"
+  | "gemini-pro-vision"
+  | "ielts-examiner-9.0"
+  | "toeic-trap-master"
+  | "gemini-2.5-pro"
+  | "gpt-4o"
+  | "claude-3-5-sonnet";
+
 export interface FileAttachment {
   id: string;
   name: string;
@@ -11,7 +31,8 @@ export interface FileAttachment {
 
 export interface ChatMessage {
   id: string;
-  role: "user" | "assistant" | "system";
+  role?: "user" | "assistant" | "system";
+  roleId?: string;
   content: string;
   timestamp: number;
   mode?: AiChatMode;
@@ -27,19 +48,6 @@ export interface ChatMessage {
   rating?: "like" | "dislike";
   isBookmarked?: boolean;
 }
-
-export type AiChatMode =
-  | "tutor"
-  | "writing_grader"
-  | "speaking_partner"
-  | "grammar_explainer"
-  | "roadmap";
-
-export type AiModelId =
-  | "gemini-2.5-flash"
-  | "gemini-pro-vision"
-  | "ielts-examiner-9.0"
-  | "toeic-trap-master";
 
 export interface ChatSession {
   id: string;
@@ -265,7 +273,7 @@ export const useAiChatStore = create<AiChatState>((set, get) => ({
     const userMsgId = `msg-user-${Date.now()}`;
     const userMessage: ChatMessage = {
       id: userMsgId,
-      role: "user",
+      roleId: "user",
       content:
         cleanText ||
         (pendingAttachments.length > 0 ? "Đã gửi tệp đính kèm phân tích" : ""),
@@ -281,7 +289,7 @@ export const useAiChatStore = create<AiChatState>((set, get) => ({
       sessions: state.sessions.map((s) => {
         if (s.id !== currentSessionId) return s;
         const isFirst =
-          s.messages.filter((m) => m.role === "user").length === 0;
+          s.messages.filter((m) => m.roleId === "user").length === 0;
         const titleText =
           cleanText || (pendingAttachments[0]?.name ?? "Phân tích tài liệu");
         return {
@@ -301,7 +309,7 @@ export const useAiChatStore = create<AiChatState>((set, get) => ({
     const currentSession = sessions.find((s) => s.id === currentSessionId);
     if (!currentSession) return;
 
-    const userMsgs = currentSession.messages.filter((m) => m.role === "user");
+    const userMsgs = currentSession.messages.filter((m) => m.roleId === "user");
     if (userMsgs.length === 0) return;
 
     const lastUserMsg = userMsgs[userMsgs.length - 1];

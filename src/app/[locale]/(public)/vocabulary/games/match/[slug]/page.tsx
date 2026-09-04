@@ -2,15 +2,18 @@
 
 import { MatchingGame } from "@/components/vocabulary";
 import { Link } from "@/i18n/routing";
-import { cefrBadgeClass } from "@/lib/vocab";
+import { cefrBadgeClass, deckCefrLevel } from "@/lib/vocab";
 import { vocabularyService } from "@/services/vocabulary.service";
 import { useToastStore } from "@/stores/useToastStore";
 import type { VocabDeck } from "@/types/vocabulary";
+import { pickLocaleText } from "@/lib/locale-text";
 import { ArrowLeft, Gamepad2, Sparkles } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 
 export default function VocabularyMatchingPage() {
+  const locale = useLocale();
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
   const { addToast } = useToastStore();
@@ -25,6 +28,8 @@ export default function VocabularyMatchingPage() {
       .catch((err) => addToast(err?.message || "Không tải được dữ liệu trò chơi", "error"))
       .finally(() => setLoading(false));
   }, [slug]);
+
+  const cefr = deck ? deckCefrLevel(deck) : "";
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-12">
@@ -52,18 +57,18 @@ export default function VocabularyMatchingPage() {
                 <span className="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                   Game Ghép Thẻ Nối Nghĩa
                 </span>
-                {deck.level && (
+                {cefr && (
                   <span
                     className={`px-2 py-0.5 rounded-full border text-[10px] font-bold ${cefrBadgeClass(
-                      deck.level,
+                      cefr,
                     )}`}
                   >
-                    CEFR {deck.level}
+                    CEFR {cefr}
                   </span>
                 )}
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-                {deck.title}
+                {pickLocaleText(locale, deck.title, deck.titleEn)}
               </h1>
             </div>
           </div>

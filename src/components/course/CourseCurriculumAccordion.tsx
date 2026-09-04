@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import React, { useState } from "react";
+import { pickLocaleText } from "@/lib/locale-text";
+import { useLocale } from "next-intl";
 
 export default function CourseCurriculumAccordion({
   courseId,
@@ -30,6 +32,7 @@ export default function CourseCurriculumAccordion({
   sections: CourseSection[];
   isEnrolled?: boolean;
 }) {
+  const locale = useLocale();
   const { completedLessonIds } = useCourseStore();
   const completedList = completedLessonIds[courseId] || [];
 
@@ -114,11 +117,11 @@ export default function CourseCurriculumAccordion({
                   <span className="size-6 rounded-lg bg-primary/10 text-primary text-xs font-black flex items-center justify-center shrink-0">
                     {secIdx + 1}
                   </span>
-                  <span>{sec.title}</span>
+                  <span>{pickLocaleText(locale, sec.title, sec.titleEn)}</span>
                 </h4>
-                {sec.description && (
+                {pickLocaleText(locale, sec.description, sec.descriptionEn) && (
                   <p className="text-xs text-muted-foreground font-normal pl-8">
-                    {sec.description}
+                    {pickLocaleText(locale, sec.description, sec.descriptionEn)}
                   </p>
                 )}
               </div>
@@ -160,7 +163,7 @@ export default function CourseCurriculumAccordion({
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="text-xs sm:text-[13px] font-semibold text-foreground truncate block">
-                              {lesson.title}
+                              {pickLocaleText(locale, lesson.title, lesson.titleEn)}
                             </span>
                             {lesson.isPreview && !isEnrolled && (
                               <span className="px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black shrink-0">

@@ -1,12 +1,15 @@
 "use client";
 
 import { Link } from "@/i18n/routing";
-import { cefrBadgeClass, deckTheme, estimateMinutes, masteredPercent } from "@/lib/vocab";
+import { estimateMinutes, masteredPercent } from "@/lib/vocab";
+import { pickLocaleText } from "@/lib/locale-text";
 import type { VocabDeck } from "@/types/vocabulary";
-import { BookOpen, Clock3, Sparkles } from "lucide-react";
+import { BookOpen, Clock3 } from "lucide-react";
+import { useLocale } from "next-intl";
+import DeckCover from "./DeckCover";
 
 export default function DeckCard({ deck }: { deck: VocabDeck }) {
-  const theme = deckTheme(deck);
+  const locale = useLocale();
   const minutes = deck.estimatedMinutes || estimateMinutes(deck.itemCount);
   const mastered = masteredPercent(deck);
   const due = deck.progress?.dueCount ?? deck.itemCount;
@@ -16,26 +19,11 @@ export default function DeckCard({ deck }: { deck: VocabDeck }) {
       href={`/vocabulary/${deck.slug}`}
       className="group flex flex-col rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-2xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
     >
-      <div className={`h-28 bg-linear-to-br ${theme.gradient} p-4 text-white flex flex-col justify-between relative overflow-hidden`}>
-        <div className="flex items-center justify-between z-10">
-          <span className="px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-black tracking-wider uppercase opacity-95">
-            {theme.exam}
-          </span>
-          {deck.level && (
-            <span className="px-2 py-0.5 rounded-full bg-black/25 backdrop-blur-md text-[10px] font-bold">
-              {deck.level}
-            </span>
-          )}
-        </div>
-        <h3 className="text-base sm:text-lg font-black leading-snug line-clamp-1 text-white z-10">
-          {deck.title}
-        </h3>
-        <Sparkles className="absolute -right-2 -bottom-2 size-16 text-white/10 pointer-events-none" />
-      </div>
+      <DeckCover deck={deck} size="sm" />
 
       <div className="p-4 flex-1 flex flex-col justify-between gap-3">
         <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
-          {deck.description || "Bộ từ vựng chuẩn hóa để luyện Flashcard và Quiz thông minh."}
+          {pickLocaleText(locale, deck.description, deck.descriptionEn) || "Bộ từ vựng chuẩn hóa để luyện Flashcard và Quiz thông minh."}
         </p>
 
         <div className="flex items-center gap-3 text-xs text-slate-500">

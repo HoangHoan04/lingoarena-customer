@@ -7,6 +7,21 @@
     "vocabulary": "Vocabulary",
     "arena": "1v1 Arena",
     "pricing": "Pricing",
+    "learn": "Practice",
+    "learnListening": "Listening",
+    "learnSpeaking": "Speaking",
+    "learnWriting": "Writing",
+    "learnGrammar": "Grammar",
+    "learnListeningDesc": "Listen to exam-style passages and conversations",
+    "learnSpeakingDesc": "Pronunciation, dialogue, and on-device speaking practice",
+    "learnWritingDesc": "Sentences, paragraphs, and essays as a local draft",
+    "learnVocabDesc": "Spaced-repetition flashcards (SRS)",
+    "learnGrammarDesc": "Grammar explanations and practice exercises",
+    "learnBadgeListening": "Audio",
+    "learnBadgeSpeaking": "Pronunciation",
+    "learnBadgeWriting": "Writing",
+    "learnBadgeVocab": "SRS",
+    "learnBadgeGrammar": "Complete",
     "placementTest": "Placement Test",
     "placementTestDesc": "Take the 15-minute placement test",
     "practiceRoom": "Enter Mock Exam Room",
@@ -71,25 +86,45 @@
         "score": "850+",
         "label": "Target TOEIC L&R",
         "badge": "Most Popular",
-        "skills": ["Listening (Part 1-4)", "Reading (Part 5-7)", "Core Grammar Focus", "2,500 Essential Words"]
+        "skills": [
+          "Listening (Part 1-4)",
+          "Reading (Part 5-7)",
+          "Core Grammar Focus",
+          "2,500 Essential Words"
+        ]
       },
       "ielts": {
         "score": "7.5+",
         "label": "Target IELTS Academic",
         "badge": "Cam 10-19 Simulator",
-        "skills": ["Reading & Listening", "AI Writing Evaluation", "Recorded Speaking Rubric", "Band 7.0+ Vocabulary"]
+        "skills": [
+          "Reading & Listening",
+          "AI Writing Evaluation",
+          "Recorded Speaking Rubric",
+          "Band 7.0+ Vocabulary"
+        ]
       },
       "vstep": {
         "score": "B2 - C1",
         "label": "University Standard Level 3-5",
         "badge": "MOET Certified",
-        "skills": ["Listening & Reading Tests", "Writing Templates B1-B2", "3-Part Speaking Reflex", "Error Log & Vocabulary"]
+        "skills": [
+          "Listening & Reading Tests",
+          "Writing Templates B1-B2",
+          "3-Part Speaking Reflex",
+          "Error Log & Vocabulary"
+        ]
       },
       "aptis": {
         "score": "CEFR C1",
         "label": "Aptis ESOL Comprehensive",
         "badge": "British Council Standard",
-        "skills": ["Grammar & Vocabulary", "Listening & Reading", "Writing 4 Tasks", "Speaking 4 Parts"]
+        "skills": [
+          "Grammar & Vocabulary",
+          "Listening & Reading",
+          "Writing 4 Tasks",
+          "Speaking 4 Parts"
+        ]
       }
     },
     "examCertificates": {
@@ -107,7 +142,11 @@
         "description": "ETS 2026 standardized mock test suite with in-depth question explanations, trap analysis, and Part 1-7 vocabulary lists.",
         "duration": "120 mins",
         "questions": "200 questions",
-        "highlights": ["Latest ETS simulation tests", "Part-by-part difficulty breakdown", "Automated mistake notebook"]
+        "highlights": [
+          "Latest ETS simulation tests",
+          "Part-by-part difficulty breakdown",
+          "Automated mistake notebook"
+        ]
       },
       "ielts": {
         "code": "IELTS ACADEMIC",
@@ -116,7 +155,11 @@
         "description": "Cambridge 10-19 computer-based exam simulator, integrating AI & instructor evaluation for Writing Task 1-2 and Speaking.",
         "duration": "165 mins",
         "questions": "4 Skills",
-        "highlights": ["IDP/BC computer test simulation", "Detailed 4-criterion Writing grading", "Live Speaking voice analysis"]
+        "highlights": [
+          "IDP/BC computer test simulation",
+          "Detailed 4-criterion Writing grading",
+          "Live Speaking voice analysis"
+        ]
       },
       "vstep": {
         "code": "VSTEP B1-B2-C1",
@@ -125,7 +168,11 @@
         "description": "Comprehensive VSTEP solution for university graduates and educators with updated test banks from top key universities.",
         "duration": "180 mins",
         "questions": "4 Skills",
-        "highlights": ["Official MOET standardized format", "Writing outlines & sample essays", "3-Part Speaking reflex room"]
+        "highlights": [
+          "Official MOET standardized format",
+          "Writing outlines & sample essays",
+          "3-Part Speaking reflex room"
+        ]
       },
       "aptis": {
         "code": "APTIS ESOL",
@@ -134,7 +181,11 @@
         "description": "Aptis General & Advanced practice following British Council's latest format, optimizing Grammar & Vocabulary scores.",
         "duration": "140 mins",
         "questions": "5 Components",
-        "highlights": ["Full 5 standard components", "Advanced grammar breakdown", "Automated CEFR score calculation"]
+        "highlights": [
+          "Full 5 standard components",
+          "Advanced grammar breakdown",
+          "Automated CEFR score calculation"
+        ]
       }
     },
     "steps": {

@@ -89,7 +89,7 @@ export default function PricingSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 text-brand dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
             <Zap className="size-3.5" />
             {t("badge")}
           </div>
@@ -145,12 +145,12 @@ export default function PricingSection() {
                 key={tier.id}
                 className={`relative rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 ${
                   tier.isPopular
-                    ? "bg-white dark:bg-slate-900 border-2 border-[#2b417e] dark:border-[#7b9bee] shadow-2xl scale-102 z-10"
+                    ? "bg-white dark:bg-slate-900 border-2 border-brand dark:border-[#7b9bee] shadow-2xl scale-102 z-10"
                     : "bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-lg"
                 }`}
               >
                 {tier.isPopular && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-linear-to-r from-[#2b417e] to-[#4563b0] text-white text-xs font-black uppercase tracking-wider shadow-md">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-linear-to-r from-brand to-[#4563b0] text-white text-xs font-black uppercase tracking-wider shadow-md">
                     Phổ biến nhất
                   </div>
                 )}
@@ -202,8 +202,8 @@ export default function PricingSection() {
                   <Button
                     className={`w-full py-6 rounded-2xl font-bold text-xs uppercase tracking-wider cursor-pointer ${
                       tier.isPopular
-                        ? "bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-lg shadow-[#2b417e]/25"
-                        : "bg-slate-100 dark:bg-slate-800 hover:bg-[#2b417e]/10 text-slate-900 dark:text-white hover:text-[#2b417e]"
+                        ? "bg-brand hover:bg-[#1e2f5e] text-white shadow-lg shadow-brand/25"
+                        : "bg-slate-100 dark:bg-slate-800 hover:bg-brand/10 text-slate-900 dark:text-white hover:text-brand"
                     }`}
                     onClick={() => router.push("/register")}
                   >

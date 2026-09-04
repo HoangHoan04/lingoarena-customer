@@ -43,7 +43,7 @@ export default function BackToTop() {
 
   if (!isVisible) return null;
 
-  const radius = 24;
+  const radius = 25;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset =
     circumference - (scrollProgress / 100) * circumference;

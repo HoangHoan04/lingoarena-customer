@@ -5,18 +5,16 @@ import {
   Award,
   BookOpen,
   CheckCircle2,
-  GraduationCap,
   Search,
   Sparkles,
   Users,
 } from "lucide-react";
-import React from "react";
 
 export default function CourseHeroBanner() {
   const { searchQuery, setSearchQuery } = useCourseStore();
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#1b2950] via-[#2b417e] to-[#405ea7] text-white p-6 sm:p-10 shadow-2xl border border-white/10 select-none mb-8">
+    <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#1b2950] via-brand to-[#405ea7] text-white p-6 sm:p-10 shadow-2xl border border-white/10 select-none mb-8">
       {/* Ambient background glows */}
       <div className="absolute -top-24 -right-24 size-80 rounded-full bg-blue-400/20 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 size-80 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
@@ -37,7 +35,9 @@ export default function CourseHeroBanner() {
         </h1>
 
         <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed font-normal max-w-2xl">
-          Giáo trình bản quyền từ Cambridge, ETS và Bộ GD&ĐT. Tích hợp AI chấm chữa bài 24/7 và lộ trình cá nhân hóa giúp bạn đỗ chứng chỉ ngay lần thi đầu tiên.
+          Giáo trình bản quyền từ Cambridge, ETS và Bộ GD&ĐT. Tích hợp AI chấm
+          chữa bài 24/7 và lộ trình cá nhân hóa giúp bạn đỗ chứng chỉ ngay lần
+          thi đầu tiên.
         </p>
 
         {/* Search Input Box */}
@@ -59,8 +59,12 @@ export default function CourseHeroBanner() {
               <BookOpen className="size-4 text-amber-300" />
             </div>
             <div>
-              <p className="text-base sm:text-lg font-black leading-tight">50+</p>
-              <p className="text-[11px] text-blue-200 font-medium">Khóa học chuẩn</p>
+              <p className="text-base sm:text-lg font-black leading-tight">
+                50+
+              </p>
+              <p className="text-[11px] text-blue-200 font-medium">
+                Khóa học chuẩn
+              </p>
             </div>
           </div>
 
@@ -69,8 +73,12 @@ export default function CourseHeroBanner() {
               <Users className="size-4 text-emerald-300" />
             </div>
             <div>
-              <p className="text-base sm:text-lg font-black leading-tight">28.000+</p>
-              <p className="text-[11px] text-blue-200 font-medium">Học viên tin chọn</p>
+              <p className="text-base sm:text-lg font-black leading-tight">
+                28.000+
+              </p>
+              <p className="text-[11px] text-blue-200 font-medium">
+                Học viên tin chọn
+              </p>
             </div>
           </div>
 
@@ -79,8 +87,12 @@ export default function CourseHeroBanner() {
               <Award className="size-4 text-amber-300" />
             </div>
             <div>
-              <p className="text-base sm:text-lg font-black leading-tight">96.4%</p>
-              <p className="text-[11px] text-blue-200 font-medium">Đạt mục tiêu điểm</p>
+              <p className="text-base sm:text-lg font-black leading-tight">
+                96.4%
+              </p>
+              <p className="text-[11px] text-blue-200 font-medium">
+                Đạt mục tiêu điểm
+              </p>
             </div>
           </div>
 
@@ -89,8 +101,12 @@ export default function CourseHeroBanner() {
               <CheckCircle2 className="size-4 text-sky-300" />
             </div>
             <div>
-              <p className="text-base sm:text-lg font-black leading-tight">Cam kết</p>
-              <p className="text-[11px] text-blue-200 font-medium">Đầu ra bằng văn bản</p>
+              <p className="text-base sm:text-lg font-black leading-tight">
+                Cam kết
+              </p>
+              <p className="text-[11px] text-blue-200 font-medium">
+                Đầu ra bằng văn bản
+              </p>
             </div>
           </div>
         </div>

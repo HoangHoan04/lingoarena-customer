@@ -1,5 +1,6 @@
 import { extractApiData } from "@/lib/auth";
 import apiService from "./api.service";
+import API_ENDPOINTS from "./endpoint";
 
 function paginationPayload<T>(res: any) {
   const body = res?.data ?? res;
@@ -35,6 +36,10 @@ export const courseService = {
     payload: { status?: string; progressPercent?: number; lastBlockId?: string },
   ) => {
     const res = await apiService.post(`/user/course/lessons/${lessonId}/progress`, payload);
+    return extractApiData<any>(res);
+  },
+  reviews: async (courseId: string, payload: { rating: number; comment?: string }) => {
+    const res = await apiService.post(API_ENDPOINTS.COURSES.REVIEWS(courseId), payload);
     return extractApiData<any>(res);
   },
 };

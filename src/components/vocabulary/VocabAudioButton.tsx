@@ -1,7 +1,7 @@
 "use client";
 
-import { hasVocabAudio, playVocabAudio } from "@/lib/vocab";
 import { cn } from "@/lib/utils";
+import { pronounceWord } from "@/lib/sound";
 import type { VocabWord } from "@/types/vocabulary";
 import { Volume2 } from "lucide-react";
 import { useState } from "react";
@@ -14,36 +14,23 @@ export default function VocabAudioButton({
   compact,
   className,
 }: {
-  word: Pick<VocabWord, "audioUsUrl" | "audioUkUrl">;
+  word: Pick<VocabWord, "headword" | "audioUsUrl" | "audioUkUrl">;
   accent?: Accent;
   compact?: boolean;
   className?: string;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const url =
-    accent === "uk"
-      ? word.audioUkUrl || word.audioUsUrl
-      : accent === "us"
-        ? word.audioUsUrl || word.audioUkUrl
-        : word.audioUsUrl || word.audioUkUrl;
-
-  const available = accent ? Boolean(url) : hasVocabAudio(word);
-  if (!available) return null;
-
   const handlePlay = (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (url && typeof window !== "undefined") {
-      setIsPlaying(true);
-      const audio = new Audio(url);
-      audio.onended = () => setIsPlaying(false);
-      audio.onerror = () => setIsPlaying(false);
-      audio.play().catch(() => setIsPlaying(false));
-    } else {
-      playVocabAudio(word, accent);
-    }
+    setIsPlaying(true);
+    pronounceWord(word, accent || "us");
+
+    setTimeout(() => {
+      setIsPlaying(false);
+    }, 1000);
   };
 
   const isUS = accent === "us";

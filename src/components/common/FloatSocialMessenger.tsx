@@ -6,12 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  Maximize2,
-  MessageCircle,
-  Minimize2,
-  X,
-} from "lucide-react";
+import { Maximize2, MessageCircle, Minimize2, X } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -96,7 +91,9 @@ export default function FloatSocialMessenger() {
                     type="button"
                     onClick={toggleSize}
                     className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors"
-                    aria-label={isCompact ? "Phóng to kích thước" : "Thu nhỏ kích thước"}
+                    aria-label={
+                      isCompact ? "Phóng to kích thước" : "Thu nhỏ kích thước"
+                    }
                   >
                     {isCompact ? (
                       <Maximize2 className="size-3.5" />
@@ -158,9 +155,11 @@ export default function FloatSocialMessenger() {
               className={`relative size-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer hover:scale-105 active:scale-95 border border-white/20 ${
                 isOpen
                   ? "bg-slate-800 hover:bg-slate-900 text-white"
-                  : "bg-[#2b417e] hover:bg-[#1e2f5e] text-white shadow-[#2b417e]/35 ring-4 ring-[#2b417e]/20"
+                  : "bg-brand hover:bg-[#1e2f5e] text-white shadow-brand/35 ring-4 ring-brand/20"
               }`}
-              aria-label={isOpen ? "Đóng danh sách hỗ trợ" : "Mở danh sách hỗ trợ"}
+              aria-label={
+                isOpen ? "Đóng danh sách hỗ trợ" : "Mở danh sách hỗ trợ"
+              }
             >
               {/* Static notification red dot */}
               {!isOpen && hasNewMessage && (

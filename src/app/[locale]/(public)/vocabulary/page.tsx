@@ -1,25 +1,30 @@
 "use client";
 
-import {
-  DeckCatalogCard,
-  MyDeckSection,
-  VocabPageHeader,
-  VocabStatsPanel,
-} from "@/components/vocabulary";
-import { groupDecks, matchDeckTag, VOCAB_TAGS, type VocabTag } from "@/lib/vocab";
+import { TopicFilterBar } from "@/components/common/TopicFilterBar";
+import
+    {
+        DeckCatalogCard,
+        MyDeckSection,
+        VocabPageHeader,
+        VocabStatsPanel,
+    } from "@/components/vocabulary";
+import { useTopicsQuery } from "@/hooks/queries/useQuestionQueries";
+import { useLocale } from "next-intl";
 import { vocabularyService } from "@/services/vocabulary.service";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
 import type { UserVocabStats, VocabDeck } from "@/types/vocabulary";
-import { Filter, Layers, RotateCcw, Search, Sparkles } from "lucide-react";
+import { Layers, RotateCcw, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 export default function VocabularyPage() {
+  const locale = useLocale();
   const { isAuthenticated } = useAuthStore();
   const { addToast } = useToastStore();
+  const { data: topics = [], isLoading: topicsLoading } = useTopicsQuery();
   const [decks, setDecks] = useState<VocabDeck[]>([]);
   const [stats, setStats] = useState<UserVocabStats | null>(null);
-  const [tag, setTag] = useState<VocabTag>("Tất cả");
+  const [selectedTopicId, setSelectedTopicId] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -33,7 +38,9 @@ export default function VocabularyPage() {
     (async () => {
       setLoading(true);
       try {
-        const res = await vocabularyService.paginationDecks(0, 50);
+        const res = await vocabularyService.paginationDecks(0, 100, {
+          topicId: selectedTopicId !== "ALL" ? selectedTopicId : undefined,
+        });
         if (cancelled) return;
         setDecks(res.data);
         if (mounted && isAuthenticated) {
@@ -54,23 +61,21 @@ export default function VocabularyPage() {
     return () => {
       cancelled = true;
     };
-  }, [mounted, isAuthenticated]);
+  }, [mounted, isAuthenticated, selectedTopicId]);
 
   const filteredDecks = useMemo(() => {
     return decks.filter((deck) => {
-      const matchTag = matchDeckTag(deck, tag);
-      if (!matchTag) return false;
       if (!searchQuery.trim()) return true;
       const q = searchQuery.toLowerCase().trim();
       return (
         deck.title.toLowerCase().includes(q) ||
+        (deck.titleEn || "").toLowerCase().includes(q) ||
         (deck.description && deck.description.toLowerCase().includes(q)) ||
+        (deck.descriptionEn && deck.descriptionEn.toLowerCase().includes(q)) ||
         deck.slug.toLowerCase().includes(q)
       );
     });
-  }, [decks, tag, searchQuery]);
-
-  const catalogGroups = useMemo(() => groupDecks(filteredDecks), [filteredDecks]);
+  }, [decks, searchQuery]);
 
   const popularDecks = useMemo(
     () => [...decks].sort((a, b) => b.itemCount - a.itemCount),
@@ -115,72 +120,34 @@ export default function VocabularyPage() {
           </div>
         </div>
 
-        {/* Tag Filters */}
-        <div className="flex flex-wrap items-center gap-2 pt-1">
-          <div className="inline-flex items-center gap-1 text-xs font-bold text-slate-400 mr-1">
-            <Filter className="size-3.5" />
-            <span>Lọc:</span>
-          </div>
-          {VOCAB_TAGS.map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setTag(item)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all duration-200 cursor-pointer select-none ${
-                tag === item
-                  ? "bg-primary text-white border-primary shadow-sm shadow-primary/20 scale-102"
-                  : "border-slate-200/90 dark:border-slate-700/80 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-primary/50"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
+        {/* Topic Filters */}
+        <TopicFilterBar
+          topics={topics}
+          selectedId={selectedTopicId}
+          onSelect={setSelectedTopicId}
+          accent="primary"
+          loading={topicsLoading}
+          title="Chọn chủ đề từ vựng"
+          hint="Bộ từ được gắn chủ đề qua từng từ. Chọn chủ đề để học đúng ngữ cảnh giao tiếp."
+        />
       </section>
 
-      {/* Catalog Groups or Skeletons */}
+      {/* Catalog Grid or Skeletons */}
       {loading ? (
-        <div className="space-y-8">
-          {[1, 2].map((group) => (
-            <div key={group} className="space-y-4">
-              <div className="h-6 w-48 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {[1, 2, 3].map((item) => (
-                  <div
-                    key={item}
-                    className="h-80 rounded-3xl bg-slate-100 dark:bg-slate-800/60 animate-pulse border border-slate-200/50 dark:border-slate-800"
-                  />
-                ))}
-              </div>
-            </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[1, 2, 3, 4, 5, 6].map((item) => (
+            <div
+              key={item}
+              className="h-80 rounded-3xl bg-slate-100 dark:bg-slate-800/60 animate-pulse border border-slate-200/50 dark:border-slate-800"
+            />
           ))}
         </div>
       ) : (
-        catalogGroups.map((group) => (
-          <section key={group.id} className="space-y-4">
-            <div className="flex items-baseline justify-between border-b border-slate-100 dark:border-slate-800/80 pb-2">
-              <div>
-                <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
-                  {group.title}
-                </h3>
-                {group.subtitle && (
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                    {group.subtitle}
-                  </p>
-                )}
-              </div>
-              <span className="text-xs font-bold text-slate-400">
-                {group.decks.length} bộ từ
-              </span>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {group.decks.map((deck) => (
-                <DeckCatalogCard key={deck.id} deck={deck} />
-              ))}
-            </div>
-          </section>
-        ))
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredDecks.map((deck) => (
+            <DeckCatalogCard key={deck.id} deck={deck} />
+          ))}
+        </div>
       )}
 
       {/* Empty State */}
@@ -193,13 +160,13 @@ export default function VocabularyPage() {
             Không tìm thấy bộ thẻ nào phù hợp
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
-            Không có kết quả khớp với tag &ldquo;{tag}&rdquo;
+            Không có kết quả khớp với chủ đề đã chọn
             {searchQuery && ` hoặc từ khóa "${searchQuery}"`}.
           </p>
           <button
             type="button"
             onClick={() => {
-              setTag("Tất cả");
+              setSelectedTopicId("ALL");
               setSearchQuery("");
             }}
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-sm hover:bg-primary/90 transition-colors cursor-pointer"

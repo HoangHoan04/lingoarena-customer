@@ -1,14 +1,9 @@
 "use client";
 
-import { WordRow } from "@/components/vocabulary";
+import { DeckCover, WordRow } from "@/components/vocabulary";
 import { Link, useRouter } from "@/i18n/routing";
-import {
-  cefrBadgeClass,
-  deckCoverUrl,
-  deckLearnerCount,
-  deckTheme,
-  estimateMinutes,
-} from "@/lib/vocab";
+import { pickLocaleText } from "@/lib/locale-text";
+import { cefrBadgeClass, deckCefrLevel, estimateMinutes } from "@/lib/vocab";
 import { vocabularyService } from "@/services/vocabulary.service";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastStore } from "@/stores/useToastStore";
@@ -16,7 +11,6 @@ import type { VocabDeck, VocabStudyModeUI } from "@/types/vocabulary";
 import {
   ArrowLeft,
   BookOpen,
-  CheckCircle2,
   Clock3,
   FileEdit,
   Flame,
@@ -25,12 +19,9 @@ import {
   Layers3,
   Mic,
   Play,
-  RotateCcw,
   Search,
-  Sparkles,
-  Users,
 } from "lucide-react";
-import Image from "next/image";
+import { useLocale } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -77,6 +68,7 @@ const STUDY_QUICK_MODES: {
 ];
 
 export default function VocabularyDeckPage() {
+  const locale = useLocale();
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
   const router = useRouter();
@@ -91,7 +83,9 @@ export default function VocabularyDeckPage() {
     vocabularyService
       .getDeckBySlug(slug)
       .then(setDeck)
-      .catch((err) => addToast(err?.message || "Không tìm thấy bộ từ vựng", "error"))
+      .catch((err) =>
+        addToast(err?.message || "Không tìm thấy bộ từ vựng", "error"),
+      )
       .finally(() => setLoading(false));
   }, [slug]);
 
@@ -112,6 +106,7 @@ export default function VocabularyDeckPage() {
       (w) =>
         w.headword.toLowerCase().includes(q) ||
         w.meaningVi.toLowerCase().includes(q) ||
+        (w.definitionVi && w.definitionVi.toLowerCase().includes(q)) ||
         (w.definitionEn && w.definitionEn.toLowerCase().includes(q)),
     );
   }, [deck?.words, wordFilter]);
@@ -123,7 +118,10 @@ export default function VocabularyDeckPage() {
         <div className="h-80 rounded-3xl bg-slate-100 dark:bg-slate-800" />
         <div className="grid sm:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-28 rounded-2xl bg-slate-100 dark:bg-slate-800" />
+            <div
+              key={i}
+              className="h-28 rounded-2xl bg-slate-100 dark:bg-slate-800"
+            />
           ))}
         </div>
       </div>
@@ -133,7 +131,9 @@ export default function VocabularyDeckPage() {
   if (!deck) {
     return (
       <div className="py-20 text-center space-y-4 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800">
-        <p className="text-base text-slate-500">Không tìm thấy bộ từ vựng yêu cầu.</p>
+        <p className="text-base text-slate-500">
+          Không tìm thấy bộ từ vựng yêu cầu.
+        </p>
         <Link
           href="/vocabulary"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold shadow-md"
@@ -144,11 +144,9 @@ export default function VocabularyDeckPage() {
     );
   }
 
-  const theme = deckTheme(deck);
   const due = deck.progress?.dueCount ?? deck.itemCount;
   const minutes = deck.estimatedMinutes || estimateMinutes(deck.itemCount);
-  const cover = deckCoverUrl(deck);
-  const learners = deckLearnerCount(deck);
+  const cefr = deckCefrLevel(deck);
 
   return (
     <div className="space-y-8 pb-12">
@@ -166,54 +164,30 @@ export default function VocabularyDeckPage() {
       <div className="grid lg:grid-cols-12 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900 shadow-xl">
         {/* Cover / Visual */}
         <div className="lg:col-span-5 relative min-h-[260px] lg:min-h-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-          {deck.thumbnailUrl ? (
-            <Image src={cover} alt={deck.title} fill className="object-cover" unoptimized />
-          ) : (
-            <div
-              className={`h-full w-full bg-linear-to-br ${theme.gradient} p-8 text-white flex flex-col justify-between`}
-            >
-              <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black tracking-widest uppercase">
-                  {theme.exam}
-                </span>
-                {deck.level && (
-                  <span className="px-3 py-1 rounded-full bg-black/30 backdrop-blur-md text-xs font-bold">
-                    CEFR {deck.level}
-                  </span>
-                )}
-              </div>
-              <div>
-                <Sparkles className="size-10 text-white/40 mb-2" />
-                <h2 className="text-2xl sm:text-3xl font-black leading-tight">{deck.title}</h2>
-              </div>
-            </div>
-          )}
+          <DeckCover deck={deck} size="lg" priority />
         </div>
 
         {/* Deck Info & Actions */}
         <div className="lg:col-span-7 p-6 sm:p-8 space-y-6 flex flex-col justify-between">
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <span className={`text-xs font-black tracking-widest uppercase ${theme.accent}`}>
-                {theme.exam}
-              </span>
-              {deck.level && (
+            {cefr && (
+              <div className="flex items-center gap-2">
                 <span
                   className={`px-2.5 py-0.5 rounded-full border text-xs font-bold uppercase ${cefrBadgeClass(
-                    deck.level,
+                    cefr,
                   )}`}
                 >
-                  CEFR {deck.level}
+                  CEFR {cefr}
                 </span>
-              )}
-            </div>
+              </div>
+            )}
 
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
-              {deck.title}
+              {pickLocaleText(locale, deck.title, deck.titleEn)}
             </h1>
 
             <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              {deck.description ||
+              {pickLocaleText(locale, deck.description, deck.descriptionEn) ||
                 "Học từ vựng theo phương pháp lặp lại ngắt quãng SRS, luyện flashcard và quiz tương tác cao."}
             </p>
 
@@ -222,10 +196,6 @@ export default function VocabularyDeckPage() {
               <span className="inline-flex items-center gap-1.5">
                 <BookOpen className="size-4 text-primary dark:text-[#7b9bee]" />
                 <strong>{deck.itemCount}</strong> thẻ từ vựng
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Users className="size-4 text-slate-400" />
-                {learners.toLocaleString("vi-VN")} người học
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Clock3 className="size-4 text-slate-400" />
@@ -265,7 +235,8 @@ export default function VocabularyDeckPage() {
             Lựa Chọn Chế Độ Luyện Tập
           </h3>
           <p className="text-xs sm:text-sm text-slate-500">
-            Bạn có thể chọn phương thức học phù hợp với mục tiêu và thời gian hiện tại.
+            Bạn có thể chọn phương thức học phù hợp với mục tiêu và thời gian
+            hiện tại.
           </p>
         </div>
 
@@ -288,7 +259,9 @@ export default function VocabularyDeckPage() {
                   <h4 className="text-base font-black text-slate-900 dark:text-white group-hover:text-primary transition-colors">
                     {mode.title}
                   </h4>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">{mode.desc}</p>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    {mode.desc}
+                  </p>
                 </div>
                 <span className="inline-flex items-center gap-1 text-xs font-bold text-primary dark:text-[#7b9bee] mt-4">
                   <span>Học ngay</span>

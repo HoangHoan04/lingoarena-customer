@@ -5,7 +5,6 @@ import Image from "next/image";
 export default function Logo({ className = "" }: { className?: string }) {
   return (
     <div className={`flex items-center gap-3 select-none ${className}`}>
-      {/* Favicon Logo Icon */}
       <div className="logo relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center">
         <Image
           src="/images/android-chrome-192x192.png"
@@ -17,12 +16,11 @@ export default function Logo({ className = "" }: { className?: string }) {
         />
       </div>
 
-      {/* Brand Text */}
       <div className="flex flex-col justify-center h-10 sm:h-11 text-left">
         <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
-          Lingo<span className="text-[#2b417e] dark:text-[#7b9bee]">Arena</span>
+          Lingo<span className="text-brand dark:text-[#7b9bee]">Arena</span>
         </span>
-        <span className="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-[#2b417e]/60 dark:text-[#7b9bee]/70 mt-1 leading-none">
+        <span className="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-brand/60 dark:text-[#7b9bee]/70 mt-1 leading-none">
           Exam Prep & AI Learning
         </span>
       </div>

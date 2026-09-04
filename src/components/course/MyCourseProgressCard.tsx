@@ -3,9 +3,12 @@
 import { useCourseStore } from "@/stores/useCourseStore";
 import { ArrowRight, BookOpen, Clock, PlayCircle, Trophy } from "lucide-react";
 import { Link } from "@/i18n/routing";
+import { pickLocaleText } from "@/lib/locale-text";
+import { useLocale } from "next-intl";
 import React from "react";
 
 export default function MyCourseProgressCard() {
+  const locale = useLocale();
   const { courses, enrolledCourseIds, getCourseProgress } = useCourseStore();
 
   const enrolledCourses = courses.filter((c) =>
@@ -46,7 +49,7 @@ export default function MyCourseProgressCard() {
               <div className="relative w-full sm:w-44 h-28 sm:h-auto rounded-2xl overflow-hidden shrink-0">
                 <img
                   src={course.thumbnailUrl}
-                  alt={course.title}
+                  alt={pickLocaleText(locale, course.title, course.titleEn)}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -61,7 +64,7 @@ export default function MyCourseProgressCard() {
                     {course.examType.toUpperCase()}
                   </span>
                   <h3 className="text-sm font-bold text-foreground mt-1 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
-                    {course.title}
+                    {pickLocaleText(locale, course.title, course.titleEn)}
                   </h3>
                 </div>
 

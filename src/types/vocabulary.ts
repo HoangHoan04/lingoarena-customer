@@ -1,5 +1,3 @@
-export type CertificateType = "ALL" | "TOEIC" | "IELTS" | "VSTEP" | "DAILY";
-
 export type CefrLevel = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 
 export type FlashcardRating = "AGAIN" | "HARD" | "GOOD" | "EASY";
@@ -44,6 +42,7 @@ export interface VocabLookup {
   id: string;
   code?: string;
   name: string;
+  nameEn?: string | null;
 }
 
 export interface VocabWord {
@@ -56,7 +55,10 @@ export interface VocabWord {
   audioUkUrl?: string | null;
   audioUsUrl?: string | null;
   definitionEn: string;
+  definitionVi?: string | null;
   meaningVi: string;
+  imageUrl?: string | null;
+  thumbnailUrl?: string | null;
   cefrLevel?: CefrLevel | string | null;
   status?: string;
   frequencyLevel?: number;
@@ -103,13 +105,16 @@ export interface DeckProgress {
 export interface VocabDeck {
   id: string;
   title: string;
+  titleEn?: string | null;
   slug: string;
   description?: string | null;
+  descriptionEn?: string | null;
   thumbnailUrl?: string | null;
   visibility?: string;
   ownerType?: string;
   examTypeId?: string | null;
   examType?: VocabLookup | null;
+  cefrLevel?: CefrLevel | string | null;
   level?: CefrLevel | string | null;
   itemCount: number;
   estimatedMinutes: number;
@@ -146,6 +151,7 @@ export interface StudyAnswerResult {
   explanation: {
     headword: string;
     meaningVi: string;
+    definitionVi?: string | null;
     definitionEn: string;
     exampleEn?: string | null;
     exampleVi?: string | null;

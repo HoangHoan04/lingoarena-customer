@@ -7,13 +7,8 @@ import {
   MyCourseProgressCard,
 } from "@/components/course";
 import { useCourseStore } from "@/stores/useCourseStore";
-import {
-  Award,
-  BookOpen,
-  CheckCircle2,
-  Sparkles,
-} from "lucide-react";
-import React, { useEffect, useMemo } from "react";
+import { Award, BookOpen, CheckCircle2, Sparkles } from "lucide-react";
+import { useEffect, useMemo } from "react";
 
 export default function CourseCatalogPage() {
   const {
@@ -37,31 +32,29 @@ export default function CourseCatalogPage() {
   const filteredCourses = useMemo(() => {
     let list = [...courses];
 
-    // Search
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       list = list.filter(
         (c) =>
           c.title.toLowerCase().includes(q) ||
+          (c.titleEn || "").toLowerCase().includes(q) ||
           c.shortDescription.toLowerCase().includes(q) ||
-          c.instructor.name.toLowerCase().includes(q)
+          (c.shortDescriptionEn || "").toLowerCase().includes(q) ||
+          c.instructor.name.toLowerCase().includes(q),
       );
     }
 
-    // Exam Type
     if (selectedExamType !== "all") {
       list = list.filter((c) => c.examType === selectedExamType);
     }
 
-    // CEFR Level
     if (selectedCefrLevel !== "all") {
       list = list.filter(
         (c) =>
-          c.levelFrom === selectedCefrLevel || c.levelTo === selectedCefrLevel
+          c.levelFrom === selectedCefrLevel || c.levelTo === selectedCefrLevel,
       );
     }
 
-    // Price Type
     if (selectedPriceType === "free") {
       list = list.filter((c) => c.isFree);
     } else if (selectedPriceType === "pro") {
@@ -70,7 +63,6 @@ export default function CourseCatalogPage() {
       list = list.filter((c) => c.hasMentor);
     }
 
-    // Sorting
     if (sortBy === "popular") {
       list.sort((a, b) => b.studentCount - a.studentCount);
     } else if (sortBy === "rating") {
@@ -94,16 +86,9 @@ export default function CourseCatalogPage() {
   return (
     <div className="min-h-screen bg-background text-foreground py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Top Hero Banner */}
         <CourseHeroBanner />
-
-        {/* My Enrolled Course Progress (if any) */}
         <MyCourseProgressCard />
-
-        {/* Multi-Dimensional Filter Bar */}
         <CourseFilterBar />
-
-        {/* Course Catalog Grid */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-base sm:text-lg font-extrabold text-foreground">
@@ -128,7 +113,8 @@ export default function CourseCatalogPage() {
                 Không tìm thấy khóa học phù hợp
               </h3>
               <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn lại các bộ lọc chứng chỉ.
+                Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn lại các bộ lọc chứng
+                chỉ.
               </p>
             </div>
           ) : (
@@ -140,7 +126,6 @@ export default function CourseCatalogPage() {
           )}
         </div>
 
-        {/* Bottom Feature Value Props */}
         <div className="pt-12 border-t border-border grid grid-cols-1 md:grid-cols-3 gap-6 select-none">
           <div className="p-6 rounded-3xl bg-card border border-border space-y-2 shadow-xs">
             <div className="size-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
@@ -150,7 +135,8 @@ export default function CourseCatalogPage() {
               Công Nghệ AI LingoBot 24/7
             </h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Chấm bài Writing và chỉnh sửa phát âm Speaking tức thì theo ma trận tiêu chí chấm thi quốc tế.
+              Chấm bài Writing và chỉnh sửa phát âm Speaking tức thì theo ma
+              trận tiêu chí chấm thi quốc tế.
             </p>
           </div>
 
@@ -162,7 +148,8 @@ export default function CourseCatalogPage() {
               Giáo Trình Bản Quyền
             </h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Biên soạn độc quyền từ các chuyên gia IELTS 8.5+ và TOEIC 990, cập nhật sát xu hướng ra đề 2026.
+              Biên soạn độc quyền từ các chuyên gia IELTS 8.5+ và TOEIC 990, cập
+              nhật sát xu hướng ra đề 2026.
             </p>
           </div>
 
@@ -174,7 +161,8 @@ export default function CourseCatalogPage() {
               Cam Kết Đầu Ra Bằng Hợp Đồng
             </h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Học lại miễn phí 100% nếu hoàn thành giáo trình nhưng không đạt điểm mục tiêu đã cam kết.
+              Học lại miễn phí 100% nếu hoàn thành giáo trình nhưng không đạt
+              điểm mục tiêu đã cam kết.
             </p>
           </div>
         </div>

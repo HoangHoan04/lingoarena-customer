@@ -46,11 +46,14 @@ export default function FaqSection() {
   ];
 
   return (
-    <section id="faq" className="py-16 sm:py-24 relative overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 border-b border-slate-200/60 dark:border-slate-800">
+    <section
+      id="faq"
+      className="py-16 sm:py-24 relative overflow-hidden bg-slate-50/50 dark:bg-slate-900/30 border-b border-slate-200/60 dark:border-slate-800"
+    >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-14 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2b417e]/10 dark:bg-[#2b417e]/20 border border-[#2b417e]/20 dark:border-[#2b417e]/30 text-[#2b417e] dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 dark:border-brand/30 text-brand dark:text-[#7b9bee] text-xs font-bold uppercase tracking-wider">
             <MessageCircleQuestion className="size-3.5" />
             {t("badge")}
           </div>
@@ -67,9 +70,9 @@ export default function FaqSection() {
           {faqs.map((faq) => (
             <AccordionItem
               key={faq.id}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-1 shadow-2xs transition-all data-open:border-[#2b417e]/50 data-open:shadow-md"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-1 shadow-2xs transition-all data-open:border-brand/50 data-open:shadow-md"
             >
-              <AccordionTrigger className="text-left font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:text-[#2b417e] dark:hover:text-[#7b9bee] transition-colors py-4">
+              <AccordionTrigger className="text-left font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:text-brand dark:hover:text-[#7b9bee] transition-colors py-4">
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed pb-5 pt-1">

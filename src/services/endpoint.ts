@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     ME: "/user/auth/me",
     PROFILE: "/user/auth/profile",
     REFRESH_TOKEN: "/user/auth/refresh-token",
+    LOGOUT: "/user/auth/logout",
     GOOGLE_LOGIN: "/user/auth/google-login",
     FACEBOOK_LOGIN: "/user/auth/facebook-login",
   },
@@ -20,6 +21,7 @@ export const API_ENDPOINTS = {
     ME_ENROLLMENTS: "/user/course/me/enrollments",
     LESSON: (id: string) => `/user/course/lessons/${id}`,
     LESSON_PROGRESS: (id: string) => `/user/course/lessons/${id}/progress`,
+    REVIEWS: (id: string) => `/user/course/${id}/reviews`,
   },
   GRAMMAR: {
     TOPICS_PAGINATION: "/user/grammar/topics/pagination",
@@ -37,6 +39,7 @@ export const API_ENDPOINTS = {
     ANSWERS: (id: string) => `/user/assessment/attempts/${id}/answers`,
     SUBMIT: (id: string) => `/user/assessment/attempts/${id}/submit`,
     RESULT: (id: string) => `/user/assessment/attempts/${id}/result`,
+    GRADING_RUN: (id: string) => `/user/assessment/grading-tasks/${id}/run`,
   },
   LEARNING: {
     GOALS: "/user/learning/goals",
@@ -49,6 +52,8 @@ export const API_ENDPOINTS = {
   },
   ARENA: {
     ME_RATING: "/user/arena/me/rating",
+    ME_MATCHES: "/user/arena/me/matches",
+    CHALLENGES: "/user/arena/challenges",
     QUEUE: "/user/arena/queue",
     QUEUE_TICKET: (id: string) => `/user/arena/queue/${id}`,
     PRACTICE_MATCH: "/user/arena/practice-match",
@@ -59,18 +64,34 @@ export const API_ENDPOINTS = {
   GAMIFICATION: {
     ME_STATS: "/user/gamification/me/stats",
     CHALLENGES_TODAY: "/user/gamification/challenges/today",
-    CHALLENGE_PROGRESS: (code: string) => `/user/gamification/challenges/${code}/progress`,
+    CHALLENGE_PROGRESS: (code: string) =>
+      `/user/gamification/challenges/${code}/progress`,
     PRACTICE_POINTS: "/user/gamification/me/practice-points",
   },
   LEADERBOARD: {
     SNAPSHOTS: "/user/leaderboard/snapshots",
   },
-  COMMERCE: {
-    PRODUCTS_PAGINATION: "/user/commerce/products/pagination",
-    ORDERS: "/user/commerce/orders",
-    PAY_SANDBOX: (id: string) => `/user/commerce/orders/${id}/pay-sandbox`,
-    ME_ORDERS: "/user/commerce/me/orders",
-    ME_ENTITLEMENTS: "/user/commerce/me/entitlements",
+
+  ORGANIZATION: {
+    ME: "/user/organization/me/organizations",
+  },
+  CLASSROOM: {
+    ME_CLASSES: "/user/classroom/me/classes",
+    JOIN: "/user/classroom/join",
+    DETAIL: (id: string) => `/user/classroom/${id}`,
+    SUBMIT_ASSIGNMENT: (id: string) =>
+      `/user/classroom/assignments/${id}/submit`,
+  },
+  SUPPORT: {
+    CONTACT: "/user/support/contact",
+    TICKETS: "/user/support/tickets",
+    TICKET: (id: string) => `/user/support/tickets/${id}`,
+    TICKET_MESSAGES: (id: string) => `/user/support/tickets/${id}/messages`,
+  },
+  NOTIFICATION: {
+    ME_PAGINATION: "/user/notification/me/pagination",
+    READ: (id: string) => `/user/notification/read/${id}`,
+    PREFERENCES: "/user/notification/me/preferences",
   },
   VOCABULARY: {
     DECKS_PAGINATION: "/user/vocabulary/decks/pagination",
@@ -81,7 +102,8 @@ export const API_ENDPOINTS = {
     ME_NOTEBOOK: "/user/vocabulary/me/notebook",
     SESSIONS: "/user/vocabulary/sessions",
     SESSION_ANSWER: (id: string) => `/user/vocabulary/sessions/${id}/answer`,
-    SESSION_COMPLETE: (id: string) => `/user/vocabulary/sessions/${id}/complete`,
+    SESSION_COMPLETE: (id: string) =>
+      `/user/vocabulary/sessions/${id}/complete`,
   },
   QUESTION: {
     QUESTIONS_PAGINATION: "/user/question/questions/pagination",
@@ -93,7 +115,26 @@ export const API_ENDPOINTS = {
     LOOKUP_TOPICS: "/user/question/lookups/topics",
     PRACTICE_START: "/user/question/practice/start",
     PRACTICE_GRADE: "/user/question/practice/grade",
+    GROUPS_PAGINATION: "/user/question/groups/pagination",
+    GROUP_DETAIL: (id: string) => `/user/question/groups/${id}`,
+    GROUP_START_SESSION: (id: string) =>
+      `/user/question/groups/${id}/start-session`,
   },
+  CONVERSATION: {
+    PERSONAS: "/user/conversation/personas",
+    SPEAKING_ROOMS_PAGINATION: "/user/conversation/speaking-rooms/pagination",
+    SPEAKING_ROOMS_CREATE: "/user/conversation/speaking-rooms",
+    SPEAKING_ROOM_JOIN: (id: string) =>
+      `/user/conversation/speaking-rooms/${id}/join`,
+    AI_SESSIONS: "/user/conversation/ai-sessions",
+    AI_SESSIONS_PAGINATION: "/user/conversation/ai-sessions/pagination",
+    CONVERSATION: (id: string) => `/user/conversation/conversations/${id}`,
+    CONVERSATION_MESSAGES: (id: string) =>
+      `/user/conversation/conversations/${id}/messages`,
+    CONVERSATION_CLOSE: (id: string) =>
+      `/user/conversation/conversations/${id}/close`,
+  },
+
   TRANSLATE: {
     TEXT: "/user/translate",
   },

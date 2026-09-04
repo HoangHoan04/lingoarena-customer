@@ -26,6 +26,29 @@ export default function ArenaUserRankCard() {
     setMounted(true);
   }, []);
 
+  if (!mounted) {
+    return (
+      <div className="rounded-3xl bg-card border border-border p-6 sm:p-7 shadow-xl space-y-6 animate-pulse select-none">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="size-16 rounded-2xl bg-muted" />
+            <div className="space-y-2">
+              <div className="h-5 w-40 bg-muted rounded-lg" />
+              <div className="h-4 w-24 bg-muted rounded-lg" />
+            </div>
+          </div>
+          <div className="h-16 w-48 bg-muted rounded-2xl" />
+        </div>
+        <div className="h-2 w-full bg-muted rounded-full" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-20 bg-muted rounded-2xl" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   const total = userStats.winCount + userStats.lossCount;
   const winRate = total > 0 ? Math.round((userStats.winCount / total) * 100) : 0;
 
@@ -34,11 +57,10 @@ export default function ArenaUserRankCard() {
   const currentEloInTier = Math.max(0, userStats.elo - rank.minElo);
   const eloProgress = Math.min(100, Math.round((currentEloInTier / eloRange) * 100));
 
-  const displayName = mounted && user?.fullName ? user.fullName : "Đấu Thủ LingoArena";
+  const displayName = user?.fullName || "Đấu Thủ LingoArena";
   const displayAvatar =
-    mounted && user?.avatarUrl
-      ? user.avatarUrl
-      : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80";
+    user?.avatarUrl ||
+    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80";
 
   const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -73,7 +95,9 @@ export default function ArenaUserRankCard() {
               </span>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Hạng #{userStats.seasonRank} Toàn Quốc · Mùa 4
+              {userStats.seasonRank > 0
+                ? `Hạng #${userStats.seasonRank}`
+                : "Chưa có hạng mùa từ API"}
             </p>
           </div>
         </div>
